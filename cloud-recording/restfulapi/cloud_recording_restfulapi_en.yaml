@@ -15,12 +15,8 @@ info:
 
     ## Data format
 
-    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive.
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. The response content is in JSON format.
     
-      - Request: See the examples in the following APIs.
-      - Response: The response content is in JSON format.
-    
-
     ## Call sequence
     
     Use the RESTful API in the following steps:
@@ -38,17 +34,17 @@ info:
 
       | Code |  Description                                                  |
       | :--- |       :----------------------------------------------------------- |
-      | 200  | The request handle is       successful.                            |
-      | 201  | The request is successful and new resources are       created.     |
-      | 206  | No user in the channel sent a stream during the recording       process, or some of the recorded files are uploaded to the Agora       Cloud Backup instead of the third-party cloud storage. |
-      | 400  | The input is in the wrong       format.                            |
-      | 401  | Unauthorized (incorrect App ID/Customer Certificate)      .        |
-      | 404  | The requested resource could not be       found.                   |
-      | 500  | An internal error occurs in the Agora Cloud Recording       RESTful API service. |
-      | 504  | The server was acting as a gateway or proxy and did not       receive the response from the upstream server. | 
+      | 200  | The request handle is successful.                            |
+      | 201  | The request is successful and new resources are created.     |
+      | 206  | No user in the channel sent a stream during the recording process, or some of the recorded files are uploaded to the Agora Cloud Backup instead of the third-party cloud storage. |
+      | 400  | The input is in the wrong format.                            |
+      | 401  | Unauthorized (incorrect App ID/Customer Certificate).        |
+      | 404  | The requested resource could not be found.                   |
+      | 500  | An internal error occurs in the Agora Cloud Recording RESTful API service. |
+      | 504  | The server was acting as a gateway or proxy and did not receive the response from the upstream server. | 
 
 
-      <div class="info-msg"><i class="fa fa-info-circle"></i> Because Cloud Recording RESTful APIs cannot be called from a browser, you cannot use the Try it out function for now.</div>  
+      <div class="info-msg"><i class="fa fa-info-circle"></i> Because Cloud Recording RESTful APIs cannot be called from a browser, you cannot use the Try it out function of this document for now.</div>  
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
@@ -78,7 +74,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded. 。
+          description: The App ID used in the channel to be recorded. For more information, see [APP ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id).
       requestBody:
         $ref: '#/components/requestBodies/acquire'
       responses:
@@ -106,7 +102,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
+          description: The App ID used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
@@ -152,7 +148,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
+          description: The App ID used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
@@ -203,7 +199,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
+          description: The App ID used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
@@ -271,7 +267,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
+          description: The App ID used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
@@ -351,7 +347,7 @@ components:
             resourceExpiredHour:
               type: integer
               default: 72
-              description: the time limit (in hours) for the Cloud Recording RESTful API calls. It must be between `1` and `720`. The time limit starts from when you successfully start a cloud recording and get `sid`(the recording ID ). When you exceed the time limit, you can no longer call `query`, `updateLayout`, and `stop`.
+              description: The time limit (in hours) for the Cloud Recording RESTful API calls. It must be between `1` and `720`. The time limit starts from when you successfully start a cloud recording and get `sid`(the recording ID ). When you exceed the time limit, you can no longer call `query`, `updateLayout`, and `stop`.
     start:
       type: object
       required:
@@ -470,9 +466,15 @@ components:
                         The video mixing layout. 0, 1, and 2 are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_recording_layout). If you set this parameter as `3`, you need to set the layout by the `layoutConfig` parameter.
 
 
-                          - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.                      
+                          - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users. 
+
+
                           - 1: Best fit layout. This is a grid layout. The number of columns and rows and the grid size vary depending on the number of users in the channel. This layout supports up to 17 users.
+
+
                           - 2: Vertical layout. One large region is displayed on the left edge of the canvas, and several smaller regions are displayed along the right edge of the canvas. The space on the right supports up to 2 columns of small regions with 8 regions per column. This layout supports up to 17 users.
+
+
                           - 3: Customized layout. Set the layoutConfig parameter to customize the layout.
                       default: 0
                     backgroundColor:                   
@@ -525,13 +527,14 @@ components:
 
                               - 0: Cropped mode. Uniformly scales the video until it fills the visible boundaries (cropped). One dimension of the video may have clipped contents.
 
+
                               - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
                             default: 0
                     subscribeVideoUids: 
                       type: array
                       description:  An array of the user IDs (UIDs) of the users whose video you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
 
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set <code>subscribeVideoUids</code> or <code>subscribeAudioUids</code>, Agora Cloud Recording records the audio or video of the specified users only. For example, if <code>subscribeVideoUids</code> is set and <code>subscribeAudioUids</code> is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording records the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
                       items:
                         type: string
                       maxLength: 32
@@ -541,7 +544,7 @@ components:
                       description: >-
                         An array of the user IDs (UIDs) of the users whose audio you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
                       
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set <code>subscribeVideoUids</code> or <code>subscribeAudioUids</code>, Agora Cloud Recording records the audio or video of the specified users only. For example, if <code>subscribeVideoUids</code> is set and <code>subscribeAudioUids</code> is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording records the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
                       items:
                         type: string
                       maxLength: 32
@@ -553,8 +556,11 @@ components:
                         The estimated maximum number of subscribed users. You must set this parameter in individual mode. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
                       
                         - 0: 1 to 2 UIDs 
+
                         - 1: 3 to 7 UIDs
-                        - 2: 8 to 12 UIDs        
+
+                        - 2: 8 to 12 UIDs  
+
                         - 3: 13 to 17 UIDs
                       
             storageConfig:
@@ -682,7 +688,7 @@ components:
           description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
-          description: A specific client request. See the following list for details. |
+          description: A specific client request. See the following list for details.
           properties:
             maxResolutionUid:
               type: string
@@ -690,7 +696,7 @@ components:
             mixedVideoLayout:
               type: integer
               description: >-
-                The video mixing layout. `0`, `1`, and `2` are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_layout_guide?platform=Linux). If you set this parameter as `3`, you need to set the layout by the layoutConfig parameter.
+                The video mixing layout. `0`, `1`, and `2` are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_recording_layout). If you set this parameter as `3`, you need to set the layout by the layoutConfig parameter.
 
                   - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.
                   
@@ -747,6 +753,8 @@ components:
                       The video display mode.
                     
                         - 0: Cropped mode. Uniformly scales the video until it fills the visible boundaries (cropped). One dimension of the video may have clipped contents.
+
+                        
                         - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
     stop:
       type: object
@@ -806,8 +814,9 @@ components:
               description: >-
                 The data type of `fileList`.
                   
-                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is `"string"`.
-                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is `"json"`.            
+                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
+
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.            
             fileList:
               type: array
               description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
@@ -854,7 +863,7 @@ components:
                   - 2: The recorder is starting.
                   - 3: The uploader is ready.
                   - 4: The recorder is ready.
-                  - 5: The first recorded file is uploaded. After uploading the first file, the status is `5` when the recording is running.
+                  - 5: The first recorded file is uploaded. After uploading the first file, the status is always `5` when the recording is running.
                   - 6: The recording stops.
                   - 7: The Agora Cloud Recording service stops.
                   - 8: The recording is ready to exit.
@@ -881,8 +890,8 @@ components:
               description: >-
                 The data type of `fileList`.
                   
-                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is `"string"`.
-                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is `"json"`.             
+                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.             
             fileList:
               type: array
               description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
