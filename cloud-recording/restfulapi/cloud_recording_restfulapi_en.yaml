@@ -5,7 +5,7 @@ info:
     
     ## Authentication
 
-    Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
+    The RESTful API only supports HTTPS. Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
     
       - `api_key`: Customer ID
       - `api_secret`: Customer Certificate
@@ -44,7 +44,7 @@ info:
       | 504  | The server was acting as a gateway or proxy and did not receive the response from the upstream server. | 
 
 
-      <div class="info-msg"><i class="fa fa-info-circle"></i> Because Cloud Recording RESTful APIs cannot be called from a browser, you cannot use the Try it out function of this document for now.</div>  
+      <div class="info-msg"><i class="fa fa-info-circle"></i> Because Cloud Recording RESTful APIs cannot be called from a browser, you cannot use the <b>Try it out</b> function of this document for now.</div>  
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
@@ -440,6 +440,11 @@ components:
                   type: object
                   description: >-
                     The transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [How do I set the video profile of the recorded video?](https://docs.agora.io/en/faq/recording_video_profile) for detailed information about setting `transcodingConfig`.
+                  required:
+                    - width
+                    - height
+                    - fps
+                    - bitrate
                   properties:
                     width:
                       type: integer
@@ -581,6 +586,7 @@ components:
                   description: >-
                     The regional information specified by the third-party cloud storage:
                     
+
                     When the third-party cloud storage is [Qiniu Cloud](https://www.qiniu.com/en/products/kodo) (`vendor` = 0):
                     
                       - 0: East China
@@ -688,7 +694,7 @@ components:
           description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
-          description: A specific client request. See the following list for details.
+          description: A specific client request.
           properties:
             maxResolutionUid:
               type: string
