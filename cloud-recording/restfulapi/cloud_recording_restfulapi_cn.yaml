@@ -1,85 +1,76 @@
 openapi: 3.0.0
 info:
   description: >
-    阅读本文前请确保你已经了解如何使用 [RESTful API 录制](https://docs.agora.io/cn/cloud-recording/cloud_recording_rest)。
+    Ensure that you know how to [record with the RESTful API](https://docs.agora.io/en/cloud-recording/cloud_recording_rest) before reading this document.
     
-    ## 认证
+    ## Authentication
 
-    云端录制 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要提供 `api_key:api_secret` 通过 Basic HTTP
-    认证并填入 HTTP 请求头部的 `Authorization` 字段：
-
-    - `api_key`: Customer ID
+    Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
     
-    - `api_secret`: Customer Certificate
+      - `api_key`: Customer ID
+      - `api_secret`: Customer Certificate
+
+    You can find your Customer ID and Customer Certificate on the [RESTful API](https://dashboard.agora.io/restful) page in Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for details.
 
 
-    你可以在控制台的 [RESTful API](https://console.agora.io/restful?_ga=2.175816613.605592384.1576459020-1595988498.1574647397) 页面找到你的 Customer ID 和 Customer Certificate。具体生成
-    Authorization 字段的方法请参考 [RESTful API 认证](https://docs.agora.io/cn/faq/restful_authentication)。
+    ## Data format
 
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive.
     
-    ## 数据格式
-
-    所有的请求都发送给域名：`api.agora.io`。所有的请求 URL 和请求包体内容都是区分大小写的。
-
-    - 请求：请求的格式详见下面各个 API 中的示例
+      - Request: See the examples in the following APIs.
+      - Response: The response content is in JSON format.
     
-    - 响应：响应内容的格式为 JSON
+
+    ## Call sequence
+    
+    Use the RESTful API in the following steps:
+    
+      1. Call the `acquire` method to request a resource ID for   cloud recording.
+      2. Call the  `start` method within five minutes after getting   the resource ID to start the recording.
+      3. Call the `stop` method to stop the recording.
+    
+    During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful API.
+
+
+    ## <a name="status"></a>Status code
+
+    The following table contains the most common HTTP status codes of cloud recording.
+
+      | Code |  Description                                                  |
+      | :--- |       :----------------------------------------------------------- |
+      | 200  | The request handle is       successful.                            |
+      | 201  | The request is successful and new resources are       created.     |
+      | 206  | No user in the channel sent a stream during the recording       process, or some of the recorded files are uploaded to the Agora       Cloud Backup instead of the third-party cloud storage. |
+      | 400  | The input is in the wrong       format.                            |
+      | 401  | Unauthorized (incorrect App ID/Customer Certificate)      .        |
+      | 404  | The requested resource could not be       found.                   |
+      | 500  | An internal error occurs in the Agora Cloud Recording       RESTful API service. |
+      | 504  | The server was acting as a gateway or proxy and did not       receive the response from the upstream server. | 
+
+
+      <div class="info-msg"><i class="fa fa-info-circle"></i> Because Cloud Recording RESTful APIs cannot be called from a browser, you cannot use the Try it out function for now.</div>  
       
-
-    ## 调用步骤
-
-    一般进行云端录制的步骤如下：
-
-    - 通过 `acquire` 请求获取一个 resource ID 用于开启云端录制。
-
-    - 获取 resource ID 后在 5 分钟内调用 `start` 开始云端录制。
-
-    - 录制完成后调用 `stop` 停止录制。
-
-
-    在整个过程中可以通过
-    `query` 请求查询云端录制的状态。完整示例代码请参考[云端录制快速开始示例代码](https://docs.agora.io/cn/cloud-recording/cloud_recording_rest#demo-rest)。
-
-
-    ## 响应状态码
-
-    下表列出云端录制常见 HTTP 响应状态码
-    
-
-      | 状态码 | 描述                                               |
-      | :----- | :-------------------------------------------     |
-      | 200    | 请求成功。                                         |
-      | 201    | 成功请求并创建了新的资源。                         |
-      | 206    | 整个录制过程中没有用户发流，或部分录制文件没有上传到第三方云存储。     |
-      | 400    | 请求的语法错误（如参数错误），服务器无法理解。     |
-      | 401    | 未经授权的（App ID/Customer Certificate匹配错误）。    |
-      | 404    | 服务器无法根据请求找到资源（网页）。               |
-      | 500    | 服务器内部错误，无法完成请求。                     |
-      | 504    | 服务器内部错误。充当网关或代理的服务器未从远端服务器获取请求。 |
-
-      <div class="info-msg"><i class="fa fa-info-circle"></i> 由于云端录制 RESTful API 不支持通过浏览器调用，该页面的 Try it out 功能暂时无法使用。</div> 
-
   version: 2019.12.16
-  title: 云端录制 RESTful API
+  title: Cloud Recording RESTful API
 servers: 
   - url: https://api.agora.io
 tags: 
-- name: "云端录制"
+- name: "Cloud Recording"
 
 paths:
   /v1/apps/{appid}/cloud_recording/acquire:
     post:
       tags:
-      - "云端录制"
-      summary: 获取云端录制资源
+      - "Cloud Recording"
+      summary: Gets the recording resource
       operationId: acquire
       
-      description: 在开始云端录制之前，你需要调用该方法获取一个 resource ID。
+      description: Before starting a cloud recording, you need to call this method to get a resource ID.
     
     
-        调用该方法成功后，你可以从 HTTP 响应包体中的 resourceId 字段得到一个 resource ID。这个 resource ID 的时效为 5 分钟，你需要在 5 分钟内用这个 resource ID 去调用开始云端录制的 API。
+        If this method call succeeds, you get a resource ID (`resourceId`) from the HTTP response body. The resource ID is valid for five minutes, so you need to start recording with this resource ID within five minutes.
 
-        <div class="info-msg"><i class="fa fa-info-circle"></i> 注意事项：<ul><li>一个 resource ID 只能用于一次云端录制服务。</li><li>每个 APP ID 每秒钟的请求数限制为 10 次。如需提高此限制，请联系 support@agora.io。</li></ul></div>   
+        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 times per second per APP ID. Contact support@agora.io if you want to raise the limit.</li></ul></div>   
       
       parameters:
         - in: path
@@ -87,12 +78,12 @@ paths:
           required: true
           schema:
             type: string
-          description: 你的项目使用的 App ID。必须使用和待录制的频道相同的 [App ID](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id)。
+          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded. 。
       requestBody:
         $ref: '#/components/requestBodies/acquire'
       responses:
         '200':
-          description: 操作成功
+          description: The request handle is successful.
           content:
             application/json:
               schema:
@@ -102,12 +93,12 @@ paths:
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start:
     post:
       tags:
-      - "云端录制"
-      summary: 开始云端录制
+      - "Cloud Recording"
+      summary: Starts cloud recording
       operationId: start
-      description: 获取 resource ID 后，调用该方法开始云端录制。
+      description: After getting a resource ID, call this method to start cloud recording.
       
-        <div class="info-msg"><i class="fa fa-info-circle"> 每个 APP ID 每秒钟的请求数限制为 10 次。</i></div>  
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 times per second per APP ID.</i></div>  
         
       parameters:
         - in: path
@@ -115,25 +106,25 @@ paths:
           required: true
           schema:
             type: string
-          description: 你的项目使用的 App ID。必须使用和待录制的频道相同的 [App ID](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id)。
+          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
           schema:
             type: string
-          description: 通过 `acquire` 请求获取的 resource ID。
+          description: The resource ID requested by the `acquire` method.
         - in: path
           name: mode
           required: true
           schema:
             type: string
           description: >-
-              录制模式，支持单流模式 `individual` 和合流模式 `mix` （默认模式）。单流模式下，分开录制频道内每个 UID（或指定 UID）的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。合流模式下，频道内所有（或指定）UID 的音视频混合录制为一个音视频文件。
+               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. In individual mode, Agora Cloud Recording generates one audio and/or video file for each UID or each specified UID in the channel. In composite mode, Agora Cloud Recording combines the audio and video of all or specified UIDs into a single file.
       requestBody:
         $ref: '#/components/requestBodies/start'
       responses:
         '200':
-          description: 操作成功
+          description: The request handle is successful.
           content:
             application/json:
               schema:
@@ -145,15 +136,15 @@ paths:
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout:
     post:
       tags:
-      - "云端录制"
-      summary: 更新合流布局
+      - "Cloud Recording"
+      summary: Updates the video mixing layout
       operationId: updateLayout
-      description: 在录制过程中，可以随时调用该方法更新合流布局的设置。
+      description: During a recording, you can call this method to update the video mixing layout multiple times.
 
 
-        每次调用该方法都会覆盖原来的布局设置，例如在开始录制时设置了 `backgroundColor` 为 `"#FF0000"`（红色），调用该方法更新合流布局时如果不设置 `backgroundColor` 参数，背景色会变为默认值黑色。
+        This method call overrides the existing layout configurations. For example, if you set the `backgroundColor` parameter as `"#FF0000"` (red) when starting a recording and call this method to update the layout without setting the `backgroundColor` parameter, the background color changes back to black (the default value).
         
-        <div class="info-msg"><i class="fa fa-info-circle"> 每个 APP ID 每秒钟的请求数限制为 10 次。</i></div> 
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 times per second per APP ID.</i></div> 
 
       parameters:
         - in: path
@@ -161,30 +152,30 @@ paths:
           required: true
           schema:
             type: string
-          description: 你的项目使用的 App ID。必须使用和待录制的频道相同的 [App ID](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id)。
+          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
           schema:
             type: string
-          description: 通过 `acquire` 请求获取的 resource ID。
+          description: The resource ID requested by the `acquire` method.
         - in: path
           name: sid
           required: true
           schema:
             type: string
-          description: 通过 `start` 请求获取的录制 ID。
+          description: The recording ID created by the `start` method. 
         - in: path
           name: mode
           required: true
           schema:
             type: string
-          description: 录制模式，支持单流模式 individual 和合流模式 mix （默认模式）。
+          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
       requestBody:
         $ref: '#/components/requestBodies/updateLayout'       
       responses:
         '200':
-          description: 操作成功
+          description: The request handle is successful.
           content:
             application/json:
               schema:
@@ -196,15 +187,15 @@ paths:
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query:
     get:
       tags:
-      - "云端录制"
-      summary: 查询云端录制状态
+      - "Cloud Recording"
+      summary: Queries the recording status
       operationId: query
-      description: 开始录制后，你可以调用 query 查询录制状态。
+      description: After you start a recording, you can call query to check its status.
 
 
-        `query` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `query` 将返回 404。建议你同时使用回调服务，以获得云端录制所有的事件通知和具体信息。如需使用回调服务，请参考 [API 回调](https://docs.agora.io/cn/cloud-recording/cloud_recording_callback_rest)。
+        `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error. We recommend that you use the callback service for getting the details of all cloud recording events. See [Agora Cloud Recording RESTful API Callback Service](https://docs.agora.io/en/cloud-recording/cloud_recording_callback_rest) for more information.
 
-        <div class="info-msg"><i class="fa fa-info-circle"> 每个 APP ID 每秒钟的请求数限制为 10 次。</i></div> 
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 times per second per APP ID.</i></div> 
 
       parameters:
         - in: path
@@ -212,28 +203,28 @@ paths:
           required: true
           schema:
             type: string
-          description: 你的项目使用的 App ID。必须使用和待录制的频道相同的 [App ID](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id)。
+          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
           schema:
             type: string
-          description: 通过 `acquire` 请求获取的 resource ID。
+          description: The resource ID requested by the `acquire` method.
         - in: path
           name: sid
           required: true
           schema:
             type: string
-          description: 通过 `start` 请求获取的录制 ID。
+          description: The recording ID created by the `start` method. 
         - in: path
           name: mode
           required: true
           schema:
             type: string
-          description: 录制模式，支持单流模式 individual 和合流模式 mix （默认模式）。
+          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
       responses:
         '200':
-          description: 操作成功
+          description: The request handle is successful.
           content:
             application/json:
               schema:
@@ -266,13 +257,13 @@ paths:
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop:
     post:
       tags:
-      - "云端录制"
-      summary: 停止云端录制
+      - "Cloud Recording"
+      summary: Stops cloud recording
       operationId: stop
-      description: 录制完成后，调用该方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 resource ID。
+      description: When a recording finishes, call this method to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the  `acquire` method for a new resource ID.
           
 
-       <div class="info-msg"><i class="fa fa-info-circle"></i> 注意事项：<ul><li>频道空闲（无用户）超过预设时间（默认为 30 秒） 后，云端录制也会自动退出频道停止录制。</li><li>每个 APP ID 每秒钟的请求数限制为 10 次。</li></ul></div>
+       <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>Agora Cloud Recording automatically leaves the channel and stops recording when no user is in the channel for more than 30 seconds by default.</li><li>The request frequency limit is 10 times per second per APP ID.</li></ul></div>
 
       parameters:
         - in: path
@@ -280,30 +271,30 @@ paths:
           required: true
           schema:
             type: string
-          description: 你的项目使用的 App ID。必须使用和待录制的频道相同的 [App ID](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id)。
+          description: The [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id) used in the channel to be recorded.
         - in: path
           name: resourceid
           required: true
           schema:
             type: string
-          description: 通过 `acquire` 请求获取的 resource ID。
+          description: The resource ID requested by the `acquire` method.
         - in: path
           name: sid
           required: true
           schema:
             type: string
-          description: 通过 `start` 请求获取的录制 ID。
+          description: The recording ID created by the `start` method. 
         - in: path
           name: mode
           required: true
           schema:
             type: string
-          description: 录制模式，支持单流模式 individual 和合流模式 mix （默认模式）。
+          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
       requestBody:
         $ref: '#/components/requestBodies/stop'
       responses:
         '200':
-          description: 操作成功
+          description: The request handle is successful.
           content:
             application/json:
               schema:
@@ -343,26 +334,24 @@ components:
       properties:
         cname:
           type: string
-          description: 待录制的频道名。
+          description: The name of the channel to be recorded. 
         uid:
           type: string
           description: >-
-            字符串内容为云端录制在频道内使用的用户 ID，32 位无符号整数，例如 `"527841"`。需满足以下条件：
+            A string that contains the UID of the recording   client, for example `"527841"`. The UID needs to meet   the following requirements: 
+              
+              - It is a 32-bit unsigned integer within the range between 1 and (2<sup>32</sup>-1).
+              - It is unique and does not clash with any existing UID in the channel.
+              - It should not be a string. Ensure that all UIDs in the channel are integers.
 
-            - 取值范围 1 到 (2<sup>32</sup>-1)，不可设置为 0。
-
-            - 不能与当前频道内的任何 UID 重复。
-            
-            - 云端录制不支持 String 用户名（User Account），请确保该字段引号内为整型 UID，且频道内所有用户均使用整型
-            UID。
         clientRequest:
           type: object
-          description: 客户请求参数。
+          description: A client request.
           properties:
             resourceExpiredHour:
               type: integer
               default: 72
-              description: 云端录制 RESTful API 的调用时效，从成功开启云端录制并获得 `sid` （录制 ID）后开始计算，单位为小时。超时后，你将无法调用 `query`，`updateLayout`，和 `stop` 方法。`resourceExpiredHour` 需大于等于 `1`， 且小于等于 `720`，默认值为 `72`。
+              description: the time limit (in hours) for the Cloud Recording RESTful API calls. It must be between `1` and `720`. The time limit starts from when you successfully start a cloud recording and get `sid`(the recording ID ). When you exceed the time limit, you can no longer call `query`, `updateLayout`, and `stop`.
     start:
       type: object
       required:
@@ -372,128 +361,127 @@ components:
       properties:
         cname:
           type: string
-          description: 待录制的频道名。
+          description: The name of the channel to be recorded. 
         uid:
           type: string
-          description: 字符串内容为云端录制在频道内使用的用户 ID，需要和你在 `acquire` 请求中输入的 uid 相同。
+          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
           required:
             - storageConfig
-          description: 特定的客户请求参数。
+          description: A client request。
           properties:
             token:
               type: string
-              description: 用于鉴权的[动态密钥](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#a-namekeya%E5%8A%A8%E6%80%81%E5%AF%86%E9%92%A5)。如果待录制的频道使用了动态密钥，请务必在该参数中传入一个动态密钥，详见[校验用户权限](https://docs.agora.io/cn/cloud-recording/token?platform=All%20Platforms)。
+              description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key) used in the channel to be recorded. Ensure that you set this parameter if the recording channel uses a token.
             recordingConfig:
               type: object
-              description: 录制的详细设置。
+              description: The recording configuration.
               properties:
                 streamTypes:
                   type: integer
-                  description: 录制的媒体流类型。
+                  description: >-
+                    The type of the recorded media stream.
                   
-                    - 0：仅录制音频
+                    - 0: Records audio only.
                     
-                    - 1：仅录制视频
+                    - 1: Records video only.
                     
-                    - 2：录制音频和视频
+                    - 2: Records audio and video.
                     
                   default: 2
                 decryptionMode:
                   type: integer
                   description: |-
-                    解密方案。如果频道设置了加密，该参数必须设置。解密方式必须与频道设置的加密方式一致。
-                    - 0：无
-                    - 1：设置 AES128XTS 解密方案
-                    - 2：设置 AES128ECB 解密方案
-                    - 3：设置 AES256XTS 解密方案
+                    The decryption mode that is the same as the encryption mode set by the Agora Native/Web SDK. When the channel is encrypted, Agora Cloud Recording uses `decryptionMode` to enable the built-in decryption function. 
+
+                    - 0: None.
+                    - 1: AES-128, XTS mode.
+                    - 2: AES-128, ECB mode.
+                    - 3: AES-256, XTS mode.
                   default: 0
                 secret:
                   type: string
-                  description: 启用解密模式后，设置的解密密码。
+                  description: The decryption password when decryption mode is enabled. 
                 channelType:
                    type: integer
-                   description: 频道模式。频道模式必须与 Agora Native/Web SDK 的设置一致，否则可能导致问题。
+                   description: >-
+                     The channel profile. Agora Cloud Recording must use the same channel profile as the Agora Native/Web SDK. Otherwise, issues may occur.
                      
-                     - 0：通信模式
+                     - 0: Communication profile. 
                      
-                     - 1：直播模式
+                     - 1: Live broadcast profile.
                      
                    default: 0
                     
                 audioProfile:
                   type: integer
-                  description: 设置录制文件的音频采样率，码率，编码模式和声道数。目前单流模式下不能设置该参数。
+                  description: >-
+                    The sample rate, bitrate, encoding mode, and the number of channels. You cannot set this parameter in individual recording mode.
                     
-                    - 0：48 KHz 采样率，音乐编码，单声道，编码码率约 48 Kbps
+                    - 0: Sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 48 Kbps.
                     
-                    - 1：48 KHz 采样率，音乐编码, 单声道，编码码率约 128 Kbps
+                    - 1: Sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 128 Kbps.
                     
-                    - 2：48 KHz 采样率，音乐编码, 双声道，编码码率约 192 Kbps
+                    - 2: Sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 192 Kbps.
                      
                   default: 0
                 videoStreamType:
                   type: integer
-                  description: 录制的视频流类型。如果频道中有用户开启了双流模式，你可以选择录制视频大流或者小流。
+                  description: >-
+                    The type of the video stream. 
                   
-                    - 0：视频大流，即高分辨率高码率的视频流
+                    - 0: Records the high-stream video.
                     
-                    - 1：视频小流，即低分辨率低码率的视频流
+                    - 1: Records the low-stream video.
                     
                   default: 0
                 maxIdleTime:
                   type: integer
                   default: 30
-                  description: 最长空闲频道时间。该值需大于等于 5，且小于等于 (2<sup>32</sup>-1)。如果频道内无用户的状态持续超过该时间，录制程序会自动退出。如果频道内有用户，但用户没有发流，不算作无用户状态。
+                  description: Agora Cloud Recording automatically stops recording and leaves the channel when there is no user in the recording channel after a time period (30 seconds by default) set by this parameter. The value range is from 5 to 2<sup>32</sup>-1. 
                 transcodingConfig:
                   type: object
                   description: >-
-                    视频转码的详细设置。仅适用于合流模式，单流模式下不能设置该参数。如果不设置将使用默认值。如果设置该参数，请务必填入
-                    `width`、`height`、`fps` 和 `bitrate` 字段。请参考[如何设置录制视频的分辨率](https://docs.agora.io/cn/faq/recording_video_profile)设置该参数。
+                    The transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [How do I set the video profile of the recorded video?](https://docs.agora.io/en/faq/recording_video_profile) for detailed information about setting `transcodingConfig`.
                   properties:
                     width:
                       type: integer
                       default: 360
-                      description: 录制视频的宽度，单位为像素。支持的最大分辨率为 1080p，超过该分辨率会报错。
+                      description: The width of the mixed video (pixels). The maximum resolution is 1080p and an error occurs if the maximum resolution is exceeded.
                     height:
                       type: integer
                       default: 640
-                      description: 录制视频的高度，单位为像素。支持的最大分辨率为 1080p，超过该分辨率会报错。
+                      description: The height of the mixed video (pixels). The maximum resolution is 1080p and an error occurs if the maximum resolution is exceeded.
                     fps:
                       type: integer
                       default: 15
-                      description: 录制视频的帧率，单位 fps。
+                      description: The video frame rate (fps). 
                     bitrate:
                       type: integer
                       default: 500
-                      description: 录制视频的码率，单位 Kbps。
+                      description: The video bitrate (Kbps). 
                     maxResolutionUid:
                       type: string
-                      description: 如果视频合流布局设为垂直布局，用该参数指定显示大视窗画面的用户 ID。
+                      description: When `mixedVideoLayout` is set as `2` (vertical layout), you can specify the UID of the large video window by this parameter.
                     mixedVideoLayout:
                       type: integer
                       description: >-
-                        设置视频合流布局，`0`、`1`、`2` 为[预设的合流布局](https://docs.agora.io/cn/cloud-recording/cloud_layout_guide?platform=Linux)，`3` 为自定义合流布局。该参数设为 `3` 时必须设置
-                        `layoutConfig` 参数。
+                        The video mixing layout. 0, 1, and 2 are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_recording_layout). If you set this parameter as `3`, you need to set the layout by the `layoutConfig` parameter.
 
-                        - 0: 悬浮布局。第一个加入频道的用户在屏幕上会显示为大视窗，铺满整个画布，其他用户的视频画面会显示为小视窗，从下到上水平排列，最多
-                        4 行，每行 4 个画面，最多支持共 17 个录制画面。
 
-                        - 1：自适应布局。根据用户的数量自动调整每个画面的大小，每个用户的画面大小一致，最多支持 17 个录制画面。
-
-                        - 2：垂直布局。指定一个用户在屏幕左侧显示大视窗画面，其他用户的小视窗画面在右侧垂直排列，最多两列，一列 8
-                        个画面，最多支持共 17 个录制画面。
-
-                        - 3：自定义布局。设置 `layoutConfig` 参数自定义合流布局。
+                          - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.                      
+                          - 1: Best fit layout. This is a grid layout. The number of columns and rows and the grid size vary depending on the number of users in the channel. This layout supports up to 17 users.
+                          - 2: Vertical layout. One large region is displayed on the left edge of the canvas, and several smaller regions are displayed along the right edge of the canvas. The space on the right supports up to 2 columns of small regions with 8 regions per column. This layout supports up to 17 users.
+                          - 3: Customized layout. Set the layoutConfig parameter to customize the layout.
                       default: 0
                     backgroundColor:                   
                       type: string
                       default: "#000000"
-                      description: 屏幕（画布）的背景颜色。支持 RGB 颜色表，字符串格式为 "#" 号后 6 个十六进制数。默认值 "#000000" 黑色。
+                      description: The background color of the canvas (the display window or screen) in RGB hex value. The string starts with a "#". The default value is `"#000000"`, the black color.
                     layoutConfig:
                       type: array
-                      description: 由每个用户对应的布局画面设置组成的数组，支持最多 17 个用户画面。当 `mixedVideoLayout` 设为 3 时，可以通过该参数自定义合流布局。
+                      description: An array of the configuration of each user's region. Supports 17 users at most. Each user's region configuration is a JSON object with the following parameters.
                       required:
                         - x_axis
                         - y_axis
@@ -505,59 +493,55 @@ components:
                           uid:
                             type: string
                             description: >-
-                              字符串内容为待显示在该区域的用户的 UID，32 位无符号整数。如果不指定
-                              UID，会按照用户加入频道的顺序自动匹配 `layoutConfig` 中的画面设置。
+                              The string contains the UID of the user displaying the video in the region. If this parameter is not specified, the configurations apply in the order of the users joining the channel.
                           x_axis:
                             type: number
                             format: float
                             description: >-
-                              屏幕里该画面左上角的横坐标的相对值，范围是 [0.0,1.0]。从左到右布局，0.0
-                              在最左端，1.0 在最右端。
+                              The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost). 
                           y_axis:
                             type: number
                             format: float
                             description: >-
-                              屏幕里该画面左上角的纵坐标的相对值，范围是 [0.0,1.0]。从上到下布局，0.0 在最上端，1.0 在最下端。                           
+                               The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom).                           
                           width:
                             type: number
                             format: float
-                            description: '该画面宽度的相对值，取值范围是 [0.0,1.0]。'
+                            description: The relative width of the region. The value is between 0.0 and 1.0.
                           height:
                             type: number
                             format: float
-                            description: '该画面高度的相对值，取值范围是 [0.0,1.0]。'
+                            description: The relative height of the region. The value is between 0.0 and 1.0.
                           alpha:
                             type: number
                             default: 1.0
                             format: float
                             description: >-
-                              图像的透明度。取值范围是 [0.0,1.0] 。0.0 表示图像为透明的，1.0
-                              表示图像为完全不透明的。
+                              The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque). 
                           render_mode:
                             type: integer
                             description: >-
-                              画面显示模式：
+                              The video display mode:
 
-                              -
-                              0：裁剪模式。优先保证画面被填满。视频尺寸等比缩放，直至整个画面被视频填满。如果视频长宽与显示窗口不同，则视频流会按照画面设置的比例进行周边裁剪或图像拉伸后填满画面。
+                              - 0: Cropped mode. Uniformly scales the video until it fills the visible boundaries (cropped). One dimension of the video may have clipped contents.
 
-                              -
-                              1：缩放模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与画面边框对齐。如果视频尺寸与画面尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满画面，缩放后的视频四周会有一圈黑边。
+                              - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
                             default: 0
                     subscribeVideoUids: 
                       type: array
-                      description: 由 UID 组成的数组，指定录制哪几个用户的视频流。如果设置了该参数，`recordingConfig` 中的 `streamTypes` 不可为 0。  
+                      description:  An array of the user IDs (UIDs) of the users whose video you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
 
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> 一旦设置 <code>subscribeVideoUids</code> 和 <code>subscribeAudioUids</code> 中的任一参数，则只录制参数指定的音视频。例如，<code>subscribeVideoUids</code> 不为空，<code>subscribeAudioUids</code> 为空，则只录制指定用户的视频，不录制音频。如果这两个参数均为空，则录制加入频道的所有用户。</div>                        
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set <code>subscribeVideoUids</code> or <code>subscribeAudioUids</code>, Agora Cloud Recording records the audio or video of the specified users only. For example, if <code>subscribeVideoUids</code> is set and <code>subscribeAudioUids</code> is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
                     subscribeAudioUids:
                       type: array
-                      description: 由 UID 组成的数组，指定录制哪几个用户的音频流。如果设置了该参数，`recordingConfig` 中的 `streamTypes` 不可为 1。  
+                      description: >-
+                        An array of the user IDs (UIDs) of the users whose audio you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
                       
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> 一旦设置 <code>subscribeVideoUids</code> 和 <code>subscribeAudioUids</code> 中的任一参数，则只录制参数指定的音视频。例如，<code>subscribeVideoUids</code> 不为空，<code>subscribeAudioUids</code> 为空，则只录制指定用户的视频，不录制音频。如果这两个参数均为空，则录制加入频道的所有用户。</div>                
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set <code>subscribeVideoUids</code> or <code>subscribeAudioUids</code>, Agora Cloud Recording records the audio or video of the specified users only. For example, if <code>subscribeVideoUids</code> is set and <code>subscribeAudioUids</code> is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
                       items:
                         type: string
                       maxLength: 32
@@ -565,190 +549,121 @@ components:
                         
                     subscribeUidGroup:
                       type: integer
-                      description: 预估的订阅人数峰值。在单流模式下，为必填参数。举例来说，如果 `subscribeVideoUids` 为 `["100","101","102"]`，`subscribeAudioUids` 为 `["101","102","103"]`，则订阅人数为 4 人。
-
-                        - 0：1 到 2 个 UID
-                        
-                        - 1：3 到 7 个 UID
-                        
-                        - 2：8 到 12 个 UID
-                        
-                        - 3：13 到 17 个 UID
+                      description: >-
+                        The estimated maximum number of subscribed users. You must set this parameter in individual mode. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
+                      
+                        - 0: 1 to 2 UIDs 
+                        - 1: 3 to 7 UIDs
+                        - 2: 8 to 12 UIDs        
+                        - 3: 13 to 17 UIDs
                       
             storageConfig:
               type: object
-              description: 第三方云存储的设置。
+              description: Cloud storage configuration.
               properties:
                 vendor:
                   type: integer
-                  description: 第三方云存储供应商。
+                  description: >-
+                    The third-party cloud storage vendor.
                   
-                    - 0：[七牛云](https://www.qiniu.com/products/kodo)
-                    
-                    - 1：[Amazon S3](https://aws.amazon.com/cn/s3/?nc2=h_m1)
-                    
-                    - 2：[阿里云](https://www.aliyun.com/product/oss)
-                    
-                    - 3：[腾讯云](https://cloud.tencent.com/product/cos)
+                      - `0`: [Qiniu Cloud](https://www.qiniu.com/en/products/kodo)
+                      - `1`: [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
+                      - `2`: [Alibaba Cloud](https://www.alibabacloud.com/product/oss)
+                      - `3`: [Tencent Cloud](https://intl.cloud.tencent.com/product/cos)
                 region:
                   type: integer
-                  description: 第三方云存储指定的地区信息。
+                  description: >-
+                    The regional information specified by the third-party cloud storage:
                     
-                    当 `vendor` = 0，即第三方云存储为七牛云时：
+                    When the third-party cloud storage is [Qiniu Cloud](https://www.qiniu.com/en/products/kodo) (`vendor` = 0):
                     
+                      - 0: East China
+                      - 1: North China 
+                      - 2: South China
+                      - 3: North America  
                     
-                      - 0：Huadong 
-                      
-                      - 1：Huabei 
-                      
-                      - 2：Huanan 
-                      
-                      - 3：Beimei  
+                      When the third-party cloud storage is [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls) (`vendor` = 1):
                     
+                      - 0: US_EAST_1 
+                      - 1: US_EAST_2 
+                      - 2: US_WEST_1 
+                      - 3: US_WEST_2 
+                      - 4: EU_WEST_1 
+                      - 5: EU_WEST_2 
+                      - 6: EU_WEST_3 
+                      - 7: EU_CENTRAL_1 
+                      - 8: AP_SOUTHEAST_1 
+                      - 9: AP_SOUTHEAST_2 
+                      - 10: AP_NORTHEAST_1 
+                      - 11: AP_NORTHEAST_2 
+                      - 12: SA_EAST_1 
+                      - 13: CA_CENTRAL_1 
+                      - 14: AP_SOUTH_1 
+                      - 15: CN_NORTH_1 
+                      - 17: US_GOV_WEST_1 
                     
-                    当 `vendor` = 1，即第三方云存储为 Amazon S3 时：
+                    When the third-party cloud storage is [Alibaba Cloud](https://www.alibabacloud.com/product/oss) (`vendor` = 2):
                     
+                      - 0: CN_Hangzhou 
+                      - 1: CN_Shanghai 
+                      - 2: CN_Qingdao 
+                      - 3: CN_Beijing
+                      - 4: CN_Zhangjiakou 
+                      - 5: CN_Huhehaote 
+                      - 6: CN_Shenzhen 
+                      - 7: CN_Hongkong 
+                      - 8: US_West_1 
+                      - 9: US_East_1 
+                      - 10: AP_Southeast_1 
+                      - 11: AP_Southeast_2 
+                      - 12: AP_Southeast_3 
+                      - 13: AP_Southeast_5 
+                      - 14: AP_Northeast_1 
+                      - 15: AP_South_1 
+                      - 16: EU_Central_1 
+                      - 17: EU_West_1 
+                      - 18: EU_East_1
                     
-                        - 0：US_EAST_1 
-                        
-                        - 1：US_EAST_2 
-                        
-                        - 2：US_WEST_1 
-                        
-                        - 3：US_WEST_2 
-                        
-                        - 4：EU_WEST_1 
-                        
-                        - 5：EU_WEST_2 
-                        
-                        - 6：EU_WEST_3 
-                        
-                        - 7：EU_CENTRAL_1 
-                        
-                        - 8：AP_SOUTHEAST_1 
-                        
-                        - 9：AP_SOUTHEAST_2 
-                        
-                        - 10：AP_NORTHEAST_1 
-                        
-                        - 11：AP_NORTHEAST_2 
-                        
-                        - 12：SA_EAST_1 
-                        
-                        - 13：CA_CENTRAL_1 
-                        
-                        - 14：AP_SOUTH_1 
-                        
-                        - 15：CN_NORTH_1 
-                        
-                        - 16：CN_NORTHWEST_1 
-                        
-                        - 17：US_GOV_WEST_1 
+                    When the third-party cloud storage is [Tencent Cloud](https://intl.cloud.tencent.com/product/cos) (`vendor` = 3):
                     
-                    
-                    当 `vendor` = 2，即第三方云存储为阿里云时： 
-                    
-                    
-                      - 0：CN_Hangzhou 
-                      
-                      - 1：CN_Shanghai 
-                      
-                      - 2：CN_Qingdao 
-                      
-                      - 3：CN_Beijin 
-                      
-                      - 4：CN_Zhangjiakou 
-                      
-                      - 5：CN_Huhehaote 
-                      
-                      - 6：CN_Shenzhen 
-                    
-                      - 7：CN_Hongkong 
-                      
-                      - 8：US_West_1 
-                      
-                      - 9：US_East_1 
-                      
-                      - 10：AP_Southeast_1 
-                      
-                      - 11：AP_Southeast_2 
-                      
-                      - 12：AP_Southeast_3 
-                      
-                      - 13：AP_Southeast_5 
-                      
-                      - 14：AP_Northeast_1 
-                      
-                      - 15：AP_South_1 
-                      
-                      - 16：EU_Central_1 
-                    
-                      - 17：EU_West_1 
-                      
-                      - 18：EU_East_1
-                    
-                    
-                     当 `vendor` = 3，即第三方云存储为腾讯云时： 
-
-
                       - 0：AP_Beijing_1
-                      
                       - 1：AP_Beijing
-                      
                       - 2：AP_Shanghai
-                      
                       - 3：AP_Guangzhou
-                      
                       - 4：AP_Chengdu 
-                      
                       - 5：AP_Chongqing 
-                      
                       - 6：AP_Shenzhen_FSI 
-                      
                       - 7：AP_Shanghai_FSI 
-                      
                       - 8：AP_Beijing_FSI 
-                      
                       - 9：AP_Hongkong 
-                      
                       - 10：AP_Singapore 
-                      
                       - 11：AP_Mumbai 
-                      
                       - 12：AP_Seoul 
-                      
                       - 13：AP_Bangkok 
-                      
                       - 14：AP_Tokyo 
-                      
                       - 15：NA_Siliconvalley 
-                      
                       - 16：NA_Ashburn 
-                      
                       - 17：NA_Toronto 
-                      
                       - 18：EU_Frankfurt 
-                      
                       - 19：EU_Moscow
 
                 bucket:
                   type: string
-                  description: 第三方云存储的 bucket。
+                  description: The bucket of the third-party cloud storage.
                 accessKey:
                   type: string
-                  description: 第三方云存储的 access key。
+                  description: The access key of the third-party cloud storage.
                 secretKey:
                   type: string
-                  description: 第三方云存储的 secret key。
+                  description: The secret key of the third-party cloud storage.
                 fileNamePrefix:
                   type: array
-                  description: 由多个字符串组成的数组，指定录制文件在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `["directory1","directory2"]`，将在录制文件名前加上前缀 `"directory1/directory2/"`，即 `directory1/directory2/xxx.m3u8`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现斜杠。以下为支持的字符集范围：
-
-                    - 26 个小写英文字母 a-z
-                    
-                    - 26 个大写英文字母 A-Z
-                    
-                    - 10 个数字 0-9
+                  description: >-
+                    An array of strings. Sets the path of the recorded files in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, Agora Cloud Recording will add the prefix "`directory1/directory2/`" before the name of the recorded file, that is, `directory1/directory2/xxx.m3u8`. The prefix's length, including the slashes, should not exceed 128 characters. The string itself should not contain any slash. The supported characters are as follows:
+                      
+                      - The 26 lowercase English letters: a to z                     
+                      - The 26 uppercase English letters: A to Z
+                      - The 10 numbers: 0 to 9
                     
                   items:
                     type: string
@@ -761,37 +676,39 @@ components:
       properties:
         cname:
           type: string
-          description: 待录制的频道名。
+          description: The name of the channel to be recorded. 
         uid:
           type: string
-          description: 字符串内容为云端录制在频道内使用的用户 ID，需要和你在 `acquire` 请求中输入的 uid 相同。
+          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
-          description: 特定的客户请求参数。
+          description: A specific client request. See the following list for details. |
           properties:
             maxResolutionUid:
               type: string
-              description: 如果 `layoutType` 设为 `2`（垂直布局），用该参数指定显示大视窗画面的用户 ID。
+              description: When the `layoutType` parameter is set as `2` (vertical layout), you can specify the UID of the large video window by this parameter.
             mixedVideoLayout:
               type: integer
-              description: 设置视频合流布局，`0`、`1`、`2` 为[预设的合流布局](https://docs.agora.io/cn/cloud-recording/cloud_layout_guide?platform=Linux)，`3` 为自定义合流布局。该参数设为 `3` 时必须设置 `layoutConfig` 参数。
-              
-                - 0：（默认）悬浮布局。第一个加入频道的用户在屏幕上会显示为大视窗，铺满整个画布，其他用户的视频画面会显示为小视窗，从下到上水平排列，最多 4 行，每行 4 个画面，最多支持共 17 个录制画面。
-                
-                - 1：自适应布局。根据用户的数量自动调整每个画面的大小，每个用户的画面大小一致，最多支持 17 个录制画面。
-                
-                - 2：垂直布局。指定一个用户在屏幕左侧显示大视窗画面，其他用户的小视窗画面在右侧垂直排列，最多两列，一列 8 个画面，最多支持共 17 个录制画面。
-                
-                - 3：自定义布局。设置 `layoutConfig` 参数自定义合流布局。
+              description: >-
+                The video mixing layout. `0`, `1`, and `2` are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_layout_guide?platform=Linux). If you set this parameter as `3`, you need to set the layout by the layoutConfig parameter.
+
+                  - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.
+                  
+                  - 1: Best fit layout. This is a grid layout. The number of columns and rows and the grid size vary depending on the number of users in the channel. This layout supports up to 17 users.
+                  
+                  - 2: Vertical layout. One large region is displayed on the left edge of the canvas, and several smaller regions are displayed along the right edge of the canvas. The space on the right supports up to 2 columns of small regions with 8 regions per column. This layout supports up to 17 users.
+                  
+                  - 3: Customized layout. Set the `layoutConfig` parameter to customize the layout.
                 
               default: 0
             backgroundColor:
               type: string
               default: "#000000"
-              description: 屏幕（画布）的背景颜色。支持 RGB 颜色表，字符串格式为 "#" 号后 6 个十六进制数。默认值 `"#000000"` 黑色。
+              description: The background color of the canvas (the display window or screen) in RGB hex value. The string starts with a "#". The default value is `"#000000"`, the black color.
             layoutConfig:
               type: array
-              description: 由每个用户对应的布局画面设置组成的数组，支持最多 17 个用户画面。当 `layoutType` 设为 `3` 时，可以通过该参数自定义合流布局。
+              description: >-
+                An array of the configuration of each user's region. Supports 17 users at most. Each user's region configuration is a JSON object.
               required:
                 - x_axis
                 - y_axis
@@ -801,36 +718,36 @@ components:
                 properties:
                   uid:
                     type: string
-                    description: 字符串内容为待显示在该画面的用户的 UID，32 位无符号整数。如果不指定 UID，会按照用户加入频道的顺序自动匹配 `layoutConfig` 中的画面设置。
+                    description: The string contains the UID of the user displaying the video in the region. If this parameter is not specified, the configurations apply in the order of the users joining the channel.
                   x_axis:
                     type: number
                     format: float
-                    description: 屏幕里该画面左上角的横坐标的相对值，范围是 [0.0,1.0]。从左到右布局，0.0 在最左端，1.0 在最右端。x_axi 也可设置为整数 0 或 1。
+                    description: The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost). `x_axis` can also be an integer 0 or 1.
                   y_axis:
                     type: number
                     format: float
-                    description: 屏幕里该画面左上角的纵坐标的相对值，范围是 [0.0,1.0]。从上到下布局，0.0 在最上端，1.0 在最下端。y_axi 也可设置为整数 0 或 1。
+                    description: The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom). `y_axis` can also be an integer 0 or 1.
                   width:
                     type: number
                     format: float
-                    description: 该画面宽度的相对值，取值范围是 [0.0,1.0]。width 也可设置为整数 0 和 1。
+                    description: The relative width of the region. The value is between 0.0 and 1.0. `width` can also be an integer 0 or 1.
                   height:
                     type: number
                     format: float
-                    description: 该画面高度的相对值，取值范围是 [0.0,1.0]。height 也可设置为整数 0 和 1。
+                    description: The relative height of the region. The value is between 0.0 and 1.0. `height` can also be an integer 0 or 1.
                   alpha:
                     type: number
                     format: float
                     default: 1.0
-                    description: 图像的透明度。取值范围是 [0.0,1.0] 。0.0 表示图像为透明的，1.0 表示图像为完全不透明的。
+                    description: The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque). The default value is 1.0.
                   render_mode:
                     type: integer
                     default: 0
-                    description: 画面显示模式。
+                    description: >-
+                      The video display mode.
                     
-                      - `0`：裁剪模式。优先保证画面被填满。视频尺寸等比缩放，直至整个画面被视频填满。如果视频长宽与显示窗口不同，则视频流会按照画面设置的比例进行周边裁剪或图像拉伸后填满画面。
-                      
-                      - `1`：缩放模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与画面边框对齐。如果视频尺寸与画面尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满画面，缩放后的视频四周会有一圈黑边。
+                        - 0: Cropped mode. Uniformly scales the video until it fills the visible boundaries (cropped). One dimension of the video may have clipped contents.
+                        - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
     stop:
       type: object
       required:
@@ -840,200 +757,176 @@ components:
       properties:
         cname:
           type: string
-          description: 待录制的频道名。
+          description: The name of the channel to be recorded. 
         uid:
           type: string
-          description: 字符串内容为云端录制在频道内使用的用户 ID，需要和你在 acquire 请求中输入的 uid 相同。
+          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method. 
         clientRequest:
           type: object
-          description: 特定的客户请求参数，对于该方法无需填入任何内容，为一个空的 JSON。
+          description: A specific client request that is empty for this method. 
     acquire_response:
       type: object
       properties:
         resourceId:
           type: string
-          description: 云端录制资源 resource ID，使用这个 resource ID 可以开始一段云端录制。这个 resource ID 的有效期为
-            5 分钟，超时需要重新请求。
+          description: The resource ID for cloud recording. The resource ID is valid for five minutes.
     start_response:
       type: object
       properties:
         resourceId:
           type: string
-          description: 云端录制使用的 resource ID。
+          description: The resource ID for cloud recording.
         sid:
           type: string
-          description: 录制 ID。成功开始云端录制后，你会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识。
+          description: The recording ID. The unique identification of the current recording.
     updateLayout_response:
       type: object
       properties:
         resourceId:
           type: string
-          description: 云端录制使用的 resource ID。
+          description: The resource ID for cloud recording.
         sid:
           type: string
-          description: 录制 ID。成功开始云端录制后，你会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识。
+          description: The recording ID. The unique identification of the current recording.
     query_response:
       type: object
       properties:
         resourceId:
           type: string
-          description: 云端录制使用的 resource ID。
+          description: The resource ID for cloud recording.
         sid:
           type: string
-          description: 录制 ID。成功开始云端录制后，你会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识。
+          description: The recording ID. The unique identification of the current recording.
         serverResponse:
           type: object
-          description: 服务器返回的具体信息。
+          description: The details about the recording status.
           properties:
             fileListMode:
               type: string
-              description: 表示 `fileList` 字段的数据格式。
-              
-                - "string"：`fileList` 为 String 类型。合流模式下，`fileListMode` 为 `"string"`。
-                
-                - "json"：`fileList` 为 JSONArray 类型。单流模式下，`fileListMode` 为 `"json"`。
-              
+              description: >-
+                The data type of `fileList`.
+                  
+                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is `"string"`.
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is `"json"`.            
             fileList:
               type: array
-              description: 当 `fileListMode` 为 `"string"` 时，`fileList` 为 String 类型，录制产生的 M3U8 文件的文件名。当 `fileListMode` 为 `"json"` 时, `fileList` 为 JSONArray 类型，由每个录制文件的具体信息组成的数组。
+              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
               items:
                 properties:
                   filename:
                     type: string
-                    description: 录制产生的 M3U8 文件的文件名。
+                    description: The name of the M3U8 file.
                   trackType:
                     type: string
-                    description: 录制文件的类型。
+                    description: >-
+                      The type of the recorded file.
                     
-                      - "audio"：纯音频文件。
-                      
-                      - "video"：纯视频文件。
-                      
-                      - "audio_and_video"：音视频文件。
-                      
+                        - `"audio"`: Audio file.
+                        - `"video"`: Video file (no audio).
+                        - `"audio_and_video"`: Video file (with audio).                    
                   uid:
                     type: string
-                    description: 用户 UID，表示录制的是哪个用户的音频流或视频流。
+                    description: The user whose audio or video is recorded in the file.
                   mixedAllUser:
                     type: string
-                    description: 用户是否是分开录制的。
+                    description: >-
+                      Whether the audio and video of all users are combined into a single file.
                     
-                      - "true"：所有用户合并在一个录制文件中。
-                      
-                      - "false"：每个用户分开录制。
-                      
+                        - `"true"`: All users are recorded in a single file.
+                        - `"false"`: Each user is recorded separately.                      
                   isPlayable:
                     type: string
-                    description: 是否可以在线播放。
+                    description: >-
+                      Whether the file can be played online.
                   
-                      - "true"：可以在线播放。
-                      
-                      - "false"：无法在线播放。
-                      
+                        - `"true"`: The file can be played online.
+                        - `"false"`: The file cannot be played online.                    
                   sliceStartTime:
                     type: string
-                    description: 该文件的录制开始时间，Unix 时间戳，单位为毫秒。
+                    description: The Unix time (ms) when the recording starts.
             status:
               type: integer
-              description: 当前录制的状态。
+              description: >-
+                The recording status.
             
-            
-                - 0：没有开始云端录制。
-                
-                - 1：云端录制初始化完成。
-                
-                - 2：录制组件开始启动。
-                
-                - 3：上传组件启动完成。
-                
-                - 4：录制组件启动完成。
-                
-                - 5：已成功上传第一个文件。第一个文件上传完成后，录制在进行中均会返回此状态。
-                
-                - 6：已经停止录制。
-                
-                - 7：云端录制服务全部停止。
-                
-                - 8：云端录制准备退出。
-                
-                - 20：云端录制异常退出。
-                
-                
+                  - 0: The recording has not started.
+                  - 1: The initialization is complete.
+                  - 2: The recorder is starting.
+                  - 3: The uploader is ready.
+                  - 4: The recorder is ready.
+                  - 5: The first recorded file is uploaded. After uploading the first file, the status is `5` when the recording is running.
+                  - 6: The recording stops.
+                  - 7: The Agora Cloud Recording service stops.
+                  - 8: The recording is ready to exit.
+                  - 20: The recording exits abnormally.
+                           
             sliceStartTime:
              type: string
-             description: 录制开始的时间，Unix 时间戳，单位为毫秒。
+             description: The time when the recording starts. Unix timestamp (ms).
     stop_response:
       type: object
       properties:
         resourceId:
           type: string
-          description: 云端录制使用的 resource ID。
+          description: The resource ID for cloud recording.
         sid:
           type: string
-          description: 录制 ID。成功开始云端录制后，你会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识。
+          description: The unique identification of the current recording.
         serverResponse:
           type: object
-          description: 服务器返回的具体信息。
+          description: The details about the recording status.
           properties:
             fileListMode:
               type: string
-              description: 表示 `fileList` 字段的数据格式。
-              
-              
-                - "string"：`fileList` 为 String 类型。合流模式下，`fileListMode` 为 `"string"`。
-                
-                - "json"：`fileList` 为 JSONArray 类型。单流模式下，`fileListMode` 为 `"json"`。
-                
+              description: >-
+                The data type of `fileList`.
+                  
+                  - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is `"string"`.
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is `"json"`.             
             fileList:
               type: array
-              description: 当 `fileListMode` 为 `"string"` 时，`fileList` 为 String 类型，录制产生的 M3U8 文件的文件名。当 `fileListMode` 为 `"json"` 时, `fileList` 为 JSONArray 类型，由每个录制文件的具体信息组成的数组。
+              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
               items:
                 properties:
                   filename:
                     type: string
-                    description: 录制产生的 M3U8 文件的文件名。
+                    description: The name of the M3U8 file.
                   trackType:
                     type: string
-                    description: 录制文件的类型。
+                    description: >-
+                      The type of the recorded file.
                     
-                      - "audio"：纯音频文件。
-                      
-                      - "video"：纯视频文件。
-                      
-                      - "audio_and_video"：音视频文件。
-                      
+                        - `"audio"`: Audio file.
+                        - `"video"`: Video file (no audio).
+                        - `"audio_and_video"`: Video file (with audio).                      
                   uid:
                     type: string
-                    description: 用户 UID，表示录制的是哪个用户的音频流或视频流。
+                    description: The user whose audio or video is recorded in the file.
                   mixedAllUser:
                     type: string
-                    description: 用户是否是分开录制的。
+                    description: >-
+                      Whether the audio and video of all users are combined into a single file.
                     
-                      - "true"：所有用户合并在一个录制文件中。
-                      
-                      - "false"：每个用户分开录制。
-                      
+                        - `"true"`: All users are recorded in a single file.
+                        - `"false"`: Each user is recorded separately.                     
                   isPlayable:
                     type: string
-                    description: 是否可以在线播放。
+                    description: >-
+                      Whether the file can be played online.
                   
-                  
-                      - "true"：可以在线播放。
-                      
-                      - "false"：无法在线播放。
-                      
+                        - `"true"`: The file can be played online.
+                        - `"false"`: The file cannot be played online.
                   sliceStartTime:
                     type: string
-                    description: 该文件的录制开始时间，Unix 时间戳，单位为毫秒。
+                    description: The Unix time (ms) when the recording starts.
             uploadingStatus:
               type: string
-              description: 当前录制上传的状态。
+              description: >-
+                The upload status.
               
-                - "uploaded"：本次录制的文件已经全部上传至指定的第三方云存储。
-                
-                - "backuped"：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了 Agora 云备份。Agora 服务器会自动将这部分文件继续上传至指定的第三方云存储。
-                
-                - "unknown"：未知状态。
+                  - `"uploaded"`: All the recorded files are uploaded to the third-party cloud storage.
+                  - `"backuped"`:  Some of the recorded files fail to upload to the third-party cloud storage and upload to Agora Cloud Backup instead. Agora Cloud Backup automatically uploads these files to your cloud storage. 
+                  - `"unknown"`: Unknown status.
   requestBodies:
     acquire:
       content:
@@ -1046,7 +939,7 @@ components:
             clientRequest: {
               resourceExpiredHour: 24
             }
-      description: 该 API 需要在请求包体中传入以下参数。
+      description: The following parameters are required in the request body.
       required: true
     start:
       content:
@@ -1087,7 +980,7 @@ components:
                 fileNamePrefix:
                   - directory1
                   - directory2
-      description: 该 API 需要在请求包体中传入以下参数。
+      description: The following parameters are required in the request body.
       required: true
     updateLayout:
       content:
@@ -1120,10 +1013,10 @@ components:
                   render_mode: 1
                 }
               ]
-      description: 该 API 需要在请求包体中传入以下参数。
+      description: The following parameters are required in the request body.
       required: true
     stop:
-      description: 该 API 需要在请求包体中传入以下参数。
+      description: The following parameters are required in the request body.
       content:
         application/json:
           schema:
