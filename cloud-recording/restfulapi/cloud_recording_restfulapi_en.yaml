@@ -1030,6 +1030,10 @@ components:
               ]
       description: The following parameters are required in the request body.
       required: true
+    query:
+      content:
+        application/json:
+          schema: {}
     stop:
       description: The following parameters are required in the request body.
       content:
