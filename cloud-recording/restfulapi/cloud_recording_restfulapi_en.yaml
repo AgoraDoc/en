@@ -52,7 +52,8 @@ servers:
   - url: https://api.agora.io
 tags: 
 - name: "Cloud Recording"
-
+security:
+  - agora_auth: []
 paths:
   /v1/apps/{appid}/cloud_recording/acquire:
     post:
