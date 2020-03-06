@@ -193,7 +193,8 @@ paths:
         `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error. We recommend that you use the callback service for getting the details of all cloud recording events. See [Agora Cloud Recording RESTful API Callback Service](https://docs.agora.io/en/cloud-recording/cloud_recording_callback_rest) for more information.
 
         <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 times per second per APP ID.</i></div> 
-
+      requestBody:
+        $ref: '#/components/requestBodies/query'
       parameters:
         - in: path
           name: appid
