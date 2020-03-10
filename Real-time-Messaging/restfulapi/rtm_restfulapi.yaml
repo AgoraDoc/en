@@ -1,0 +1,272 @@
+openapi: 3.0.0
+info:
+
+  description: >
+    You can now get both user and channel events with the Agora RTM RESTful APIs. 
+
+  
+      <div class="info-msg">
+        <i class="fa fa-info-circle"></i> Considerations: qps of the RESTful APIs: 100 (for each App ID).
+      </div>
+    
+    ## Authentication
+
+    The Agora RTM RESTful APIs support HTTPS only. You can use either of the following to authenticate your HTTP request: 
+
+    <li><a href="#basicauth">Basic Authentication</a></li>
+    <li><a href="#tokenauth">Token Authentication/a></li>
+
+      ### <a name="basicauth"></a>Basic Authentication
+    
+      You need to pass the basic HTTP authentication and put `api_key:api_secret` in the `Authorization` field of the HTTP header: 
+
+      - `api_key`: Customer ID
+    
+      - `api_secret`: Customer Certificate
+
+      You can get your Customer ID and Customer Certificate on the [RESTful API](https://console.agora.io/restful) page of the Agora Console. For more information on how to generate the `Authorization` filed, see [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication).
+
+      ### <a name="tokenauth"></a>Token Authentication
+
+      If you have already generated an RTM Token on your server, you can use Token Authentication. You need to put the following information to the `x-agora-token` field `x-agora-uid` field when sending your HTTP request: 
+
+      - The RTM Token generated at your server. 
+
+      - The uid you use to generate the RTM Token. 
+
+      **Sample code**
+
+      ```java
+        Request request = new Request.Builder()
+        ...
+        // Puts your RTM Token to the `x-agora-token` field of the HTTP request. 
+
+        .addHeader("x-agora-token", "<Your RTM Token>")
+
+        // Puts the uid, which generates the RTM token, to the `x-agora-uid` field of the HTTP request.
+
+        .addHeader("x-agora-uid", "<Your uid used to generate the RTM Token>")
+      ```
+
+      <div class="info-msg">
+        <i class="fa fa-info-circle"></i> For more information about how to generate an RTM Token, see <a href="https://docs.agora.io/en/Real-time-Messaging/rtm_token?platform=All%20Platforms">Token Security</a>
+      </div>
+    
+    ## Data format
+
+    所有的请求都发送给域名：`api.agora.io`。
+
+    - Request: See the examples in the following APIs. 
+    
+    - Response: The response content is in JSON format. 
+      
+
+    ## API sequence
+
+    - To get events such as a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
+    - To get events such as a user joins or leaves a channel, call `channel_events` directly.
+
+
+
+    ## Status code
+
+    The following table contains the most common HTTP status codes for Real-time Messaging.
+    
+
+      | Code | Description                                           |
+      | :----- | :------------------------------------------- |
+      | 200    | The request succeeds.   |
+      | 400    | Incorrect request syntax.    |
+      | 408    | The server request times out or the server fails to respond. Try again later.  |
+
+
+  version: Beta
+  title: Real-time Messaging RESTful API
+servers: 
+  - url: https://api.agora.io
+    description: Official Environment
+security:
+  - agora_auth: []
+
+
+paths:
+  /dev/v2/project/{appid}/rtm/vendor/user_events:
+    get:
+      tags:
+      - "Get Events"
+      summary: Get user events such as a user logs in or logs out of the Agora RTM system. 
+      operationId: user_events   
+      description: This method gets the user events from the address specified by the Agora RTM server. 
+
+          <div class="warning-msg">
+            <i class="fa fa-warning"></i> Considerations:<ul>
+          <li>The RTM backend stores a maximum of 2,000 events</li>
+          <li>The backend returns a maximum of 1,000 events each time. </li>
+          <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
+          <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
+          </div>
+
+      parameters:
+        - $ref: '#/components/parameters/appid'
+      responses:
+        '200':
+          description: Successfully gets the user events from the address specified by the Agora RTM server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_event_response'
+              example:
+                result: success
+                request_id: 10116762670167749259
+                events: { user_id: "rtmtest_RTM_4852_4857w7%", type: "Login", ts: "1578027420761" }
+
+  /dev/v2/project/{appid}/rtm/vendor/channel_events:
+    get:
+      tags:
+      - "Get events"
+      summary: Get channel events such as a user joins or leave a channel.
+      operationId: channel_events
+      description: This methods gets the channel events.
+      
+          <div class="warning-msg">
+            <i class="fa fa-warning"></i>
+            <li>The RTM backend stores a maximum of 2,000 events. </li>
+            <li>The backend returns a maximum of 1,000 events each time. </li>
+            <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
+            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li>
+          </div> 
+        
+      parameters:
+        - $ref: '#/components/parameters/appid'
+      responses:
+        '200':
+          description: Successfully gets the channel events from the address specified by the Agora RTM server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_event_response'
+              example:
+                result: success
+                request_id: 10116762670167749259
+                events: { channel_id: "example_channel_id", user_id: "rtmtest_RTM_4852_4857w7%", type: "Join", ts: "1578027418981" }
+                offset: 100
+                limit: 20
+                order: 
+  
+
+components:
+  schemas:              
+    user_event_response:
+      type: object
+      properties:
+        result:
+          type: string
+          description: >- 
+            Result of this request.
+
+            - "success": Success.
+
+            - "failure": Failure.
+
+        request_id:
+          type: string
+          description: The unique ID of this request.
+        events:
+          type: object
+          description: A user event.
+          $ref: '#/components/schemas/user_events'
+
+    user_events:
+       type: object
+       properties:
+         user_id: 
+           type: string
+           description: The ID of the user corresponds to this user event.
+         type: 
+           type: string
+           description: >-
+             User event type:
+
+             - "Login": A user logs in to the Agora RTM system.
+
+             - "Logout": A user logs out of the Agora RTM system.
+
+         ts: 
+           type: integer
+           description: Timestamp (ms).
+
+    channel_event_response:
+      type: object
+      properties:
+        result:
+          type: string
+          description: >-
+            Result of this request.
+              
+              - "success": Success;
+
+              - "failure": Failure.          
+        request_id:
+          type: string
+          description: The unique ID of this request.
+        events:
+          type: object
+          description: A channel event.
+          $ref: '#/components/schemas/channel_events'
+    channel_events:
+      type: object
+      properties:
+         user_id: 
+          type: string
+          description: The ID of the user corresponds to this channel event. 
+         type: 
+          type: string
+          description: >-
+            Channel event type:
+
+            - "Join": A user has joined the channel.
+
+            - "Leave": A channel member has left the channel.
+         ts: 
+           type: integer
+           description: The timestamp (ms).
+
+              
+
+  parameters:
+    appid:
+      name: appid
+      in: path
+      required: true
+      description: >-
+        The App ID for your project.
+      schema:
+        type: string
+
+
+
+  requestBodies:
+    message_history:
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/message_history'    
+          example:
+            filter: { source: "src_account", description: "dst_account", start_time: "2019-08-01T01:22:10Z", end_time: "2019-08-01T01:32:10Z" } 
+            offset: 100
+            limit: 20
+            order: asc   
+
+    count:
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/count' 
+          example:
+            
+
+
+  securitySchemes:
+    agora_auth:
+      type: http
+      scheme: basic
