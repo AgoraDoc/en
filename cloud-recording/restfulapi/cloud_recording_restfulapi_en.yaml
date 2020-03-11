@@ -44,7 +44,7 @@ info:
       | 504  | The server was acting as a gateway or proxy and did not receive the response from the upstream server. | 
 
 
-       <div class="info-msg"><i class="fa fa-info-circle"></i> 注意事项：<ul><li>Because Cloud Recording RESTful APIs do not support cross-origin requests, you cannot get a valid HTTP response by using the <b>Try it out</b> feature of this document temporarily. Instead, you can use <b>Try it out</b> to generate a curl command, and copy and run the command in your terminal to get the response. </li><li>Before using <b>Try it out</b>, you need to click <b>Authorize</b> and enter your Customer ID and Customer Certificate to get authorization.</li></ul></div>
+       <div class="info-msg"><i class="fa fa-info-circle"></i> 注意事项：<ul><li>You will not receive a valid HTTP response by using the <b>Try it out</b> function on this web page for now, because the Agora Cloud Recording RESTful APIs do not support cross-origin requests. As a workaround, you can use this function to generate a curl command, copy it, and run the command in your terminal to get the response.</li><li>Before using the <b>Try it out</b> function, you must click <b>Authorize</b> and enter your Customer ID and Customer Certificate to complete authorization.</li></ul></div>
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
