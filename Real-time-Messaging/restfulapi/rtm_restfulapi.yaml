@@ -64,6 +64,7 @@ info:
     ## API sequence
 
     - To get events such as a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
+    
     - To get events such as a user joins or leaves a channel, call `channel_events` directly.
 
 
