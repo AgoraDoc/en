@@ -13,8 +13,8 @@ info:
 
     The Agora RTM RESTful APIs support HTTPS only. You can use either of the following to authenticate your HTTP request: 
 
-    <li><a href="#basicauth">Basic Authentication</a></li>
-    <li><a href="#tokenauth">Token Authentication/a></li>
+    <li><a href="#basicauth">Basic Authentication /a></li>
+    <li><a href="#tokenauth">Token Authentication /a></li>
 
       ### <a name="basicauth"></a>Basic Authentication
     
@@ -64,7 +64,7 @@ info:
     ## API sequence
 
     - To get events such as a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
-    
+
     - To get events such as a user joins or leaves a channel, call `channel_events` directly.
 
 
