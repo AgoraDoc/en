@@ -93,7 +93,7 @@ paths:
   /dev/v2/project/{appid}/rtm/vendor/user_events:
     get:
       tags:
-      - "Get Events"
+      - "Get user events"
       summary: Get user events such as a user logs in or logs out of the Agora RTM system. 
       operationId: user_events   
       description: This method gets the user events from the address specified by the Agora RTM server. 
@@ -123,7 +123,7 @@ paths:
   /dev/v2/project/{appid}/rtm/vendor/channel_events:
     get:
       tags:
-      - "Get events"
+      - "Get channel events"
       summary: Get channel events such as a user joins or leave a channel.
       operationId: channel_events
       description: This methods gets the channel events.
