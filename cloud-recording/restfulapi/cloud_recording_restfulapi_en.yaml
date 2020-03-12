@@ -367,6 +367,7 @@ components:
           type: object
           required:
             - storageConfig
+            - recordingConfig
           description: A client request。
           properties:
             token:
@@ -375,6 +376,8 @@ components:
             recordingConfig:
               type: object
               description: The recording configuration.
+              required:
+                - channelType
               properties:
                 streamTypes:
                   type: integer
