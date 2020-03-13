@@ -54,7 +54,7 @@ info:
     
     ## Data format
 
-    所有的请求都发送给域名：`api.agora.io`。
+    All requests are sent to the host: `api.agora.io`.
 
     - Request: See the examples in the following APIs. 
     
