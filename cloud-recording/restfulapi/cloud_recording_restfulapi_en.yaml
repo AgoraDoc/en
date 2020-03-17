@@ -379,6 +379,16 @@ components:
               required:
                 - channelType
               properties:
+                channelType:
+                   type: integer
+                   description: >-
+                     The channel profile. Agora Cloud Recording must use the same channel profile as the Agora Native/Web SDK. Otherwise, issues may occur.
+                     
+                     - 0: Communication profile. 
+                     
+                     - 1: Live broadcast profile.
+                     
+                   default: 0
                 streamTypes:
                   type: integer
                   description: >-
@@ -403,18 +413,7 @@ components:
                   default: 0
                 secret:
                   type: string
-                  description: The decryption password when decryption mode is enabled. 
-                channelType:
-                   type: integer
-                   description: >-
-                     The channel profile. Agora Cloud Recording must use the same channel profile as the Agora Native/Web SDK. Otherwise, issues may occur.
-                     
-                     - 0: Communication profile. 
-                     
-                     - 1: Live broadcast profile.
-                     
-                   default: 0
-                    
+                  description: The decryption password when decryption mode is enabled.              
                 audioProfile:
                   type: integer
                   description: >-
@@ -443,7 +442,7 @@ components:
                   description: >-
                     Agora Cloud Recording automatically stops recording and leaves the channel when there is no user in the recording channel after a time period (30 seconds by default) set by this parameter. The value range is from 5 to 2<sup>32</sup>-1. 
                   
-                    <div class="info-msg"><i class="fa fa-info-circle"></i> Note: <ul><li>The recording service does not recognize a channel as an idle channel, so long as the channel has users, regardless of whether they send stream or not.</li><li>If a live-broadcast channel has an audience without a host for a set time (<note>maxIdleTime</note>), the recording service automatically stops and leaves the channel.</li></div>
+                    <div class="info-msg"><i class="fa fa-info-circle"></i> Note: <ul><li>The recording service does not recognize a channel as an idle channel, so long as the channel has users, regardless of whether they send stream or not.</li><li>If a live-broadcast channel has an audience without a host for a set time (<code>maxIdleTime</code>), the recording service automatically stops and leaves the channel.</li></div>
                 transcodingConfig:
                   type: object
                   description: >-
