@@ -44,7 +44,7 @@ info:
       | 504  | The server was acting as a gateway or proxy and did not receive the response from the upstream server. | 
 
 
-       <div class="info-msg"><i class="fa fa-info-circle"></i> Before using the <b>Try it out</b> function, you must click <b>Authorize</b> and enter your Customer ID and Customer Certificate to complete authorization.</div>
+       <div class="info-msg"><i class="fa fa-info-circle"></i> Before using the <b>Try it out</b> function, you must click <b>Authorize</b> to complete authorization. Enter Customer ID in <b>Username</b> and Customer Certificate in <b>Password</b>, and then click <b>Authorize</b>.</div>
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
@@ -976,7 +976,6 @@ components:
               recordingConfig:
                 maxIdleTime: 30
                 streamTypes: 2
-                audioProfile: 1
                 channelType: 0
                 videoStreamType: 1
                 transcodingConfig:
@@ -1041,7 +1040,6 @@ components:
       content:
         application/json:
           schema: {}
-          example: {}
       description: No parameters are required in the request body.
 
     stop:
