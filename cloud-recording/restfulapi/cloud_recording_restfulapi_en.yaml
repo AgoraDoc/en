@@ -144,6 +144,8 @@ paths:
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '201':
           $ref: '#/components/responses/201' 
+        '206':
+          $ref: '#/components/responses/206' 
         '400':
           $ref: '#/components/responses/400' 
         '401':
@@ -282,8 +284,8 @@ paths:
                       sliceStartTime: "1562724971626"
                    }
                    ]
-                status: "5"
-                sliceStartTime: "1562724971626"
+                  status: "5"
+                  sliceStartTime: "1562724971626"
         '206':
           $ref: '#/components/responses/206' 
         '400':
@@ -364,7 +366,7 @@ paths:
                       sliceStartTime: "1562724971626"
                    }
                    ]
-                uploadingStatus: "uploaded"
+                  uploadingStatus: "uploaded"
         '206':
           $ref: '#/components/responses/206' 
         '400':
@@ -434,6 +436,7 @@ components:
               description: The recording configuration.
               required:
                 - channelType
+                - subscribeUidGroup
               properties:
                 channelType:
                    type: integer
@@ -616,8 +619,7 @@ components:
                       items:
                         type: string
                       maxLength: 32
-                      example: ["123","456"]
-                        
+                      example: ["123","456"]                     
                 subscribeUidGroup:
                       type: integer
                       description: >-
@@ -629,11 +631,16 @@ components:
 
                         - 2: 8 to 12 UIDs  
 
-                        - 3: 13 to 17 UIDs
-                      
+                        - 3: 13 to 17 UIDs                   
             storageConfig:
               type: object
               description: Cloud storage configuration.
+              required:
+                - vendor
+                - region
+                - bucket
+                - accessKey
+                - secretKey
               properties:
                 vendor:
                   type: integer
@@ -900,7 +907,9 @@ components:
                       The type of the recorded file.
                     
                         - `"audio"`: Audio file.
+
                         - `"video"`: Video file (no audio).
+
                         - `"audio_and_video"`: Video file (with audio).                    
                   uid:
                     type: string
@@ -911,6 +920,7 @@ components:
                       Whether the audio and video of all users are combined into a single file.
                     
                         - `"true"`: All users are recorded in a single file.
+
                         - `"false"`: Each user is recorded separately.                      
                   isPlayable:
                     type: string
@@ -918,6 +928,7 @@ components:
                       Whether the file can be played online.
                   
                         - `"true"`: The file can be played online.
+
                         - `"false"`: The file cannot be played online.                    
                   sliceStartTime:
                     type: string
@@ -960,6 +971,7 @@ components:
                 The data type of `fileList`.
                   
                   - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
+
                   - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.             
             fileList:
               type: array
@@ -975,7 +987,9 @@ components:
                       The type of the recorded file.
                     
                         - `"audio"`: Audio file.
+
                         - `"video"`: Video file (no audio).
+
                         - `"audio_and_video"`: Video file (with audio).                      
                   uid:
                     type: string
@@ -986,6 +1000,7 @@ components:
                       Whether the audio and video of all users are combined into a single file.
                     
                         - `"true"`: All users are recorded in a single file.
+
                         - `"false"`: Each user is recorded separately.                     
                   isPlayable:
                     type: string
@@ -993,6 +1008,7 @@ components:
                       Whether the file can be played online.
                   
                         - `"true"`: The file can be played online.
+
                         - `"false"`: The file cannot be played online.
                   sliceStartTime:
                     type: string
@@ -1003,7 +1019,9 @@ components:
                 The upload status.
               
                   - `"uploaded"`: All the recorded files are uploaded to the third-party cloud storage.
+
                   - `"backuped"`:  Some of the recorded files fail to upload to the third-party cloud storage and upload to Agora Cloud Backup instead. Agora Cloud Backup automatically uploads these files to your cloud storage. 
+
                   - `"unknown"`: Unknown status.
   requestBodies:
     acquire:
