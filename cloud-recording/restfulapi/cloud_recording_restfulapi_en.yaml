@@ -28,7 +28,7 @@ info:
     During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful API.
 
 
-    ## <a name="status"></a>Errors
+    ## <a name="status"></a>Common Errors
 
     [Errors](https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest#errors) lists the common errors in using the Agora Cloud Recording RESTful APIs.
 
@@ -45,6 +45,8 @@ info:
     If the request is successful, you can check the response in **Server response**. In addition, you can find the curl command that sends the request in **Curl**.
 
     <div class="info-msg">Note：Any Agora service incurred by the request is included in your monthly service usage.</div>
+
+    <img src="https://web-cdn.agora.io/docs-files/1585030335558" alt="Authorize" width=40%>
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
@@ -1023,10 +1025,10 @@ components:
           schema:
             $ref: '#/components/schemas/start'
           example:
-            token: "<token if any>"
             cname: "httpClient463224"
             uid: "527841"
             clientRequest:
+              token: "<token if any>"
               recordingConfig:
                 maxIdleTime: 30
                 streamTypes: 2
