@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: >
-    Ensure that you know how to [record with the RESTful API](https://docs.agora.io/en/cloud-recording/cloud_recording_rest) before reading this document.
+    This article contains detailed help for the Cloud Recording RESTful API, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.
     
     ## Authentication
 
@@ -10,7 +10,7 @@ info:
       - `api_key`: Customer ID
       - `api_secret`: Customer Certificate
 
-    You can find your Customer ID and Customer Certificate on the [RESTful API](https://dashboard.agora.io/restful) page in Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for details.
+    You can find your Customer ID and Customer Certificate on the [RESTful API](https://dashboard.agora.io/restful) page in Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate `Authorization`. You can also generate `Authorization` by using the **Try it out** feature of this page.
 
 
     ## Data format
@@ -28,23 +28,23 @@ info:
     During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful API.
 
 
-    ## <a name="status"></a>Status code
+    ## <a name="status"></a>Errors
 
-    The following table contains the most common HTTP status codes of cloud recording.
+    [Errors](https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest#errors) lists the common errors in using the Agora Cloud Recording RESTful APIs.
 
-      | Code |  Description                                                  |
-      | :--- |       :----------------------------------------------------------- |
-      | 200  | The request handle is successful.                            |
-      | 201  | The request is successful and new resources are created.     |
-      | 206  | No user in the channel sent a stream during the recording process, or some of the recorded files are uploaded to the Agora Cloud Backup instead of the third-party cloud storage. |
-      | 400  | The input is in the wrong format.                            |
-      | 401  | Unauthorized (incorrect App ID/Customer Certificate).        |
-      | 404  | The requested resource could not be found.                   |
-      | 500  | An internal error occurs in the Agora Cloud Recording RESTful API service. |
-      | 504  | The server was acting as a gateway or proxy and did not receive the response from the upstream server. | 
+    ## <a name="tryapi"></a>Try out the API
 
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page.
 
-       <div class="info-msg"><i class="fa fa-info-circle"></i> Before using the <b>Try it out</b> function, you must click <b>Authorize</b> to complete authorization. Enter Customer ID in <b>Username</b> and Customer Certificate in <b>Password</b>, and then click <b>Authorize</b>.</div>
+    1. Click **Authorize** to get authorized. Enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize** to get authorized.
+
+    2. Expand an API and click **Try it out**.
+
+    3. Enter parameter values and edit the request body as required, and then click **Execute** to send the request.
+
+    If the request is successful, you can check the response in **Server response**. In addition, you can find the curl command that sends the request in **Curl**.
+
+    <div class="info-msg">Note：Any Agora service incurred by the request is included in your monthly service usage.</div>
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
@@ -87,6 +87,16 @@ paths:
                 $ref: '#/components/schemas/acquire_response'
               example:
                 resourceId: JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG 
+        '201':
+          $ref: '#/components/responses/201' 
+        '400':
+          $ref: '#/components/responses/400' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '500':
+          $ref: '#/components/responses/500' 
+        '504':
+          $ref: '#/components/responses/504' 
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start:
     post:
       tags:
@@ -130,6 +140,16 @@ paths:
                 sid: 38f8e3cfdc474cd56fc1ceba380d7e1a
                 resourceId: >-
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
+        '201':
+          $ref: '#/components/responses/201' 
+        '400':
+          $ref: '#/components/responses/400' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '500':
+          $ref: '#/components/responses/500' 
+        '504':
+          $ref: '#/components/responses/504' 
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout:
     post:
       tags:
@@ -181,6 +201,16 @@ paths:
                 sid: 38f8e3cfdc474cd56fc1ceba380d7e1a
                 resourceId: >-
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
+        '400':
+          $ref: '#/components/responses/400' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '404':
+          $ref: '#/components/responses/404' 
+        '500':
+          $ref: '#/components/responses/500' 
+        '504':
+          $ref: '#/components/responses/504' 
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query:
     get:
       tags:
@@ -252,6 +282,18 @@ paths:
                    ]
                 status: "5"
                 sliceStartTime: "1562724971626"
+        '206':
+          $ref: '#/components/responses/206' 
+        '400':
+          $ref: '#/components/responses/400' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '404':
+          $ref: '#/components/responses/404' 
+        '500':
+          $ref: '#/components/responses/500' 
+        '504':
+          $ref: '#/components/responses/504' 
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop:
     post:
       tags:
@@ -321,6 +363,18 @@ paths:
                    }
                    ]
                 uploadingStatus: "uploaded"
+        '206':
+          $ref: '#/components/responses/206' 
+        '400':
+          $ref: '#/components/responses/400' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '404':
+          $ref: '#/components/responses/404' 
+        '500':
+          $ref: '#/components/responses/500' 
+        '504':
+          $ref: '#/components/responses/504' 
 components:
   schemas:
     acquire:
@@ -1052,6 +1106,21 @@ components:
             cname: "httpClient463224"
             uid: "527841"
             clientRequest: {}
+  responses:
+    201:
+      description: The request is successful and new resources are created.  
+    206:
+      description: No user in the channel sent a stream during the recording process, or some of the recorded files are uploaded to the Agora Cloud Backup instead of the third-party cloud storage.
+    400:
+      description: The input is in the wrong format.
+    401:
+      description: Unauthorized (incorrect App ID/Customer Certificate).
+    404:
+      description: The requested resource could not be found. 
+    500:
+      description: An internal error occurs in the Agora Cloud Recording RESTful API service.
+    504:
+      description: The server was acting as a gateway or proxy and did not receive the response from the upstream server.
   securitySchemes:
     agora_auth:
       type: http
