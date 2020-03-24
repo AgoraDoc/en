@@ -598,7 +598,7 @@ components:
 
                               - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
                             default: 0
-                    subscribeVideoUids: 
+                subscribeVideoUids: 
                       type: array
                       description:  An array of the user IDs (UIDs) of the users whose video you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
 
@@ -607,7 +607,7 @@ components:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
-                    subscribeAudioUids:
+                subscribeAudioUids:
                       type: array
                       description: >-
                         An array of the user IDs (UIDs) of the users whose audio you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
@@ -618,7 +618,7 @@ components:
                       maxLength: 32
                       example: ["123","456"]
                         
-                    subscribeUidGroup:
+                subscribeUidGroup:
                       type: integer
                       description: >-
                         The estimated maximum number of subscribed users. You must set this parameter in individual mode. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
@@ -1041,13 +1041,13 @@ components:
                   fps: 15
                   mixedVideoLayout: 1
                   backgroundColor: "#FF0000"
-                  subscribeVideoUids:
+                subscribeVideoUids:
                     - "123"
                     - "456"
-                  subscribeAudioUids:
+                subscribeAudioUids:
                     - “123”
                     - “456”
-                  subscribeUidGroup: 0
+                subscribeUidGroup: 0
               storageConfig:
                 accessKey: "xxxxxxf"
                 region: 3
