@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
   description: >
-    This article contains detailed help for the Cloud Recording RESTful API, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.
+    This article contains detailed help for the Cloud Recording RESTful APIs, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.
     
     ## Authentication
 
-    The RESTful API only supports HTTPS. Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
+    The RESTful APIs only support HTTPS. Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
     
       - `api_key`: Customer ID
       - `api_secret`: Customer Certificate
@@ -19,18 +19,18 @@ info:
     
     ## Call sequence
     
-    Use the RESTful API in the following steps:
+    Use the RESTful APIs in the following steps:
     
       1. Call the `acquire` method to request a resource ID for   cloud recording.
       2. Call the  `start` method within five minutes after getting   the resource ID to start the recording.
       3. Call the `stop` method to stop the recording.
     
-    During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful API.
+    During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful APIs.
 
 
     ## <a name="status"></a>Common Errors
 
-    [Errors](https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest#errors) lists the common errors in using the Agora Cloud Recording RESTful APIs.
+    [Errors](https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest#errors) lists the common errors in using the Cloud Recording RESTful APIs.
 
     ## <a name="tryapi"></a>Try out the API
 
@@ -82,7 +82,7 @@ paths:
         $ref: '#/components/requestBodies/acquire'
       responses:
         '200':
-          description: The request handle is successful.
+          description: The request is successful.
           content:
             application/json:
               schema:
@@ -133,7 +133,7 @@ paths:
         $ref: '#/components/requestBodies/start'
       responses:
         '200':
-          description: The request handle is successful.
+          description: The request is successful.
           content:
             application/json:
               schema:
@@ -144,8 +144,6 @@ paths:
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '201':
           $ref: '#/components/responses/201' 
-        '206':
-          $ref: '#/components/responses/206' 
         '400':
           $ref: '#/components/responses/400' 
         '401':
@@ -196,7 +194,7 @@ paths:
         $ref: '#/components/requestBodies/updateLayout'       
       responses:
         '200':
-          description: The request handle is successful.
+          description: The request is successful.
           content:
             application/json:
               schema:
@@ -256,7 +254,7 @@ paths:
           description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
       responses:
         '200':
-          description: The request handle is successful.
+          description: The request is successful.
           content:
             application/json:
               schema:
@@ -338,7 +336,7 @@ paths:
         $ref: '#/components/requestBodies/stop'
       responses:
         '200':
-          description: The request handle is successful.
+          description: The request is successful.
           content:
             application/json:
               schema:
@@ -1128,19 +1126,19 @@ components:
             clientRequest: {}
   responses:
     201:
-      description: The request is successful and new resources are created.  
+      description: The request has been fulfilled, resulting in the creation of a new resource.
     206:
       description: No user in the channel sent a stream during the recording process, or some of the recorded files are uploaded to the Agora Cloud Backup instead of the third-party cloud storage.
     400:
-      description: The input is in the wrong format.
+      description: The server cannot process the request due to malformed request syntax.
     401:
       description: Unauthorized (incorrect App ID/Customer Certificate).
     404:
       description: The requested resource could not be found. 
     500:
-      description: An internal error occurs in the Agora Cloud Recording RESTful API service.
+      description: Internal server error.
     504:
-      description: The server was acting as a gateway or proxy and did not receive the response from the upstream server.
+      description: The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
   securitySchemes:
     agora_auth:
       type: http
