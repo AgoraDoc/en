@@ -15,7 +15,7 @@ info:
 
     ## Data format
 
-    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. The response content is in JSON format.
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. Both the request and response contents are in JSON format.
     
     ## Call sequence
     
@@ -30,7 +30,7 @@ info:
 
     ## <a name="status"></a>Common Errors
 
-    [Errors](https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest#errors) lists the common errors in using the Cloud Recording RESTful APIs.
+    [Errors](https://docs.agora.io/en/cloud-recording/common_errors) lists the common errors in using the Cloud Recording RESTful APIs.
 
     ## <a name="tryapi"></a>Try out the API
 
