@@ -34,19 +34,13 @@ info:
 
     ## <a name="tryapi"></a>Try out the API
 
-    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page.
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You need to get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
 
-    1. Click **Authorize** to get authorized. Enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize** to get authorized.
-
-    2. Expand an API and click **Try it out**.
-
-    3. Enter parameter values and edit the request body as required, and then click **Execute** to send the request.
-
-    If the request is successful, you can check the response in **Server response**. In addition, you can find the curl command that sends the request in **Curl**.
+    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1585562960119" alt="Authorize" width="50%">
 
     <div class="info-msg">Note：Any Agora service incurred by the request is included in your monthly service usage.</div>
 
-    <img src="https://web-cdn.agora.io/docs-files/1585030335558" alt="Authorize" width=40%>
+
       
   version: 2019.12.16
   title: Cloud Recording RESTful API
