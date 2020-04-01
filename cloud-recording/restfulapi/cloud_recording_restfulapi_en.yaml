@@ -122,7 +122,7 @@ paths:
           schema:
             type: string
           description: >-
-               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. In individual mode, Agora Cloud Recording generates one audio and/or video file for each UID or each specified UID in the channel. In composite mode, Agora Cloud Recording combines the audio and video of all or specified UIDs into a single file.
+               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. In individual mode, Agora Cloud Recording records the audio and video as separate files for each UID in a channel.. In composite mode, Agora Cloud Recording generates a single mixed audio and video file for all UIDs in a channel.
       requestBody:
         $ref: '#/components/requestBodies/start'
       responses:
