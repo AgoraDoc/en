@@ -42,7 +42,7 @@ info:
 
 
       
-  version: 2019.12.16
+  version: 2020.04.10
   title: Cloud Recording RESTful API
 servers: 
   - url: https://api.agora.io
@@ -103,9 +103,9 @@ paths:
 
         1. Subscribes to the audio and video streams in the channel according to `recordingConfig`.
 
-        2. Records the media streams according to `recordingFileConfig`, or takes screenshots according to         `snapshotConfig`.
+        2. Records the media streams according to `recordingFileConfig`, or takes screenshots according to `snapshotConfig`.
 
-        3. Uploads the recorded files or screenshots to your third-party cloud storage according to         `storageConfig`.
+        3. Uploads the recorded files or screenshots to your third-party cloud storage according to `storageConfig`.
       
         <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each APP ID.</i></div>  
         
