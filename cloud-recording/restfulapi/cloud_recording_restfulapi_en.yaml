@@ -99,9 +99,15 @@ paths:
       - "Cloud Recording"
       summary: Starts cloud recording
       operationId: start
-      description: After getting a resource ID, call this method to start cloud recording.
+      description: After getting a resource ID, call `start` to begin cloud recording. The Cloud Recording service does the following after you call `start`.
+
+        1. Subscribes to the audio and video streams in the channel according to `recordingConfig`.
+
+        2. Records the media streams according to `recordingFileConfig`, or takes screenshots according to         `snapshotConfig`.
+
+        3. Uploads the recorded files or screenshots to your third-party cloud storage according to         `storageConfig`.
       
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per APP ID.</i></div>  
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each APP ID.</i></div>  
         
       parameters:
         - in: path
@@ -412,7 +418,7 @@ components:
           description: The name of the channel to be recorded. 
         uid:
           type: string
-          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
+          description: A string containing the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
           required:
@@ -425,7 +431,7 @@ components:
               description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key) used in the channel to be recorded. Ensure that you set this parameter if the recording channel uses a token.
             recordingConfig:
               type: object
-              description: The recording configuration.
+              description: Configures how the Cloud Recording service subscribes to the media streams in the channel.
               required:
                 - channelType
                 - subscribeUidGroup
@@ -443,13 +449,13 @@ components:
                 streamTypes:
                   type: integer
                   description: >-
-                    The type of the recorded media stream.
+                    The type of the media stream to subscribe to.
                   
-                    - 0: Records audio only.
+                    - 0: Subscribes to audio streams only.
                     
-                    - 1: Records video only.
+                    - 1: Subscribes to video streams only.
                     
-                    - 2: Records audio and video.
+                    - 2: Subscribes to both audio and video streams.
                     
                   default: 2
                 decryptionMode:
@@ -468,7 +474,7 @@ components:
                 audioProfile:
                   type: integer
                   description: >-
-                    The sample rate, bitrate, encoding mode, and the number of channels. You cannot set this parameter in individual recording mode.
+                    The profile of the output audio stream, including the sample rate, bitrate, encoding mode, and the number of channels. You cannot set this parameter in individual recording mode.
                     
                     - 0: Sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 48 Kbps.
                     
@@ -480,11 +486,11 @@ components:
                 videoStreamType:
                   type: integer
                   description: >-
-                    The type of the video stream. 
+                    The type of the video stream to subscribe to.
                   
-                    - 0: Records the high-stream video.
+                    - 0: Subscribes to the high-stream video.
                     
-                    - 1: Records the low-stream video.
+                    - 1: Subscribes to the low-stream video.
                     
                   default: 0
                 maxIdleTime:
@@ -497,7 +503,7 @@ components:
                 transcodingConfig:
                   type: object
                   description: >-
-                    The transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [How do I set the video profile of the recorded video?](https://docs.agora.io/en/faq/recording_video_profile) for detailed information about setting `transcodingConfig`.
+                    The video transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [How do I set the video profile of the recorded video?](https://docs.agora.io/en/faq/recording_video_profile) for detailed information about setting `transcodingConfig`.
                   required:
                     - width
                     - height
@@ -595,9 +601,9 @@ components:
                             default: 0
                 subscribeVideoUids: 
                       type: array
-                      description:  An array of the user IDs (UIDs) of the users whose video you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
+                      description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe to, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
 
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording records the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
                       items:
                         type: string
                       maxLength: 32
@@ -605,9 +611,9 @@ components:
                 subscribeAudioUids:
                       type: array
                       description: >-
-                        An array of the user IDs (UIDs) of the users whose audio you want to record, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
+                        An array of the user IDs (UIDs) of the users whose audio you want to subscribe to, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
                       
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording records the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
                       items:
                         type: string
                       maxLength: 32
@@ -624,6 +630,43 @@ components:
                         - 2: 8 to 12 UIDs  
 
                         - 3: 13 to 17 UIDs                   
+            recordingFileConfig:
+              type: object
+              description: Configurations for the recorded files. You cannot set both `recordingFileConfig` and `snapshotConfig` at the same time, otherwise an error will occur. 
+              default: ["hls"]
+              properties:
+                avFileType:
+                  type: array
+                  description: The format of the recorded files. `avFileType` can only take `["hls"]`, setting the recorded files to M3U8 and TS formats.
+                  items:
+                    type: string
+
+            snapshotConfig:
+              type: object
+              description: Video screenshot configurations. Pay attention to the following parameters, as incorrect settings result in errors or failure to capture screenshots.
+
+                - In the URL of your request, `mode` must be `individual`.
+
+                - You can not set both `recordingFileConfig` and `snapshotConfig` at the same time.
+
+                - `streamType` must be `1` or `2`.
+
+                - If you have set `subscribeAudioUid`, you must also set `subscribeVideoUids`.
+              
+              required:
+                - fileType
+              properties:
+                captureInterval:
+                  type: integer
+                  default: 10
+                  minimum: 5
+                  maximum: 3600
+                  description: The time interval (in seconds) between two successive screenshots.
+                fileType:
+                  type: array
+                  description: File format of the screenshots. `fileType` can only take `["jpg"]`, setting screenshots to the JPG format.
+                  items:
+                    type: string          
             storageConfig:
               type: object
               description: Cloud storage configuration.
@@ -880,14 +923,14 @@ components:
             fileListMode:
               type: string
               description: >-
-                The data type of `fileList`.
+                The data type of `fileList`. The `query` method does not return this field if you have set `snapshotConfig`.
                   
                   - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
 
                   - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.            
             fileList:
               type: array
-              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
+              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file. The `query` method does not return this field if you have set `snapshotConfig`.
               items:
                 properties:
                   filename:
@@ -960,14 +1003,14 @@ components:
             fileListMode:
               type: string
               description: >-
-                The data type of `fileList`.
+                The data type of `fileList`. The `query` method does not return this field if you have set `snapshotConfig`.
                   
                   - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
 
                   - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.             
             fileList:
               type: array
-              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file.
+              description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file. The `query` method does not return this field if you have set `snapshotConfig`.
               items:
                 properties:
                   filename:
@@ -1034,39 +1077,78 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/start'
-          example:
-            cname: "httpClient463224"
-            uid: "527841"
-            clientRequest:
-              token: "<token if any>"
-              recordingConfig:
-                maxIdleTime: 30
-                streamTypes: 2
-                channelType: 0
-                videoStreamType: 0
-                transcodingConfig:
-                  height: 640
-                  width: 360
-                  bitrate: 500
-                  fps: 15
-                  mixedVideoLayout: 1
-                  backgroundColor: "#FF0000"
-                subscribeVideoUids:
-                    - "123"
-                    - "456"
-                subscribeAudioUids:
-                    - “123”
-                    - “456”
-                subscribeUidGroup: 0
-              storageConfig:
-                accessKey: "xxxxxxf"
-                region: 3
-                bucket: "xxxxx"
-                secretKey: "xxxxx"
-                vendor: 2
-                fileNamePrefix:
-                  - "directory1"
-                  - "directory2"
+          examples:
+            Record video:
+              value:
+                cname: "httpClient463224"
+                uid: "527841"
+                clientRequest:
+                  token: "<token if any>"
+                  recordingConfig:
+                    maxIdleTime: 30
+                    streamTypes: 2
+                    channelType: 0
+                    videoStreamType: 0
+                    transcodingConfig:
+                      height: 640
+                      width: 360
+                      bitrate: 500
+                      fps: 15
+                      mixedVideoLayout: 1
+                      backgroundColor: "#FF0000"
+                    subscribeVideoUids:
+                        - "123"
+                        - "456"
+                    subscribeAudioUids:
+                        - “123”
+                        - “456”
+                    subscribeUidGroup: 0
+                  recordingFileConfig:
+                    avFileType: ["hls"]
+                  storageConfig:
+                    accessKey: "xxxxxxf"
+                    region: 3
+                    bucket: "xxxxx"
+                    secretKey: "xxxxx"
+                    vendor: 2
+                    fileNamePrefix:
+                      - "directory1"
+                      - "directory2"
+            Capture snapshot:
+              value:
+                uid: "527841"
+                cname: "httpClient463224"
+                clientRequest: {
+                    token: "<token if any>",
+                    recordingConfig: {
+                        maxIdleTime: 30,
+                        streamTypes: 2,
+                        channelType": 0, 
+                        transcodingConfig: {
+                            height: 640, 
+                            width: 360,
+                            bitrate: 500, 
+                            fps: 15, 
+                            mixedVideoLayout: 1,
+                            backgroundColor: "#FF0000"
+                                    },
+                        subscribeVideoUids: ["123","456"], 
+                        subscribeAudioUids: ["123","456"],
+                        subscribeUidGroup: 0
+                    }, 
+                    snapshotConfig: {
+                        captureInterval: 5,
+                        fileType: ["jpg"]
+                    },
+                    storageConfig: {
+                        accessKey: "xxxxxxf",
+                        region: 3,
+                        bucket: "xxxxx",
+                        secretKey: "xxxxx",
+                        vendor: 2,
+                        fileNamePrefix: ["directory1","directory2"]
+                    }
+                }         
       description: The following parameters are required in the request body.
       required: true
     updateLayout:
