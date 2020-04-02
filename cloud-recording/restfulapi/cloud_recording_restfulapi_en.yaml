@@ -603,7 +603,7 @@ components:
                       type: array
                       description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe to, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `0`.  
 
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                        
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording subscribes to only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be subscribed.</div>                        
                       items:
                         type: string
                       maxLength: 32
@@ -613,7 +613,7 @@ components:
                       description: >-
                         An array of the user IDs (UIDs) of the users whose audio you want to subscribe to, such as `["123","456"]`. The length of the array should not exceed 32. Once you set the parameter, do not set `streamTypes` in `recordingConfig` as `1`.  
                       
-                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording records only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be recorded.</div>                
+                        <div class="warning-msg"><i class="fa   fa-warning"></i> Once you set subscribeVideoUids or subscribeAudioUids, Agora Cloud Recording subscribes to the audio or video of the specified users only. For example, if subscribeVideoUids is set and subscribeAudioUids is not set or is an empty array, Agora Cloud Recording subscribes to only the video (no audio) of the specified users. If both parameters are empty or if neither is set, all the users' audio and video will be subscribed.</div>                
                       items:
                         type: string
                       maxLength: 32
@@ -637,6 +637,7 @@ components:
               properties:
                 avFileType:
                   type: array
+                  default: ["hls"]
                   description: The format of the recorded files. `avFileType` can only take `["hls"]`, setting the recorded files to M3U8 and TS formats.
                   items:
                     type: string
