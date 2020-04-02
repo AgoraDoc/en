@@ -389,7 +389,7 @@ components:
             A string that contains the UID of the recording   client, for example `"527841"`. The UID needs to meet   the following requirements: 
               
               - It is a 32-bit unsigned integer within the range between 1 and (2<sup>32</sup>-1).
-              - It is unique and does not clash with any existing UID in the channel.
+              - *It is unique and does not clash with any existing UID in the channel.*
               - It should not be a string. Ensure that all UIDs in the channel are integers.
 
         clientRequest:
