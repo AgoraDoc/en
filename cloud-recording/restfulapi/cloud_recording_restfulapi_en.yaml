@@ -1124,7 +1124,7 @@ components:
                     recordingConfig: {
                         maxIdleTime: 30,
                         streamTypes: 2,
-                        channelType": 0, 
+                        channelType: 0, 
                         subscribeUidGroup: 0
                     }, 
                     snapshotConfig: {
