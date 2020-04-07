@@ -63,7 +63,7 @@ paths:
     
         If this method call succeeds, you get a resource ID (`resourceId`) from the HTTP response body. The resource ID is valid for five minutes, so you need to start recording with this resource ID within five minutes.
 
-        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second per APP ID. Contact support@agora.io if you want to raise the limit.</li></ul></div>   
+        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second per App ID. Contact support@agora.io if you want to raise the limit.</li></ul></div>   
       
       parameters:
         - in: path
@@ -71,7 +71,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The App ID used in the channel to be recorded. For more information, see [APP ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id).
+          description: The App ID used in the channel to be recorded. For more information, see [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id).
       requestBody:
         $ref: '#/components/requestBodies/acquire'
       responses:
@@ -101,7 +101,7 @@ paths:
       operationId: start
       description: After getting a resource ID, call this method to start cloud recording.
       
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per APP ID.</i></div>  
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per App ID.</i></div>  
         
       parameters:
         - in: path
@@ -157,7 +157,7 @@ paths:
 
         This method call overrides the existing layout configurations. For example, if you set the `backgroundColor` parameter as `"#FF0000"` (red) when starting a recording and call this method to update the layout without setting the `backgroundColor` parameter, the background color changes back to black (the default value).
         
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per APP ID.</i></div> 
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per App ID.</i></div> 
 
       parameters:
         - in: path
@@ -218,7 +218,7 @@ paths:
 
         `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error. We recommend that you use the callback service for getting the details of all cloud recording events. See [Agora Cloud Recording RESTful API Callback Service](https://docs.agora.io/en/cloud-recording/cloud_recording_callback_rest) for more information.
 
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per APP ID.</i></div> 
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second per App ID.</i></div> 
       requestBody:
         $ref: '#/components/requestBodies/query'
       parameters:
@@ -299,7 +299,7 @@ paths:
       description: When a recording finishes, call this method to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the  `acquire` method for a new resource ID.
           
 
-       <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>Agora Cloud Recording automatically leaves the channel and stops recording when no user is in the channel for more than 30 seconds by default.</li><li>The request frequency limit is 10 requests per second per APP ID.</li></ul></div>
+       <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>Agora Cloud Recording automatically leaves the channel and stops recording when no user is in the channel for more than 30 seconds by default.</li><li>The request frequency limit is 10 requests per second per App ID.</li></ul></div>
 
       parameters:
         - in: path
