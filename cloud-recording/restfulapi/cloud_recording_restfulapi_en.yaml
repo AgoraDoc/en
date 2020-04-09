@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: >
-    This article contains detailed help for the Cloud Recording RESTful APIs, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.test
+    This article contains detailed help for the Cloud Recording RESTful APIs, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.
     
     ## Authentication
 
