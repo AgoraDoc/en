@@ -63,7 +63,7 @@ paths:
     
         If this method call succeeds, you get a resource ID (`resourceId`) from the HTTP response body. The resource ID is valid for five minutes, so you need to start recording with this resource ID within five minutes.
 
-        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second for each App ID. Contact support@agora.io if you want to raise the limit.</li></ul></div>   
+        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</li></ul></div>   
       
       parameters:
         - in: path
