@@ -71,7 +71,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The App ID used in the channel to be recorded. For more information, see [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id).
+          description: The App ID used in the channel to be recorded. For more information, see [App ID](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#appid).
       requestBody:
         $ref: '#/components/requestBodies/acquire'
       responses:
@@ -101,7 +101,7 @@ paths:
       operationId: start
       description: After getting a resource ID, call `start` to begin cloud recording. The Cloud Recording service does the following after you call `start`.
 
-        1. Subscribes to the audio and video streams in the channel according to `recordingConfig`.
+        1. [Subscribes](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#sub) to the audio and video streams in the channel according to `recordingConfig`.
 
         2. Records the media streams according to `recordingFileConfig`, or takes screenshots according to `snapshotConfig`.
 
@@ -128,7 +128,11 @@ paths:
           schema:
             type: string
           description: >-
-               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. In individual mode, Agora Cloud Recording records the audio and video as separate files for each UID in a channel. In composite mode, Agora Cloud Recording generates a single mixed audio and video file for all UIDs in a channel.
+               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. 
+               
+               - In individual mode, Agora Cloud Recording records the audio and video as separate files for each UID in a channel. 
+               
+               - In composite mode, Agora Cloud Recording generates a single mixed audio and video file for all UIDs in a channel.
       requestBody:
         $ref: '#/components/requestBodies/start'
       responses:
@@ -428,7 +432,7 @@ components:
           properties:
             token:
               type: string
-              description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key) used in the channel to be recorded. Ensure that you set this parameter if the recording channel uses a token.
+              description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#token) used in the channel to be recorded. Ensure that you set this parameter if the recording channel uses a token.
             recordingConfig:
               type: object
               description: Configures how the Cloud Recording service subscribes to the media streams in the channel.
@@ -439,7 +443,7 @@ components:
                 channelType:
                    type: integer
                    description: >-
-                     The channel profile. Agora Cloud Recording must use the same channel profile as the Agora Native/Web SDK. Otherwise, issues may occur.
+                     The channel profile. Agora Cloud Recording must use the same channel profile as the Agora RTC Native/Web SDK. Otherwise, issues may occur.
                      
                      - 0: Communication profile. 
                      
@@ -488,9 +492,9 @@ components:
                   description: >-
                     The type of the video stream to subscribe to.
                   
-                    - 0: Subscribes to the high-stream video.
+                    - 0: Subscribes to the high-quality stream.
                     
-                    - 1: Subscribes to the low-stream video.
+                    - 1: Subscribes to the low-quality stream.
                     
                   default: 0
                 maxIdleTime:
