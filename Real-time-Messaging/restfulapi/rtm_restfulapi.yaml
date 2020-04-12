@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
 
   description: >
-    The Agora Real-time Messaging RESTful API currently supports vendor event queries. You can get both user and channel events with the Agora RTM RESTful APIs. 
+    The Agora Real-time Messaging (RTM) RESTful APIs currently support vendor event queries, including user and channel events. 
 
   
       <div class="info-msg">
@@ -54,18 +54,14 @@ info:
     
     ## Data format
 
-    All requests are sent to the host: `api.agora.io`.
-
-    - Request: See the examples in the following APIs. 
-    
-    - Response: The response content is in JSON format. 
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. Both the request and response contents are in JSON format.
       
 
     ## API sequence
 
-    - To get events such as a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
+    - To get events such as when a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
 
-    - To get events such as a user joins or leaves a channel, call `channel_events` directly.
+    - To get events such as when a user joins or leaves a channel, call `channel_events` directly.
 
 
 
