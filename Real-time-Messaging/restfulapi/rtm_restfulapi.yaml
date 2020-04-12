@@ -49,7 +49,7 @@ info:
       ```
 
       <div class="info-msg">
-        <i class="fa fa-info-circle"></i> For more information about how to generate an RTM Token, see <a href="https://docs.agora.io/en/Real-time-Messaging/rtm_token?platform=All%20Platforms">Token Security</a>
+        <i class="fa fa-info-circle"></i> Note: For more information about how to generate an RTM Token, see <a href="https://docs.agora.io/en/Real-time-Messaging/rtm_token?platform=All%20Platforms">Token Security</a>
       </div>
     
     ## Data format
@@ -101,7 +101,9 @@ paths:
       description: This method gets the user events from the address specified by the Agora RTM server. 
 
           <div class="warning-msg">
-            <i class="fa fa-warning"></i> Considerations:<ul>
+          <i class="fa fa-warning"></i>
+          <p>Note:</p>
+          <ul>
           <li>The RTM backend stores a maximum of 2,000 events</li>
           <li>The backend returns a maximum of 1,000 events each time. </li>
           <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
@@ -128,14 +130,16 @@ paths:
       - "Get channel events"
       summary: Gets channel events such as when a user joins or leaves a channel.
       operationId: channel_events
-      description: This methods gets the channel events.
+      description: This method gets the channel events.
       
           <div class="warning-msg">
-            <i class="fa fa-warning"></i>
+            <i class="fa fa-warning"></i> 
+            <p>Note:</p>
+            <ul>
             <li>The RTM backend stores a maximum of 2,000 events. </li>
             <li>The backend returns a maximum of 1,000 events each time. </li>
             <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
-            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li>
+            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
           </div> 
         
       parameters:
