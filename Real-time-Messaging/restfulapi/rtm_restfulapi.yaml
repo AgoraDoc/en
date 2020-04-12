@@ -101,8 +101,7 @@ paths:
       description: This method gets the user events from the address specified by the Agora RTM server. 
 
           <div class="warning-msg">
-          <i class="fa fa-warning"></i>
-          <p>Note:</p>
+          <i class="fa fa-warning"></i> Note:<ul>
           <ul>
           <li>The RTM backend stores a maximum of 2,000 events</li>
           <li>The backend returns a maximum of 1,000 events each time. </li>
@@ -133,8 +132,7 @@ paths:
       description: This method gets the channel events.
       
           <div class="warning-msg">
-            <i class="fa fa-warning"></i> 
-            <p>Note:</p>
+            <i class="fa fa-warning"></i> Note:<ul> 
             <ul>
             <li>The RTM backend stores a maximum of 2,000 events. </li>
             <li>The backend returns a maximum of 1,000 events each time. </li>
