@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
 
   description: >
-    You can use the Agora Real-time Messaging (RTM) RESTful APIs to get user or channel events. 
+    You can use the Agora RTM RESTful API to get user or channel events. 
 
   
       <div class="info-msg">
@@ -11,7 +11,7 @@ info:
     
     ## Authentication
 
-    The RESTful APIs only support HTTPS. You can use either of the following to authenticate your HTTP request: 
+    The RESTful API only supports HTTPS. You can use either of the following to authenticate your HTTP request: 
 
     <li><a href="#basicauth">Basic Authentication</a></li>
     <li><a href="#tokenauth">Token Authentication</a></li>
