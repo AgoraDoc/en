@@ -517,11 +517,11 @@ components:
                     width:
                       type: integer
                       default: 360
-                      description: The width of the mixed video (pixels).  `width` should not exceed 1080, and `width`*`height`  should not exceed 1920 * 1080, otherwise, an error occurs.
+                      description: The width of the mixed video (pixels). `width` should not exceed 1920, and `width`*`height` should not exceed 1920 * 1080; otherwise, an error occurs.
                     height:
                       type: integer
                       default: 640
-                      description: The height of the mixed video (pixels). `height` should not exceed 1080, and `width`*`height`  should not exceed 1920 * 1080, otherwise, an error occurs.
+                      description: The height of the mixed video (pixels). `height` should not exceed 1920, and `width`*`height` should not exceed 1920 * 1080; otherwise, an error occurs.
                     fps:
                       type: integer
                       default: 15
