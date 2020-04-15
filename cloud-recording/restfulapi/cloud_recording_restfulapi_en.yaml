@@ -432,7 +432,7 @@ components:
           properties:
             token:
               type: string
-              description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#token) used in the channel to be recorded. Ensure that you set this parameter if the recording channel uses a token.
+              description: The [dynamic key](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#token) used for the channel to record. Ensure that you set this parameter if App Certificate is enabled for your application. See [Set up Authentication](https://docs.agora.io/en/Agora%20Platform/token?platform=All%20Platforms).
             recordingConfig:
               type: object
               description: Configures how the Cloud Recording service subscribes to the media streams in the channel.
