@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: >
-    This article contains detailed help for the Cloud Recording RESTful APIs, and provides the **Try it out** feature which allows you to send RESTful API requests and receive responses directly on the web page.
+    This article contains detailed help for the Cloud Recording RESTful APIs and provides the **Try it out** feature which enables you to send RESTful API requests and receive responses directly on the Web page.
     
     ## Authentication
 
@@ -10,7 +10,7 @@ info:
       - `api_key`: Customer ID
       - `api_secret`: Customer Certificate
 
-    You can find your Customer ID and Customer Certificate on the [RESTful API](https://dashboard.agora.io/restful) page in Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate `Authorization`. You can also generate `Authorization` by using the **Try it out** feature of this page.
+    You can find your Customer ID and Customer Certificate on the [RESTful API](https://dashboard.agora.io/restful) page in Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate `Authorization`. You can also generate `Authorization` by using the **Try it out** feature on this page.
 
 
     ## Data format
@@ -30,11 +30,11 @@ info:
 
     ## <a name="status"></a>Common Errors
 
-    [Errors](https://docs.agora.io/en/cloud-recording/common_errors) lists the common errors in using the Cloud Recording RESTful APIs.
+    [Errors](https://docs.agora.io/en/cloud-recording/common_errors) lists the common errors that you may encounter when using the Cloud Recording RESTful APIs.
 
     ## <a name="tryapi"></a>Try out the API
 
-    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You need to get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the Web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
 
     <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1585619936606" alt="Authorize" width="50%">
 
