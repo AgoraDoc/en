@@ -96,7 +96,7 @@ paths:
 
           <div class="warning-msg">
             <i class="fa fa-warning"></i> Note:<ul> 
-            <li>The number of requests per second for each App ID must not exceed 10.<li>
+            <li>The number of requests per second for each App ID must not exceed 10.</li>
             <li>The RTM backend stores a maximum of 2,000 events.</li>
             <li>The backend returns a maximum of 1,000 events each time.</li>
             <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions. </li>
@@ -127,7 +127,7 @@ paths:
       
           <div class="warning-msg">
             <i class="fa fa-warning"></i> Note:<ul> 
-            <li>The number of requests per second for each App ID must not exceed 10.<li>
+            <li>The number of requests per second for each App ID must not exceed 10.</li>
             <li>The RTM backend stores a maximum of 2,000 events.</li>
             <li>The backend returns a maximum of 1,000 events each time.</li>
             <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions.</li>
