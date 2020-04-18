@@ -216,7 +216,7 @@ components:
       properties:
          user_id: 
           type: string
-          description: The ID of the user that corresponds to this channel event. 
+          description: The ID of the user that relates to this channel event. 
          type: 
           type: string
           description: >-
