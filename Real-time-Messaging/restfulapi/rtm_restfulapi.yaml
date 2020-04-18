@@ -101,7 +101,7 @@ paths:
             <li>The RTM backend stores a maximum of 2,000 events. </li>
             <li>The backend returns a maximum of 1,000 events each time. </li>
             <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions. </li>
-            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
+            <li>If you have pulled events from one geographical region, you may get the same events when you pull from a different geographical region. This is because Agora only synchronize events within a geographical region and does not synchronize events across geographical regions. </li></ul>
           </div> 
 
       parameters:
@@ -133,7 +133,7 @@ paths:
             <li>The RTM backend stores a maximum of 2,000 events. </li>
             <li>The backend returns a maximum of 1,000 events each time. </li>
             <li>Agora does not guarantee the time sequence of events across geographies (countries or continents), because Agora stores events by regions. </li>
-            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
+            <li>If you have pulled events from one geographical region, you may get the same events when you pull from a different geographical region. This is because Agora only synchronize events within a geographical region and does not synchronize events across geographical regions. </li></ul>
           </div> 
         
       parameters:
