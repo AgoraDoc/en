@@ -95,14 +95,14 @@ paths:
       description: This method gets the user events from the address specified by the Agora RTM server. 
 
           <div class="warning-msg">
-          <i class="fa fa-warning"></i> Note:<ul>
-          <ul>
-          <li>The number of requests per second for each App ID must not exceed 10.<li>
-          <li>The RTM backend stores a maximum of 2,000 events</li>
-          <li>The backend returns a maximum of 1,000 events each time. </li>
-          <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
-          <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
-          </div>
+            <i class="fa fa-warning"></i> Note:<ul> 
+            <ul>
+            <li>The number of requests per second for each App ID must not exceed 10.<li>
+            <li>The RTM backend stores a maximum of 2,000 events. </li>
+            <li>The backend returns a maximum of 1,000 events each time. </li>
+            <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions. </li>
+            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
+          </div> 
 
       parameters:
         - $ref: '#/components/parameters/appid'
@@ -132,7 +132,7 @@ paths:
             <li>The number of requests per second for each App ID must not exceed 10.<li>
             <li>The RTM backend stores a maximum of 2,000 events. </li>
             <li>The backend returns a maximum of 1,000 events each time. </li>
-            <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
+            <li>Agora does not guarantee the time sequence of events across geographies (countries or continents), because Agora stores events by regions. </li>
             <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
           </div> 
         
@@ -181,7 +181,7 @@ components:
        properties:
          user_id: 
            type: string
-           description: The ID of the user that corresponds to this user event.
+           description: The ID of the user that relates to this user event.
          type: 
            type: string
            description: >-
