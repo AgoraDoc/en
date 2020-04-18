@@ -2,11 +2,11 @@ openapi: 3.0.0
 info:
 
   description: >
-    You can use the Agora RTM RESTful API to get user or channel events. 
+    You can use the Vendor Event RESTful API to get user or channel events. 
 
   
       <div class="info-msg">
-        <i class="fa fa-info-circle"></i> Note: In the RESTful API, the number of requests per second for each App ID must not exceed 10.
+        <i class="fa fa-info-circle"></i> Note: In the Vendor Event RESTful API, the number of requests per second for each App ID must not exceed 10.
       </div>
     
     ## Authentication
@@ -83,7 +83,7 @@ info:
 
 
   version: Beta
-  title: Real-time Messaging RESTful API
+  title: Vendor Event RESTful API
 servers: 
   - url: https://api.agora.io
     description: Official Environment
