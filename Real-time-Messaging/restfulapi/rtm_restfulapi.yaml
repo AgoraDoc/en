@@ -123,7 +123,7 @@ paths:
       - "Get channel events"
       summary: Gets channel events such as when a user joins or leaves a channel.
       operationId: channel_events
-      description: This method gets the channel events.
+      description: This method gets the channel events from the address specified by the Agora RTM server.
       
           <div class="warning-msg">
             <i class="fa fa-warning"></i> Note:<ul> 
