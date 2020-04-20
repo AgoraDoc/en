@@ -193,7 +193,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
+          description: The recording mode. Supports composite mode (`mix`) only.
       requestBody:
         $ref: '#/components/requestBodies/updateLayout'       
       responses:
