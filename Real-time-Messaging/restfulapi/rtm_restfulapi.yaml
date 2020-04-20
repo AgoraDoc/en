@@ -2,16 +2,10 @@ openapi: 3.0.0
 info:
 
   description: >
-    You can now get both user and channel events with the Agora RTM RESTful APIs. 
-
-  
-      <div class="info-msg">
-        <i class="fa fa-info-circle"></i> Considerations: qps of the RESTful APIs: 100 (for each App ID).
-      </div>
     
     ## Authentication
 
-    The Agora RTM RESTful APIs support HTTPS only. You can use either of the following to authenticate your HTTP request: 
+    The RESTful API only supports HTTPS. You can use either of the following to authenticate your HTTP request: 
 
     <li><a href="#basicauth">Basic Authentication</a></li>
     <li><a href="#tokenauth">Token Authentication</a></li>
@@ -49,23 +43,19 @@ info:
       ```
 
       <div class="info-msg">
-        <i class="fa fa-info-circle"></i> For more information about how to generate an RTM Token, see <a href="https://docs.agora.io/en/Real-time-Messaging/rtm_token?platform=All%20Platforms">Token Security</a>
+        <i class="fa fa-info-circle"></i> Note: For more information about how to generate an RTM Token, see <a href="https://docs.agora.io/en/Real-time-Messaging/rtm_token?platform=All%20Platforms">Token Security</a>
       </div>
     
     ## Data format
 
-    All requests are sent to the host: `api.agora.io`.
-
-    - Request: See the examples in the following APIs. 
-    
-    - Response: The response content is in JSON format. 
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. Both the request and response contents are in JSON format.
       
 
     ## API sequence
 
-    - To get events such as a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
+    - To get events such as when a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
 
-    - To get events such as a user joins or leaves a channel, call `channel_events` directly.
+    - To get events such as when a user joins or leaves a channel, call `channel_events` directly.
 
 
 
@@ -78,7 +68,12 @@ info:
       | :----- | :------------------------------------------- |
       | 200    | The request succeeds.   |
       | 400    | Incorrect request syntax.    |
-      | 408    | The server request times out or the server fails to respond. Try again later.  |
+      | 408    | The server request times out or the server fails to respond.  |
+    
+    
+    ## <a name="tryapi"></a>Try out the API
+
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You need to get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
 
 
   version: Beta
@@ -95,17 +90,18 @@ paths:
     get:
       tags:
       - "Get user events"
-      summary: Get user events such as a user logs in or logs out of the Agora RTM system. 
+      summary: Gets user events such as when a user logs in or logs out of the Agora RTM system. 
       operationId: user_events   
       description: This method gets the user events from the address specified by the Agora RTM server. 
 
           <div class="warning-msg">
-            <i class="fa fa-warning"></i> Considerations:<ul>
-          <li>The RTM backend stores a maximum of 2,000 events</li>
-          <li>The backend returns a maximum of 1,000 events each time. </li>
-          <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
-          <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li></ul>
-          </div>
+            <i class="fa fa-warning"></i> Note:<ul> 
+            <li>The number of requests per second for each App ID must not exceed 10.</li>
+            <li>The RTM backend stores a maximum of 2,000 events.</li>
+            <li>The backend returns a maximum of 1,000 events each time.</li>
+            <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions. </li>
+            <li>If you have pulled events from one geographical region, you may get the same events when you pull from a different geographical region. This is because Agora only synchronize events within a geographical region and does not synchronize events across geographical regions. </li></ul>
+          </div> 
 
       parameters:
         - $ref: '#/components/parameters/appid'
@@ -125,16 +121,17 @@ paths:
     get:
       tags:
       - "Get channel events"
-      summary: Get channel events such as a user joins or leave a channel.
+      summary: Gets channel events such as when a user joins or leaves a channel.
       operationId: channel_events
-      description: This methods gets the channel events.
+      description: This method gets the channel events from the address specified by the Agora RTM server.
       
           <div class="warning-msg">
-            <i class="fa fa-warning"></i>
-            <li>The RTM backend stores a maximum of 2,000 events. </li>
-            <li>The backend returns a maximum of 1,000 events each time. </li>
-            <li>We do not guarantee the time sequence of events across geographies, because we store events by regions. </li>
-            <li>If you have pulled events from one region, you may get the same events when you pull from a different region. This is because we only synchronize events within a region and do not synchronize events across regions. </li>
+            <i class="fa fa-warning"></i> Note:<ul> 
+            <li>The number of requests per second for each App ID must not exceed 10.</li>
+            <li>The RTM backend stores a maximum of 2,000 events.</li>
+            <li>The backend returns a maximum of 1,000 events each time.</li>
+            <li>Agora does not guarantee the time sequence of events across geographical regions (countries or continents), because Agora stores events by geographical regions.</li>
+            <li>If you have pulled events from one geographical region, you may get the same events when you pull from a different geographical region. This is because Agora only synchronize events within a geographical region and does not synchronize events across geographical regions. </li></ul>
           </div> 
         
       parameters:
@@ -182,7 +179,7 @@ components:
        properties:
          user_id: 
            type: string
-           description: The ID of the user corresponds to this user event.
+           description: The ID of the user that relates to this user event.
          type: 
            type: string
            description: >-
@@ -219,7 +216,7 @@ components:
       properties:
          user_id: 
           type: string
-          description: The ID of the user corresponds to this channel event. 
+          description: The ID of the user that relates to this channel event. 
          type: 
           type: string
           description: >-
@@ -227,7 +224,7 @@ components:
 
             - "Join": A user has joined the channel.
 
-            - "Leave": A channel member has left the channel.
+            - "Leave": A user has left the channel.
          ts: 
            type: integer
            description: The timestamp (ms).
@@ -246,25 +243,7 @@ components:
 
 
 
-  requestBodies:
-    message_history:
-      content: 
-        application/json:
-          schema:
-            $ref: '#/components/schemas/message_history'    
-          example:
-            filter: { source: "src_account", description: "dst_account", start_time: "2019-08-01T01:22:10Z", end_time: "2019-08-01T01:32:10Z" } 
-            offset: 100
-            limit: 20
-            order: asc   
-
-    count:
-      content: 
-        application/json:
-          schema:
-            $ref: '#/components/schemas/count' 
-          example:
-            
+  
 
 
   securitySchemes:
