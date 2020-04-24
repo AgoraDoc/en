@@ -18,7 +18,7 @@ info:
     
       - `api_secret`: Customer Certificate
 
-      You can get your Customer ID and Customer Certificate on the [RESTful API](https://console.agora.io/restful) page of the Agora Console. For more information on how to generate the `Authorization` filed, see [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication).
+      You can get your Customer ID and Customer Certificate on the [RESTful API](https://console.agora.io/restfulApi) page of the Agora Console. For more information on how to generate the `Authorization` filed, see [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication).
 
       ### <a name="tokenauth"></a>Token Authentication
 
@@ -53,9 +53,9 @@ info:
 
     ## API sequence
 
-    - To get events such as when a user logs in to or logs out of the Agora RTM system, call `user_events` directly.
+    - To get events such as when a user logs in to or logs out of the Agora RTM system, call `user_events`.
 
-    - To get events such as when a user joins or leaves a channel, call `channel_events` directly.
+    - To get events such as when a user joins or leaves a channel, call `channel_events`.
 
 
 
