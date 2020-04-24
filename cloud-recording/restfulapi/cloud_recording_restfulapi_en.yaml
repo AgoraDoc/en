@@ -774,7 +774,7 @@ components:
                   description: The bucket of the third-party cloud storage.
                 accessKey:
                   type: string
-                  description: The access key of the third-party cloud storage.
+                  description: The access key of the third-party cloud storage.Agora suggests that you use a write-only access key.
                 secretKey:
                   type: string
                   description: The secret key of the third-party cloud storage.
