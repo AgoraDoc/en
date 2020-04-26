@@ -507,7 +507,7 @@ components:
                 transcodingConfig:
                   type: object
                   description: >-
-                    The video transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [How do I set the video profile of the recorded video?](https://docs.agora.io/en/faq/recording_video_profile) for detailed information about setting `transcodingConfig`.
+                    The video transcoding configuration. You cannot set this parameter in individual recording mode. If you set this parameter, ensure that you set `width`, `height`, `fps`, and `bitrate`. Refer to [Set the Video Profile](/en/cloud-recording/recording_video_profile) for detailed information about setting `transcodingConfig`.
                   required:
                     - width
                     - height
