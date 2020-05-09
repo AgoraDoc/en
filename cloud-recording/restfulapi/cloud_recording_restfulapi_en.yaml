@@ -692,6 +692,7 @@ components:
                       - `1`: [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
                       - `2`: [Alibaba Cloud](https://www.alibabacloud.com/product/oss)
                       - `3`: [Tencent Cloud](https://intl.cloud.tencent.com/product/cos)
+                      - `4`: [Kingsoft Cloud](https://en.ksyun.com/post/product/KS3.html)
                 region:
                   type: integer
                   description: >-
@@ -769,6 +770,20 @@ components:
                       - 17：NA_Toronto 
                       - 18：EU_Frankfurt 
                       - 19：EU_Moscow
+
+
+                     When the third-party cloud storage is [Kingsoft Cloud](https://en.ksyun.com/post/product/KS3.html) (`vendor` = 4):
+
+                      - `0`：CN_Hangzhou
+                      - `1`：CN_Shanghai
+                      - `2`：CN_Qingdao
+                      - `3`：CN_Beijing
+                      - `4`：CN_Guangzhou
+                      - `5`：CN_Hongkong
+                      - `6`：JR_Beijing
+                      - `7`：JR_Shanghai
+                      - `8`：NA_Russia_1
+                      - `9`：NA_Singapore_1
 
                 bucket:
                   type: string
