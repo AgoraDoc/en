@@ -273,21 +273,21 @@ paths:
                       filename: "xxx.m3u8",
                       trackType: "audio_and_video",
                       uid: "123",
-                      mixedAllUser: "true",
-                      isPlayable: "true",
-                      sliceStartTime: "1562724971626"
+                      mixedAllUser: true,
+                      isPlayable: true,
+                      sliceStartTime: 1562724971626
                     },  
                     {
                       filename: "xxx.m3u8",
                       trackType: "audio_and_video",
                       uid: "456",
-                      mixedAllUser: "true",
-                      isPlayable: "true",
-                      sliceStartTime: "1562724971626"
+                      mixedAllUser: true,
+                      isPlayable: true,
+                      sliceStartTime: 1562724971626
                    }
                    ]
                   status: "5"
-                  sliceStartTime: "1562724971626"
+                  sliceStartTime: 1562724971626
         '206':
           $ref: '#/components/responses/206' 
         '400':
@@ -355,17 +355,17 @@ paths:
                       filename: "xxx.m3u8",
                       trackType: "audio_and_video",
                       uid: "123",
-                      mixedAllUser: "true",
-                      isPlayable: "true",
-                      sliceStartTime: "1562724971626"
+                      mixedAllUser: true,
+                      isPlayable: true,
+                      sliceStartTime: 1562724971626
                     },  
                     {
                       filename: "xxx.m3u8",
                       trackType: "audio_and_video",
                       uid: "456",
-                      mixedAllUser: "true",
-                      isPlayable: "true",
-                      sliceStartTime: "1562724971626"
+                      mixedAllUser: true,
+                      isPlayable: true,
+                      sliceStartTime: 1562724971626
                    }
                    ]
                   uploadingStatus: "uploaded"
@@ -956,23 +956,23 @@ components:
                     type: string
                     description: The user whose audio or video is recorded in the file.
                   mixedAllUser:
-                    type: string
+                    type: boolean
                     description: >-
                       Whether the audio and video of all users are combined into a single file.
                     
-                        - `"true"`: All users are recorded in a single file.
+                        - `true`: All users are recorded in a single file.
 
-                        - `"false"`: Each user is recorded separately.                      
+                        - `false`: Each user is recorded separately.                      
                   isPlayable:
-                    type: string
+                    type: boolean
                     description: >-
                       Whether the file can be played online.
                   
-                        - `"true"`: The file can be played online.
+                        - `true`: The file can be played online.
 
-                        - `"false"`: The file cannot be played online.                    
+                        - `false`: The file cannot be played online.                    
                   sliceStartTime:
-                    type: string
+                    type: integer
                     description: The Unix time (ms) when the recording starts.
             status:
               type: integer
@@ -991,7 +991,7 @@ components:
                   - 20: The recording exits abnormally.
                            
             sliceStartTime:
-             type: string
+             type: integer
              description: The time when the recording starts. Unix timestamp (ms).
     stop_response:
       type: object
@@ -1036,23 +1036,23 @@ components:
                     type: string
                     description: The user whose audio or video is recorded in the file.
                   mixedAllUser:
-                    type: string
+                    type: boolean
                     description: >-
                       Whether the audio and video of all users are combined into a single file.
                     
-                        - `"true"`: All users are recorded in a single file.
+                        - `true`: All users are recorded in a single file.
 
-                        - `"false"`: Each user is recorded separately.                     
+                        - `false`: Each user is recorded separately.                     
                   isPlayable:
-                    type: string
+                    type: boolean
                     description: >-
                       Whether the file can be played online.
                   
-                        - `"true"`: The file can be played online.
+                        - `true`: The file can be played online.
 
-                        - `"false"`: The file cannot be played online.
+                        - `false`: The file cannot be played online.
                   sliceStartTime:
-                    type: string
+                    type: integer
                     description: The Unix time (ms) when the recording starts.
             uploadingStatus:
               type: string
