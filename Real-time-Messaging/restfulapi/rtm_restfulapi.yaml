@@ -7,10 +7,10 @@ info:
 
     The RESTful API only supports HTTPS. You can use either of the following to authenticate your HTTP request: 
 
-    <li><a href="#basicauth">Basic Authentication</a></li>
-    <li><a href="#tokenauth">Token Authentication</a></li>
+    <li><a href="#basicauth">Basic authentication</a></li>
+    <li><a href="#tokenauth">Token authentication</a></li>
 
-      ### <a name="basicauth"></a>Basic Authentication
+      ### <a name="basicauth"></a>Basic authentication
     
       You need to pass the basic HTTP authentication and put `api_key:api_secret` in the `Authorization` field of the HTTP header: 
 
@@ -22,13 +22,15 @@ info:
 
       ### <a name="tokenauth"></a>Token Authentication
 
-      If you have already generated an RTM Token on your server, you can use Token Authentication. You need to put the following information to the `x-agora-token` field `x-agora-uid` field when sending your HTTP request: 
+      If you have already generated an RTM Token on your server, you can use token authentication. You need to add the following information to the `x-agora-token` field `x-agora-uid` field when sending your HTTP request: 
 
       - The RTM Token generated at your server. 
 
       - The uid you use to generate the RTM Token. 
 
       **Sample code**
+      
+      The following sample code shows how to implement token authentication in Java:
 
       ```java
         Request request = new Request.Builder()
