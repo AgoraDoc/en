@@ -704,7 +704,7 @@ components:
                 subscribeUidGroup:
                       type: integer
                       description: >-
-                        The estimated maximum number of subscribed users. You must set this parameter in individual mode. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
+                        The estimated maximum number of subscribed users. **You must set this parameter in individual mode**. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
                       
                         - 0: 1 to 2 UIDs 
 
