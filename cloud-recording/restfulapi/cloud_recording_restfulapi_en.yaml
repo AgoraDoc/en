@@ -42,7 +42,7 @@ info:
 
 
       
-  version: 2020.04.10
+  version: 2020.06.12
   title: Cloud Recording RESTful API
 servers: 
   - url: https://api.agora.io
@@ -667,36 +667,36 @@ components:
                             default: 0
                 subscribeVideoUids:  
                       type: array
-                      description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe. Agora recommends that you do not set the array as empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details. 
+                      description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
 
-                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
+                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
                 unSubscribeVideoUids: 
                       type: array
-                      description:  An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. Agora recommends that you do not set the array as empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details. 
+                      description:  An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
 
-                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
+                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
                       items:
                         type: string
                       maxLength: 32
                       example: ["345","789"]
                 subscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. Agora recommends that you do not set the array as empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details.   
+                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.   
                       
-                        <div class="warning-msg"><i class="fa fa-warning"></i> <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
+                        <div class="warning-msg"><i class="fa fa-warning"></i> <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]                     
                 unSubscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. Agora recommends that you do not set the array as empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details. 
+                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
                       
-                        <div class="warning-msg"><i class="fa fa-warning"></i><ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
+                        <div class="warning-msg"><i class="fa fa-warning"></i><ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
                       items:
                         type: string
                       maxLength: 32
@@ -910,14 +910,14 @@ components:
                properties:
                 subscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details.
+                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]   
                 unSubscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details.     
+                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.     
                       items:
                         type: string
                       maxLength: 32
@@ -928,14 +928,14 @@ components:
                properties:
                 subscribeVideoUids: 
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose video you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details.                   
+                      description: An array of the user IDs (UIDs) of the users whose video you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.                   
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
                 unSubscribeVideoUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs-preview.agoralab.co/cn/cloud-recording/cloud_recording_subscription?platform=All%20Platforms&versionId=6e88cc30-aa61-11ea-aa07-c5bcc14a9a95) for details.                
+                      description: An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.                
                       items:
                         type: string
                       maxLength: 32
