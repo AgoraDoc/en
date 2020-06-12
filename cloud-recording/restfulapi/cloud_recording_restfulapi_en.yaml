@@ -782,7 +782,8 @@ components:
                       - 0: East China
                       - 1: North China 
                       - 2: South China
-                      - 3: North America  
+                      - 3: North America
+                      - 4: Southeast Asia   
                     
                       When the third-party cloud storage is [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls) (`vendor` = 1):
                     
