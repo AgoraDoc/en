@@ -562,7 +562,7 @@ components:
                   type: integer
                   default: 30
                   description: >-
-                    Agora Cloud Recording automatically stops recording and leaves the channel when there is no user in the recording channel after a time period (30 seconds by default) set by this parameter. The value range is from 5 to 2<sup>32</sup>-1. 
+                    Agora Cloud Recording automatically stops recording and leaves the channel when there is no user in the recording channel after a time period (30 seconds by default) set by this parameter. The value range is from 5 to 2<sup>32</sup>-1. Once the recording stops, the recording service generates new recorded files if you call `start` for the second time.
                   
                     <div class="info-msg"><i class="fa fa-info-circle"></i> Note: <ul><li>In a communication channel, the recording service does not recognize a channel as an idle channel, so long as the channel has users, regardless of whether they send stream or not.</li><li>If a live broadcast channel has an audience without a host for a set time (<code>maxIdleTime</code>), the recording service automatically stops and leaves the channel.</li></div>
                 transcodingConfig:
