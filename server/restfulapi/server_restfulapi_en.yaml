@@ -1,0 +1,1542 @@
+openapi: 3.0.0
+info:
+  description: >
+    This article contains detailed help for the Server RESTful APIs and provides the **Try it out** feature which enables you to send RESTful API requests and receive responses directly on the web page.
+
+    ## Authentication
+
+    The RESTful APIs only support HTTPS. Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
+
+      - `api_key`: Customer ID
+      - `api_secret`: Customer Certificate
+
+    You can find your Customer ID and Customer Certificate on the [RESTful API](https://console.agora.io/restfulApi) page in Agora Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate `Authorization`. You can also generate `Authorization` by using the **Try it out** feature on this page.
+
+
+    ## Data format
+
+    All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. Both the request and response contents are in JSON format.
+
+    ## Functions
+
+    The RESTful APIs on this web page provide you with the following functions:
+    <ul>
+      <li><a href="#/Project%20API/creatProject">Project API</a>: Creates and manages a project.</li>
+      <li><a href="#/Usage%20API/getProjectUsagesV3">Usage API</a>: Gets the usage data of a specified project.</li>
+      <li><a href="#/Ban%20Users%20at%20the%20Server%20API/createKickingRule">Ban Users at the Server API</a >: Manages user privileges.</li>
+      <li><a href="#/Online%20Statistics%20Query%20API/userProperty">Online Statistics Query API</a>: Gets information on channels.</li>
+    </ul>
+
+
+    ## <a name="tryapi"></a>Try out the API
+
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
+
+    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1593314309962" alt="Authorize" width="50%">
+
+    <div class="info-msg">Note：<ul><li>Any Agora service incurred by the request is included in your monthly service usage. </li><li>All the RESTful API requests sent on the web page take real effect on your projects. If you only want to try the API, Agora recommends creating a test project.</li></ul></div>
+
+
+
+  version: 2020.06.28
+  title: Server RESTful API
+servers:
+  - url: https://api.agora.io/dev
+tags:
+- name: "Project API"
+security:
+  - agora_auth: []
+paths:
+  /v1/project:
+    post:
+      tags:
+      - "Project API"
+      summary: Creates a project
+      operationId: creatProject
+      description: Creates an Agora project.
+          <div class="info-msg">You can create up to 10 projects, including the deleted ones. If you need to create more projects, please contact us by <a href="https://agora-ticket.agora.io/">submitting a ticket</a >.</i></div>
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/createProject'
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createProject_response'
+              example:
+                project:
+                  id: xxxx
+                  name: project1
+                  vendor_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+                  sign_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+                  recording_server: 10.2.2.8:8080
+                  status: 1
+                  created: 1464165672
+        '400':
+          description: >-
+                   Bad request. Possible reasons:
+                   <ul>
+                   <li>Duplicate project name.</li>
+                   <li>Vendor blocked.</li>
+                   <li>The number of projects exceeds the maximum limit.</li>
+                   </ul>
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+      - "Project API"
+      summary: Gets a specified project
+      operationId: getProject
+      description: Gets the information of a specified project.
+      parameters:
+        - name: id
+          required: true
+          in: query
+          description: The project ID.
+          schema:
+            type: string
+        - name: name
+          required: true
+          in: query
+          description: The project name.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProject_response'
+              example:
+                "project":
+                  {
+                    "id": "xxxx",
+                    "name": "project1",
+                    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "recording_server": "10.2.2.8:8080",
+                    "status": 1,
+                    "created": 1464165672
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+      - "Project API"
+      summary: Deletes a project
+      operationId: deleteProject
+      description: Deletes a specified Agora project.
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/deleteProject'
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteProject_response'
+              example:
+                "success": true
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/projects:
+    get:
+      tags:
+      - "Project API"
+      summary: Gets all projects
+      operationId: projects
+      description: Gets the information of all your Agora projects.
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProjects_response'
+              example:
+                "projects": [
+                  {
+                    "id": "xxxx",
+                    "name": "project1",
+                    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "recording_server": "10.2.2.8:8080",
+                    "status": 1,
+                    "created": 1464165672
+                  }
+                  ]
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/project_status:
+    post:
+      tags:
+      - "Project API"
+      summary: Disables or enables a project
+      operationId: changeProjectStatus
+
+      description: Disables or enables a specified Agora project.
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/changeProjectStatus'
+      responses:
+        '200':
+          description: The request is successful.
+           <div class="info-msg">If you successfully enable or disable the project, this response contains the information of this project, including the current status of the project.</i></div>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/changeProjectstatus_response'
+              example:
+                "project":
+                  {
+                    "id": "xxxx",
+                    "name": "project1",
+                    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "recording_server": "10.2.2.8:8080",
+                    "status": 0,
+                    "created": 1464165672
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/recording_config:
+   post:
+      tags:
+      - "Project API"
+      summary: Sets the IP of the recording server
+      operationId: setRecordingServer
+      description: Sets the IP of the recording server for a specified project.
+      parameters: []
+
+      requestBody:
+        $ref: '#/components/requestBodies/setRecordingServer'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+              application/json:
+               schema:
+                 $ref: '#/components/schemas/setRecordingServer_response'
+               example:
+                 "project":
+                    {
+                      "id": "xxxx",
+                      "name": "project1",
+                      "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                      "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                      "recording_server": "10.2.2.8:8080",
+                      "status": 1,
+                      "created": 1464165672
+                    }
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/signkey:
+   post:
+      tags:
+      - "Project API"
+      summary: Enables or disables the primary App Certificate
+      operationId: changeSignKey
+      description: Enables or disables the primary App Certificate for a specifed project.
+
+      requestBody:
+        $ref: '#/components/requestBodies/changeSignKey'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+              application/json:
+               schema:
+                  $ref: '#/components/schemas/changeSignKey_response'
+               example:
+                  "project":
+                    {
+                      "id": "xxxx",
+                      "name": "project1",
+                      "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                      "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                      "recording_server": "10.2.2.8:8080",
+                      "status": 1,
+                      "created": 1464165672
+                    }
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/reset_signkey:
+   post:
+      tags:
+      - "Project API"
+      summary: Resets the primary App Certificate
+      operationId: resetSignKey
+      description: Resets the primary App Certificate for a specifed project.
+        <div class="info-msg"><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></i></div>
+      requestBody:
+        $ref: '#/components/requestBodies/resetSignKey'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+           application/json:
+              schema:
+                $ref: '#/components/schemas/resetSignKey_response'
+              example:
+                "project":
+                  {
+                    "id": "xxxx",
+                    "name": "project1",
+                    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    "recording_server": "10.2.2.8:8080",
+                    "status": 1,
+                    "created": 1464165672
+                  }
+
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+
+
+  /v3/usage:
+    get:
+      tags:
+      - "Usage API"
+      summary:  Gets usage data
+      operationId: getProjectUsagesV3
+      description: Gets the usage data of a specified project.<br>
+                  You can query usage data within one year. Agora recommends not including the current day in your query period, because the data is continueously changing on that day.
+                  <div class="info-msg">Ensure that you fill in a valid <code>project_id</code>, otherwise, you cannot get the usage information.</i></div>
+      parameters:
+        - name: projects
+          required: true
+          in: query
+          description: The project ID.
+          schema:
+            type: string
+        - name: from_date
+          required: true
+          in: query
+          description: The start date of the query, using UTC time. For example, 2020-01-01.
+          schema:
+            type: string
+        - name: to_date
+          required: true
+          in: query
+          description: The end date of the query, using UTC time. For example, 2020-01-31.
+          schema:
+            type: string
+        - name: business
+          required: true
+          in: query
+          description: >-
+            The business type. You can choose the following values:
+              - `default`: The default business type is RTC.
+              - `transcodeDuration`: Transcoding.
+              - `recording`: On-premise Recording.
+              - `cloudRecording`: Cloud Recording.
+              - `miniapp`: Miniapp.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request is successful.
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProjectUsagesV3_response'
+              example:
+                {
+                  "meta": {
+                      "durationAudioAll": {
+                          "cn": "总音频时长",
+                          "en": "Total Audio Duration",
+                          "unit": "second"
+                      },
+                      "durationVideoHd": {
+                          "cn": "HD视频时长（含本地服务端录制）",
+                          "en": "HD Video Duration (including On-premise Recording)",
+                          "unit": "second"
+                      },
+                      "durationVideoHdp": {
+                          "cn": "HDP视频时长（含本地服务端录制）",
+                          "en": "HDP Video Duration（including On-premise Recording)",
+                          "unit": "second"
+                      }
+                  },
+                  "usages": [
+                      {
+                          "date": "2020-03-01T00:00:00.000Z",
+                          "usage": {
+                              "durationAudioAll": 0,
+                              "durationVideoHd": 0,
+                              "durationVideoHdp": 0
+                          }
+                      }
+                  ]
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/kicking-rule:
+    post:
+      tags:
+      - "Ban Users at the Server API"
+      summary: Creates a rule
+      operationId: createKickingRule
+      description: >-
+                  Creates a banning rule.<br>
+                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following examples:
+                    - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot join any channel in the app.
+                    - If you set `cname`, but not `uid` or `ip`, then no one can join the channel specified by the `cname` field.
+                    - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
+                    - If you set `uid`, but not `cname` or `ip`, then the user with the ID cannot join any channel in the app.
+
+                  Setting `time` to `0` means that the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.<br>
+                  The banned user receives the corresponding callback as follows:
+                    - Android: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+                    - iOS/macOS: [`connectionChangedToState`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:connectionChangedToState:reason:) callback reports `AgoraConnectionChangedBannedByServer(3)`.
+                    - Web: [`onclient-banned`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/web/interfaces/agorartc.client.html#on) callback.
+                    - Windows: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/cpp/classagora_1_1rtc_1_1_i_rtc_engine_event_handler.html#af409b2e721d345a65a2c600cea2f5eb4) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+                    - Electron: [`AgoraRtcEngine.on("connectionStateChanged")`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/electron/classes/agorartcengine.html#on) callback reports `3`.
+                    - Unity: [`OnConnectionStateChangedHandler`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/unity/namespaceagora__gaming__rtc.html#adae7694cb602375ccbc14be3062a230c) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+
+
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/createKickingRule'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createKickingRule_response'
+              example:
+                 status: "success"
+                 id: 1953
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+      - "Ban Users at the Server API"
+      summary: Gets the rule list
+      operationId: listKickingRule
+      description: Gets the list of all banning rules.
+      parameters:
+        - name: appid
+          required: true
+          in: query
+          description: The project App ID in Agora Console.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listKickingRule_response'
+              example:
+               status: "success"
+               ruls: [
+                  {
+                    id: 1953,
+                    appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+                    uid: 1,
+                    opid: 1406,
+                    cname: "11",
+                    ip: "192.168.0.1",
+                    ts: "2018-01-09T07:23:06.000Z",
+                    createAt: "2018-01-09T06:23:06.000Z",
+                    updateAt: "2018-01-09T14:23:06.000Z",
+                }
+                ]
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+      - "Ban Users at the Server API"
+      summary: Updates the rule time
+      operationId: updateKickingRule
+      description: Updates the time duration when the rule taks effect.
+
+      requestBody:
+        $ref: '#/components/requestBodies/updateKickingRule'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateKickingRule_response'
+              example:
+                 status: "success"
+                 result:
+                  id: 1953
+                  ts: "2018-01-09T08:45:54.545Z"
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+
+    delete:
+      tags:
+      - "Ban Users at the Server API"
+      summary: Deletes the rule
+      operationId: deleteKickingRule
+      description: Deletes the specified banning rule.
+
+      requestBody:
+        $ref: '#/components/requestBodies/deleteKickingRule'
+
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteKickingRule_response'
+              example:
+                 status: "success"
+                 id: 1953
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/channel/user/property/{appid}/{uid}/{channelName}:
+    get:
+      tags:
+      - "Online Statistics Query API"
+      summary: Gets the user role
+      operationId: userProperty
+      description: This method checks if a specified user is in a specified channel, and if yes, the role of this user in the channel.
+      parameters:
+        - in: path
+          name: appid
+          required: true
+          schema:
+            type: string
+          description: The project App ID in Agora Console.
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: The user ID.
+        - in: path
+          name: cname
+          required: true
+          schema:
+            type: string
+          description: The channel name.
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userProperty_response'
+              example:
+                success: true
+                data:
+                    join: 1592289039
+                    in_channel: true
+                    role: 2
+
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/channel/user/{appid}/{channelName}:
+    get:
+      tags:
+      - "Online Statistics Query API"
+      summary: Gets the user list
+      operationId: userList
+      description: >-
+       This method gets the user list.
+        - In the Communication profile, this method gets the list of all users in the channel.
+        - In the Live-broadcast profile, this method gets the list of all broadcasters and audience in the channel.
+      parameters:
+        - in: path
+          name: appid
+          required: true
+          schema:
+            type: string
+          description: The project App ID in Agora Console.
+        - in: path
+          name: cname
+          required: true
+          schema:
+            type: string
+          description: The channel name.
+      responses:
+        '200':
+          description: The request is successful.</br>
+            <div class="info-msg">The response of this method differs with the channel profile.</i></div>
+          content:
+                application/json:
+                  schema:
+                      $ref: '#/components/schemas/userList_response'
+                  examples:
+                    Communicatio profile:
+                        value:
+                          success: true
+                          data:
+                            channel_exist: true
+                            mode: 1
+                            total: 1
+                            users: [<uid>]
+                    Live-broadcast profile:
+                        value:
+                          success: true
+                          data:
+                            channel_exist: true
+                            mode: 2
+                            broadcasters: [<uid>]
+                            audience: [<uid>]
+                            audience_total: <count>
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/channel/{appid}:
+    get:
+      tags:
+      - "Online Statistics Query API"
+      summary: Gets the channel list of a specified vendor
+      operationId: channelList
+      parameters:
+        - in: path
+          name: appid
+          required: true
+          schema:
+            type: string
+          description: The project App ID in Agora Console.
+        - in: query
+          name: page_no
+          required: false
+          schema:
+            type: number
+          description: The starting page of the channel list. The default value is 0.
+        - in: query
+          name: page_size
+          required: false
+          schema:
+            type: number
+          description: The number of items in a page. The default value is 100 and the greatest value is 500.
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/channelList_response'
+              example:
+               success: true
+               data:
+                    channels: [
+                      {
+                      channel_name: "lkj144",
+                      user_count: 3,
+                      }
+                    ]
+                    total_size: 3
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+components:
+  schemas:
+     createProject:
+      type: object
+      required:
+        - name
+        - enable_sign_key
+      properties:
+        name:
+          type: string
+          description: The project name.
+          maxLength: 255
+          minLength: 1
+        enable_sign_key:
+          type: boolean
+          description: >-
+             Whether to enable the primary App Certificate:
+
+              - true: Enable the primary App Certificate.
+              - false: Do not enable the primary App Certificate.
+
+              <div class="info-msg">After creating a project, you can send request to <code>https://api.agora.io/dev/v1/signkey</code> to enable or disable the primary App Certificate, or send request to <code>https://api.agora.io/dev/v1/reset_signkey</code> to reset the primary App Certificate.</i></div>
+          default: false
+     getProject:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: The project id.
+        name:
+          type: string
+          description: The project id.
+     deleteProject:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The project id.
+     changeProjectStatus:
+      type: object
+      required:
+        - id
+        - status
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        status:
+          type: number
+          description: >-
+                  Whether to enable or disable the project:
+                  <ul>
+                    <li>0：Enable the project.</li>
+                    <li>1：Disable the project.</li>
+                    </ul>
+     setRecordingServer:
+      type: object
+      required:
+        - id
+        - recording_server
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+     changeSignKey:
+      type: object
+      required:
+        - id
+        - enable
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        enable:
+          type: boolean
+          description: >-
+                    Whether to enable or disable the primary App Certificate of the project:
+                      - true：Enable the primary App Certificate.
+                      - false：Do not enable the primary App Certificate.
+          default: false
+     resetSignKey:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The project ID.
+     createKickingRule:
+      type: object
+      required:
+        - appid
+        - time
+        - privileges
+      properties:
+        appid:
+          type: string
+          description: The project App ID in Agora Console.
+        cname:
+          type: string
+          description: (Optional) The channel name. If you set this parameter, do not set it as the empty string "".
+        uid:
+          type: string
+          description: (Optional) The user ID. You can use the SDK APIs to get it. Do not set it as `0`.
+        ip:
+          type: string
+          description: (Optional) The IP address of the user that you want to kick out of the channel. Do not set it as `0`.
+        time:
+          type: number
+          description: The time duration (in minutes) to ban the user. The value range is [1, 1440], and the default value is 60.
+                        <div class="alert note"><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+        privileges:
+          type: array
+          description: >-
+                  The user privileges that you want to ban. The default field is `join_channel`. You can choose the following values:
+                    - `join_channel`： Join a channel.
+                    - `publish_audio`：Publish audio.
+                    - `publish_video`：Publish video.
+          items:
+            type: string
+            enum:
+              - join_channel
+              - publish_audio
+              - publish_video
+     updateKickingRule:
+      type: object
+      required:
+        - appid
+        - id
+        - time
+      properties:
+        appid:
+          type: string
+          description: The project App ID in Agora Console.
+        id:
+          type: number
+          description: The ID of the rule that you want to update.
+        time:
+          type: number
+          description: The time duration (minute) to ban the user. The value range is [1, 1440], and the default value is 60.
+                      <div class="alert note"><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+     deleteKickingRule:
+      type: object
+      required:
+        - appid
+        - id
+      properties:
+        appid:
+          type: string
+          description: The project App ID in Agora Console.
+        id:
+          type: number
+          description: The ID of the rule that you want to delete.
+     createProject_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+            The status of the project.
+              - 1: The project is enabled.
+              - 0：The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     getProject_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID。
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+            The status of the project.
+              - 1: The project is enabled.
+              - 0：The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     deleteProject_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: >-
+             Whether the project is deleted:
+               - true：Successfully delete the project.
+               - false：(Reserved.)
+
+     getProjects_response:
+      type: object
+      properties:
+        Projects:
+         type: array
+         description: All projects.
+         items:
+          properties:
+            id:
+              type: string
+              description: The project ID.
+            name:
+              type: string
+              description: The project name.
+            vendor_key:
+              type: string
+              description: The App ID of the project.
+            sign_key:
+              type: string
+              description: The primary App Certificate of the project.
+            recording_server:
+              type: string
+              description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+
+            status:
+              type: number
+              description: >-
+                  The status of the project:
+                    - 1: The project is enabled.
+                    - 0：The project is disabled.
+            created:
+              type: number
+              description: The Unix timestamp (ms) for creating the project.
+     changeProjectstatus_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+               The status of the project:
+                  - 1: The project is enabled.
+                  - 0：The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     setRecordingServer_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+               The status of the project:
+                  - 1: The project is enabled.
+                  - 0: The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     changeSignKey_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+                The status of the project:
+                  - 1: The project is enabled.
+                  - 0: The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     resetSignKey_response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The project ID.
+        name:
+          type: string
+          description: The project name.
+        vendor_key:
+          type: string
+          description: The App ID of the project.
+        sign_key:
+          type: string
+          description: The primary App Certificate of the project.
+        recording_server:
+          type: string
+          description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
+        status:
+          type: number
+          description: >-
+               The status of the project:
+                  - 1: The project is enabled.
+                  - 0: The project is disabled.
+        created:
+          type: number
+          description: The Unix timestamp (ms) for creating the project.
+     getProjectUsagesV3_response:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Metadata, which describes the meaning of `durationAudioAll`, `durationVideoHd`, and `durationVideoHdp` in `usage`.
+          properties:
+           "durationAudioAll":
+              type: object
+              description: Total audio duration.
+              properties:
+                  "cn":
+                    type: string
+                    description: The meaning of `durationAudioAll` in Chinese，which is "总音频时长".
+                  "en":
+                    type: string
+                    description: The meaning of `durationAudioAll` in English, which is "Total Audio Duration".
+                  "unit":
+                    type: number
+                    description: Unit of measurement, which is second.
+           "durationVideoHd":
+              type: object
+              description: The total duration of HD video.
+              properties:
+                  "cn":
+                    type: string
+                    description: The meaning of `durationVideoHd` in Chinese，which is "高清视频时长（含本地服务端录制）".
+                  "en":
+                    type: string
+                    description: The meaning of `durationVideoHd` in English，which is "HD Video Duration (including On-premise Recording)".
+                  "unit":
+                    type: number
+                    description: Unit of measurement, which is second.
+           "durationVideoHdp":
+              type: object
+              description: The total duration of HDP video.
+              properties:
+                  "cn":
+                    type: string
+                    description: The meaning of `durationVideoHdp` in Chinese，which is "超高清视频时长（含本地服务端录制）".
+                  "en":
+                    type: string
+                    description: The meaning of `durationVideoHdp` in English，which is "HDP Video Duration (including On-premise Recording)".
+                  "unit":
+                    type: number
+                    description: Unit of measurement, which is second.
+        usages:
+          type: array
+          description: Usage of the specifed project.
+          items:
+            properties:
+              date:
+                type: number
+                description: The query date, using UTC time and Unix timestamp.
+              usage:
+                type: object
+                description: Usage of the query date.
+                properties:
+                    "durationAudioAll":
+                        type: number
+                        description: Total audio duration in seconds.
+                    "durationVideoHd":
+                        type: number
+                        description: HD video duration in seconds.
+                    "durationVideoHdp":
+                        type: number
+                        description: HDP video duration in seconds.
+     createKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request.
+        id:
+          type: number
+          description: The rule ID. If you want to update the rule, you need the rule ID to specify the rule.
+     listKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request.
+        rules:
+          type: array
+          description: >-
+              The list of the kicking rule, which contains the following fields:
+          items:
+            properties:
+              id:
+                type: number
+                description: The rule ID.
+              appid:
+                type: string
+                description:  The project App ID in Agora Console.
+              uid:
+                type: string
+                description: The user ID.
+              opid:
+                type: number
+                description: The operation ID, which can be used to track operation records when teoubleshooting.
+              cname:
+                type: string
+                description: The channel name.
+              ip:
+                type: string
+                description: The IP address.
+              ts:
+                type: string
+                description: The timestamp when this rule stops taking effect.
+              createAt:
+                type: string
+                description: The timestamp when this rule is created.
+              updateAt:
+                type: string
+                description: The timestamp when this rule is updated.
+     updateKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request.
+        result:
+          type: object
+          description: The result of the rule update.
+          properties:
+           id:
+            type: string
+            description: The rule ID.
+           ts:
+              type: string
+              description: The timestamp when the rule stops taking effect.
+     deleteKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request.
+        id:
+          type: string
+          description: The ID of the rule that you want to delete.
+     userProperty_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description:  >-
+                      The state of this request:
+                        - true: Success.
+                        - false:  (Reserved.)
+        data:
+          type: object
+          description: 用户在频道中的状态数据。
+          properties:
+            join:
+              type: number
+              description: The timestamp when the user joins the channel.
+            in_channel:
+              type: boolean
+              description: >-
+                         Whether the user is in the channel:
+                          - true：The user is in the channel.
+                          - false: The user is not in the channel.
+            role:
+              type: number
+              description: >-
+                        The role of the user in the channel:
+                          - 0: Unknown user role.
+                          - 1: The user in a Communication channel.
+                          - 2: The broadcaster in a Live-broadcast channel.
+                          - 3: The audience in a Live-broadcast channel.
+     userList_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description:  >-
+                       The state of this request:
+                        - true: Success.
+                        - false: (Reserved.)
+        data:
+          type: object
+          description: >-
+            The data of user information, which includes the following fields:
+          properties:
+            channel_exist:
+              type: boolean
+              description:  >-
+                          Whether the specified channel exists.
+                            - true: The channel exists.
+                            - false: The channel does not exist.
+            mode:
+              type: number
+              description: >-
+                         The channel profile:
+                          - 1：The Communication profile.
+                          - 2: The Live-broadcast profile.
+            total:
+              type: number
+              description: The total number of users in the channel.
+            users:
+              type: array
+              description: The ID list of all users in the channel.
+              items:
+               type: string
+            broadcasters:
+              type: array
+              description: The ID list of all the broadcasters in the channel.
+              items:
+               type: string
+            audience:
+              type: array
+              description: The ID list of the first 10000 audience in the channel.
+              items:
+               type: string
+            audience_total:
+              type: number
+              description: The total number of the audience in the channel.
+     channelList_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description:  >-
+                       The state of this request:
+                        - true: Success.
+                        - false: (Reserved.)
+        data:
+          type: object
+          description: >-
+                   The response data, which includes the following fields:
+          properties:
+            channels:
+              type: array
+              description: >-
+                       The channel list：
+              items:
+               properties:
+                 channel_name:
+                  type: string
+                  description: The channel name.
+                 user_count:
+                  type: number
+                  description: The number of users in the channel.
+            total_size:
+              type: number
+              description: The number of channels.
+
+  requestBodies:
+    createProject:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createProject'
+          example:
+            name: "projectx"
+            enable_sign_key: "true"
+      description: The following parameters are required in the request body.
+      required: true
+    getProject:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/getProject'
+          example:
+            id: "xxxxx"
+            name: "xxxxx"
+      description: The following parameters are required in the request body.
+      required: true
+    deleteProject:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/deleteProject'
+          example:
+            id: "xxxx"
+      description: The following parameters are required in the request body.
+      required: true
+    changeProjectStatus:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/changeProjectStatus'
+          example:
+            id: "xxxx"
+            status: 0
+      description: The following parameters are required in the request body.
+      required: true
+    setRecordingServer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/setRecordingServer'
+          example:
+            id: "xxxx"
+            recording_server: "10.12.1.5:8080"
+      description: The following parameters are required in the request body.
+      required: true
+    changeSignKey:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/changeSignKey'
+          example:
+            id: "xxxx"
+            enable: true
+      description: The following parameters are required in the request body.
+      required: true
+    resetSignKey:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/resetSignKey'
+          example:
+            id: "xxxx"
+      description: The following parameters are required in the request body.
+      required: true
+    createKickingRule:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createKickingRule'
+          example:
+            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+            cname: "channel1"
+            uid: ""
+            ip: ""
+            time: 60
+            privileges: ["join_channel"]
+      description: The following parameters are required in the request body.
+      required: true
+    updateKickingRule:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateKickingRule'
+          example:
+            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+            id: 1953
+            time: 60
+      description: The following parameters are required in the request body.
+      required: true
+    deleteKickingRule:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/deleteKickingRule'
+          example:
+            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+            id: 1953
+      description: The following parameters are required in the request body.
+      required: true
+
+  responses:
+    200:
+      description: The request is successful.
+    400:
+      description: The input is in the wrong format.
+    401:
+      description: Unauthorized (incorrect App ID/Customer Certificate).
+    403:
+      description: Forbidden.
+    404:
+      description: The requested resource could not be found.
+    429:
+      description: Too many requests.
+    500:
+      description: Internal error of the Agora RESTful API service.
+  securitySchemes:
+    agora_auth:
+      type: http
+      scheme: basic
