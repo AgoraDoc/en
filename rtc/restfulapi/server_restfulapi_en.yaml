@@ -32,6 +32,7 @@ info:
 
     You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
 
+
     <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1593314309962" alt="Authorize" width="50%">
 
     <div class="info-msg"><i class="fa fa-info-circle"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
@@ -40,18 +41,18 @@ info:
   version: 2020.06.30
   title: Server RESTful API
 servers:
-  - url: https://api.agora.io/dev
+  - url: https://api.agora.io
 tags:
-- name: "Project"
+- name: "Project management"
 security:
   - agora_auth: []
 paths:
-  /v1/project:
+  /dev/v1/project:
     post:
       tags:
-      - "Project"
+      - "Project management"
       summary: Creates a project
-      operationId: creatProject
+      operationId: createProject
       description: Creates an Agora project.
 
             <div class="info-msg"><i class="fa fa-info-circle"></i> You can create up to 10 projects, including any previously deleted. If you need to create more projects, please contact us by <a href="https://agora-ticket.agora.io/">submitting a ticket</a >.</div>
@@ -94,7 +95,7 @@ paths:
           $ref: '#/components/responses/500'
     get:
       tags:
-      - "Project"
+      - "Project management"
       summary: Gets a specified project
       operationId: getProject
       description: Gets the information of a specified project.
@@ -143,7 +144,7 @@ paths:
           $ref: '#/components/responses/500'
     delete:
       tags:
-      - "Project"
+      - "Project management"
       summary: Deletes a project
       operationId: deleteProject
       description: Deletes a specified Agora project.
@@ -171,10 +172,10 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/projects:
+  /dev/v1/projects:
     get:
       tags:
-      - "Project"
+      - "Project management"
       summary: Gets all projects
       operationId: projects
       description: Gets the information of all your Agora projects.
@@ -210,13 +211,12 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/project_status:
+  /dev/v1/project_status:
     post:
       tags:
-      - "Project"
+      - "Project management"
       summary: Disables or enables a project
       operationId: changeProjectStatus
-
       description: Disables or enables a specified Agora project.
       parameters: []
       requestBody:
@@ -251,18 +251,16 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/recording_config:
+  /dev/v1/recording_config:
    post:
       tags:
-      - "Project"
+      - "Project management"
       summary: Sets the IP of the recording server
       operationId: setRecordingServer
       description: Sets the IP of the recording server for a specified project.
       parameters: []
-
       requestBody:
         $ref: '#/components/requestBodies/setRecordingServer'
-
       responses:
         '200':
           description: The request is successful.
@@ -293,13 +291,13 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/signkey:
+  /dev/v1/signkey:
    post:
       tags:
-      - "Project"
+      - "Project management"
       summary: Enables or disables the primary App Certificate
       operationId: changeSignKey
-      description: Enables or disables the primary App Certificate for a specifed project.
+      description: Enables or disables the primary App Certificate for a specified project.
 
       requestBody:
         $ref: '#/components/requestBodies/changeSignKey'
@@ -334,13 +332,13 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/reset_signkey:
+  /dev/v1/reset_signkey:
    post:
       tags:
-      - "Project"
+      - "Project management"
       summary: Resets the primary App Certificate
       operationId: resetSignKey
-      description: Resets the primary App Certificate for a specifed project.
+      description: Resets the primary App Certificate for a specified project.
         <div class="info-msg"><i class="fa fa-info-circle"></i> Note:</br><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></i></div>
       requestBody:
         $ref: '#/components/requestBodies/resetSignKey'
@@ -363,7 +361,6 @@ paths:
                     "status": 1,
                     "created": 1464165672
                   }
-
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -376,13 +373,10 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-
-
-
-  /v3/usage:
+  /dev/v3/usage:
     get:
       tags:
-      - "Usage"
+      - "Project usage query"
       summary:  Gets usage data
       operationId: getProjectUsagesV3
       description: Gets the usage data within one year of a specified project.<br>
@@ -411,7 +405,7 @@ paths:
           in: query
           description: >-
             The business type. You can choose the following values:
-              - `default`: RTC, that is, audio and video communication except on Miniapp.
+              - `default`: Audio and video. The usage on Miniapp is not included.
               - `transcodeDuration`: Transcoding.
               - `recording`: On-premise Recording.
               - `cloudRecording`: Cloud Recording.
@@ -468,10 +462,10 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/kicking-rule:
+  /dev/v1/kicking-rule:
     post:
       tags:
-      - "Ban Users"
+      - "Banning rule management"
       summary: Creates a rule
       operationId: createKickingRule
       description: >-
@@ -519,7 +513,7 @@ paths:
           $ref: '#/components/responses/500'
     get:
       tags:
-      - "Ban Users"
+      - "Banning rule management"
       summary: Gets the rule list
       operationId: listKickingRule
       description: Gets a list of all banning rules.
@@ -566,7 +560,7 @@ paths:
           $ref: '#/components/responses/500'
     put:
       tags:
-      - "Ban Users"
+      - "Banning rule management"
       summary: Updates the rule time
       operationId: updateKickingRule
       description: Updates the expiration time of a specified banning rule.
@@ -602,7 +596,7 @@ paths:
 
     delete:
       tags:
-      - "Ban Users"
+      - "Banning rule management"
       summary: Deletes the rule
       operationId: deleteKickingRule
       description: Deletes a specified banning rule.
@@ -632,10 +626,10 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/channel/user/property/{appid}/{uid}/{channelName}:
+  /dev/v1/channel/user/property/{appid}/{uid}/{channelName}:
     get:
       tags:
-      - "Query statistics"
+      - "Channel statistics query"
       summary: Gets the user role
       operationId: userProperty
       description: This method checks if a specified user is in a specified channel, and if yes, the role of this user in the channel.
@@ -684,16 +678,16 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/channel/user/{appid}/{channelName}:
+  /dev/v1/channel/user/{appid}/{channelName}:
     get:
       tags:
-      - "Query statistics"
+      - "Channel statistics query"
       summary: Gets the user list
       operationId: userList
       description: >-
        This method gets the user list.
         - In the Communication profile, this method gets the list of all users in the channel.
-        - In the Live Broadcast profile, this method gets the list of all broadcasters and audience in the channel.
+        - In the  Live Interactive Streaming profile, this method gets the list of all hosts and audience in the channel.
       parameters:
         - in: path
           name: appid
@@ -724,7 +718,7 @@ paths:
                             mode: 1
                             total: 1
                             users: [<uid>]
-                    Live Broadcast profile:
+                    Live Interactive Streaming profile:
                         value:
                           success: true
                           data:
@@ -745,11 +739,12 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-  /v1/channel/{appid}:
+  /dev/v1/channel/{appid}:
     get:
       tags:
-      - "Query statistics"
-      summary: Gets the channel list of a specified project.
+      - "Channel statistics query"
+      summary: Gets the channel list
+      description: Gets the channel list of a specified project.
       operationId: channelList
       parameters:
         - in: path
@@ -763,7 +758,8 @@ paths:
           required: false
           schema:
             type: number
-          description: The starting page of the channel list. The default value is 0.
+          description: The page of the channel list that you want to query. The default value is 0.</br>
+                       <div class="info-msg"><i class="fa fa-info-circle"></i> The value of <code>page_no</code> cannot exceed (the total number of channels/the number of items in a page - 1). Otherwise, the specified page does not contain any channel list.</i></div>
         - in: query
           name: page_size
           required: false
@@ -831,10 +827,10 @@ components:
       properties:
         id:
           type: string
-          description: The project id.
+          description: The project ID.
         name:
           type: string
-          description: The project id.
+          description: The project ID.
      deleteProject:
       type: object
       required:
@@ -842,7 +838,7 @@ components:
       properties:
         id:
           type: string
-          description: The project id.
+          description: The project ID.
      changeProjectStatus:
       type: object
       required:
@@ -1206,10 +1202,10 @@ components:
               properties:
                   "cn":
                     type: string
-                    description: The meaning of `durationAudioAll` in Chinese，which is "总音频时长".
+                    description: The meaning of `durationAudioAll` in Chinese，that is, "总音频时长".
                   "en":
                     type: string
-                    description: The meaning of `durationAudioAll` in English, which is "Total Audio Duration".
+                    description: The meaning of `durationAudioAll` in English, that is, "Total Audio Duration".
                   "unit":
                     type: number
                     description: The unit of audio duration, which is second.
@@ -1219,10 +1215,10 @@ components:
               properties:
                   "cn":
                     type: string
-                    description: The meaning of `durationVideoHd` in Chinese，which is "高清视频时长（含本地服务端录制）".
+                    description: The meaning of `durationVideoHd` in Chinese，that is, "高清视频时长（含本地服务端录制）".
                   "en":
                     type: string
-                    description: The meaning of `durationVideoHd` in English，which is "HD Video Duration (including On-premise Recording)".
+                    description: The meaning of `durationVideoHd` in English，that is, "HD Video Duration (including On-premise Recording)".
                   "unit":
                     type: number
                     description: The unit of HD video duration, which is second.
@@ -1361,8 +1357,8 @@ components:
                         The role of the user in the channel. The response contains this field only if `in_channel` is `true`.
                           - 0: Unknown user role.
                           - 1: User, in a Communication channel.
-                          - 2: Broadcaster, in a Live Broadcast channel.
-                          - 3: Audience, in a Live Broadcast channel.
+                          - 2: Host, in a  Live Interactive Streaming channel.
+                          - 3: Audience, in a  Live Interactive Streaming channel.
      userList_response:
       type: object
       properties:
@@ -1388,7 +1384,9 @@ components:
               description: >-
                          The channel profile:
                           - 1：The Communication profile.
-                          - 2: The Live Broadcast profile.
+                          - 2: The  Live Interactive Streaming profile.
+
+                           The response contains this field only if `channel_exist` is `true`.
             total:
               type: number
               description: The total number of users in the channel. The response returns this field only when `mode` is `1`, that is, the Communication profile.
@@ -1399,17 +1397,17 @@ components:
                type: string
             broadcasters:
               type: array
-              description: The ID list of all the broadcasters in the channel. The response returns this field only when `mode` is `2`, that is, the Live Broadcast profile.
+              description: The ID list of all the hosts in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
               items:
                type: string
             audience:
               type: array
-              description: The ID list of the first 10000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live Broadcast profile.
+              description: The ID list of the first 10000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
               items:
                type: string
             audience_total:
               type: number
-              description: The total number of the audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live Broadcast profile.
+              description: The total number of the audience in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
      channelList_response:
       type: object
       properties:
@@ -1427,7 +1425,9 @@ components:
             channels:
               type: array
               description: >-
-                       The channel list：
+                       The channel lists.
+                       <div class="info-msg"><i class="fa fa-info-circle"></i> If the specified page does not contain any channels, this field is empty.</i></div>
+
               items:
                properties:
                  channel_name:
