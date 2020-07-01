@@ -629,7 +629,7 @@ paths:
   /dev/v1/channel/user/property/{appid}/{uid}/{channelName}:
     get:
       tags:
-      - "Channel statistics query"
+      - "Online channel statistics query"
       summary: Gets the user role
       operationId: userProperty
       description: This method checks if a specified user is in a specified channel, and if yes, the role of this user in the channel.
@@ -681,13 +681,13 @@ paths:
   /dev/v1/channel/user/{appid}/{channelName}:
     get:
       tags:
-      - "Channel statistics query"
+      - "Online channel statistics query"
       summary: Gets the user list
       operationId: userList
       description: >-
        This method gets the user list.
         - In the Communication profile, this method gets the list of all users in the channel.
-        - In the  Live Interactive Streaming profile, this method gets the list of all hosts and audience in the channel.
+        - In the Live-broadcast profile, this method gets the list of all broadcasters and audience in the channel.
       parameters:
         - in: path
           name: appid
@@ -718,7 +718,7 @@ paths:
                             mode: 1
                             total: 1
                             users: [<uid>]
-                    Live Interactive Streaming profile:
+                    Live-broadcast profile:
                         value:
                           success: true
                           data:
@@ -742,7 +742,7 @@ paths:
   /dev/v1/channel/{appid}:
     get:
       tags:
-      - "Channel statistics query"
+      - "Online channel statistics query"
       summary: Gets the channel list
       description: Gets the channel list of a specified project.
       operationId: channelList
@@ -1357,8 +1357,8 @@ components:
                         The role of the user in the channel. The response contains this field only if `in_channel` is `true`.
                           - 0: Unknown user role.
                           - 1: User, in a Communication channel.
-                          - 2: Host, in a  Live Interactive Streaming channel.
-                          - 3: Audience, in a  Live Interactive Streaming channel.
+                          - 2: Broadcaster, in a Live-broadcast channel.
+                          - 3: Audience, in a Live-broadcast channel.
      userList_response:
       type: object
       properties:
@@ -1384,7 +1384,7 @@ components:
               description: >-
                          The channel profile:
                           - 1：The Communication profile.
-                          - 2: The  Live Interactive Streaming profile.
+                          - 2: The Live-broadcast profile.
 
                            The response contains this field only if `channel_exist` is `true`.
             total:
@@ -1397,17 +1397,17 @@ components:
                type: string
             broadcasters:
               type: array
-              description: The ID list of all the hosts in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
+              description: The ID list of all the broadcasters in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
               items:
                type: string
             audience:
               type: array
-              description: The ID list of the first 10000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
+              description: The ID list of the first 10000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
               items:
                type: string
             audience_total:
               type: number
-              description: The total number of the audience in the channel. The response returns this field only when `mode` is `2`, that is, the  Live Interactive Streaming profile.
+              description: The total number of the audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
      channelList_response:
       type: object
       properties:
