@@ -339,7 +339,7 @@ paths:
       summary: Resets the primary App Certificate
       operationId: resetSignKey
       description: Resets the primary App Certificate for a specified project.
-        <div class="info-msg"><i class="fa fa-info-circle"></i> Note:</br><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></i></div>
+        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></i></div>
       requestBody:
         $ref: '#/components/requestBodies/resetSignKey'
 
@@ -380,7 +380,7 @@ paths:
       summary:  Gets usage data
       operationId: getProjectUsagesV3
       description: Gets the usage data within one year of a specified project.<br>
-                  <div class="info-msg"><i class="fa fa-info-circle"></i> Note:</br><ul><li>Ensure that you fill in a valid project ID, otherwise, you cannot get the usage information.</li><li>Agora recommends not including the current day in your query period, because the data is continuously changing on the current day.</li></ul></i></div>
+                  <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>Ensure that you fill in a valid project ID, otherwise, you cannot get the usage information.</li><li>Agora recommends not including the current day in your query period, because the data is continuously changing on the current day.</li></ul></i></div>
       parameters:
         - name: projects
           required: true
@@ -479,7 +479,7 @@ paths:
                   The banned user receives the corresponding callback as follows:
                     - Android: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
                     - iOS/macOS: [`connectionChangedToState`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:connectionChangedToState:reason:) callback reports `AgoraConnectionChangedBannedByServer(3)`.
-                    - Web: [`onclient-banned`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/web/interfaces/agorartc.client.html#on) callback.
+                    - Web: [`Client.on("client-banned")`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/web/interfaces/agorartc.client.html#on) callback.
                     - Windows: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/cpp/classagora_1_1rtc_1_1_i_rtc_engine_event_handler.html#af409b2e721d345a65a2c600cea2f5eb4) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
                     - Electron: [`AgoraRtcEngine.on("connectionStateChanged")`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/electron/classes/agorartcengine.html#on) callback reports `3`.
                     - Unity: [`OnConnectionStateChangedHandler`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/unity/namespaceagora__gaming__rtc.html#adae7694cb602375ccbc14be3062a230c) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
@@ -687,7 +687,7 @@ paths:
       description: >-
        This method gets the user list.
         - In the Communication profile, this method gets the list of all users in the channel.
-        - In the Live-broadcast profile, this method gets the list of all broadcasters and audience in the channel.
+        - In the Live-broadcast profile, this method gets the list of all hosts and audience in the channel.
       parameters:
         - in: path
           name: appid
@@ -913,8 +913,8 @@ components:
           description: The IP address of the user that you want to kick out of the channel. Do not set it as `0`.
         time:
           type: number
-          description: The time duration (in minutes) to ban the user. The value range is [1, 1440], and the default value is 60.
-                        <div class="alert note"><i class="fa fa-info-circle"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+          description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
         privileges:
           type: array
           description: >-
@@ -946,8 +946,8 @@ components:
           description: The ID of the rule that you want to update.
         time:
           type: number
-          description: The time duration (in minutes) to ban the user. The value range is [1, 1440], and the default value is 60.
-                      <div class="alert note"><i class="fa fa-info-circle"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+          description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
+                      <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
      deleteKickingRule:
       type: object
       required:
@@ -1207,8 +1207,8 @@ components:
                     type: string
                     description: The meaning of `durationAudioAll` in English, that is, "Total Audio Duration".
                   "unit":
-                    type: number
-                    description: The unit of audio duration, which is second.
+                    type: string
+                    description: The unit of audio duration, that is, second.
            "durationVideoHd":
               type: object
               description: The total duration of HD video.
@@ -1220,8 +1220,8 @@ components:
                     type: string
                     description: The meaning of `durationVideoHd` in English，that is, "HD Video Duration (including On-premise Recording)".
                   "unit":
-                    type: number
-                    description: The unit of HD video duration, which is second.
+                    type: string
+                    description: The unit of HD video duration, that is, second.
            "durationVideoHdp":
               type: object
               description: The total duration of HDP video.
@@ -1233,7 +1233,7 @@ components:
                     type: string
                     description: The meaning of `durationVideoHdp` in English，that is, "HDP Video Duration (including On-premise Recording).
                   "unit":
-                    type: number
+                    type: string
                     description: The unit of HDP video duration, that is, second.
         usages:
           type: array
@@ -1357,7 +1357,7 @@ components:
                         The role of the user in the channel. The response contains this field only if `in_channel` is `true`.
                           - 0: Unknown user role.
                           - 1: User, in a Communication channel.
-                          - 2: Broadcaster, in a Live-broadcast channel.
+                          - 2: Host, in a Live-broadcast channel.
                           - 3: Audience, in a Live-broadcast channel.
      userList_response:
       type: object
@@ -1397,12 +1397,12 @@ components:
                type: string
             broadcasters:
               type: array
-              description: The ID list of all the broadcasters in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
+              description: The ID list of all the hosts in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
               items:
                type: string
             audience:
               type: array
-              description: The ID list of the first 10000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
+              description: The ID list of the first 10,000 audience in the channel. The response returns this field only when `mode` is `2`, that is, the Live-broadcast profile.
               items:
                type: string
             audience_total:
