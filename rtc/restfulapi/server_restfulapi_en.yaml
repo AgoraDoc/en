@@ -647,7 +647,7 @@ paths:
             type: string
           description: The user ID.
         - in: path
-          name: cname
+          name: channelName
           required: true
           schema:
             type: string
@@ -696,7 +696,7 @@ paths:
             type: string
           description: The App ID of the project.
         - in: path
-          name: cname
+          name: channelName
           required: true
           schema:
             type: string
