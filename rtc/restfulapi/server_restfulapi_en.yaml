@@ -382,7 +382,7 @@ paths:
       description: Gets the usage data within one year of a specified project.<br>
                   <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>Ensure that you fill in a valid project ID, otherwise, you cannot get the usage information.</li><li>Agora recommends not including the current day in your query period, because the data is continuously changing on the current day.</li></ul></i></div>
       parameters:
-        - name: projects
+        - name: project_id
           required: true
           in: query
           description: The project ID.
@@ -1448,7 +1448,7 @@ components:
             $ref: '#/components/schemas/createProject'
           example:
             name: "projectx"
-            enable_sign_key: "true"
+            enable_sign_key: true
       description: The following parameters are required in the request body.
       required: true
     getProject:
