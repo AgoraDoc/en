@@ -2,11 +2,11 @@ openapi: 3.0.0
 info:
   description: >
     This article contains detailed help for the Cloud Recording RESTful APIs and provides the **Try it out** feature which enables you to send RESTful API requests and receive responses directly on the Web page.
-    
+
     ## Authentication
 
     The RESTful APIs only support HTTPS. Before sending HTTP requests, you must pass the basic Agora HTTP authentication (the `Authorization` parameter in the HTTP request head) with `api_key:api_secret`:
-    
+
       - `api_key`: Customer ID
       - `api_secret`: Customer Certificate
 
@@ -16,15 +16,15 @@ info:
     ## Data format
 
     All requests are sent to the host: `api.agora.io`. All the request URLs and request bodies are case sensitive. Both the request and response contents are in JSON format.
-    
+
     ## Call sequence
-    
+
     Use the RESTful APIs in the following steps:
-    
+
       1. Call the `acquire` method to request a resource ID for   cloud recording.
       2. Call the  `start` method within five minutes after getting   the resource ID to start the recording.
       3. Call the `stop` method to stop the recording.
-    
+
     During the recording, you can call the `query` method to check the recording status. See [Sample code](https://docs.agora.io/en/cloud-recording/cloud_recording_rest#demo-rest) for an example of using the RESTful APIs.
 
 
@@ -41,12 +41,12 @@ info:
     <div class="info-msg">Note：Any Agora service incurred by the request is included in your monthly service usage.</div>
 
 
-      
+
   version: 2020.06.12
   title: Cloud Recording RESTful API
-servers: 
+servers:
   - url: https://api.agora.io
-tags: 
+tags:
 - name: "Cloud Recording"
 security:
   - agora_auth: []
@@ -57,14 +57,14 @@ paths:
       - "Cloud Recording"
       summary: Gets the recording resource
       operationId: acquire
-      
+
       description: Before starting a cloud recording, you need to call this method to get a resource ID.
-    
-    
+
+
         If this method call succeeds, you get a resource ID (`resourceId`) from the HTTP response body. The resource ID is valid for five minutes, so you need to start recording with this resource ID within five minutes.
 
-        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</li></ul></div>   
-      
+        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>One resource ID can only be used for one recording session.</li><li>The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</li></ul></div>
+
       parameters:
         - in: path
           name: appid
@@ -82,17 +82,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/acquire_response'
               example:
-                resourceId: JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG 
+                resourceId: JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '201':
-          $ref: '#/components/responses/201' 
+          $ref: '#/components/responses/201'
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504' 
+          $ref: '#/components/responses/504'
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start:
     post:
       tags:
@@ -103,12 +103,12 @@ paths:
 
         1. [Subscribes](https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#sub) to the audio and video streams in the channel according to `recordingConfig`.
 
-        2. Records the media streams according to `recordingFileConfig`, or takes screenshots according to `snapshotConfig`.
+        2. Processes the subscribed media streams, such as generating recorded files in the specified file format, taking video screenshots, or uploading recorded files to an extension service.
 
         3. Uploads the recorded files or screenshots to your third-party cloud storage according to `storageConfig`.
-      
+
         <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div>
-        
+
       parameters:
         - in: path
           name: appid
@@ -128,10 +128,10 @@ paths:
           schema:
             type: string
           description: >-
-               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode. 
-               
-               - In individual mode, Agora Cloud Recording records the audio and video as separate files for each UID in a channel. 
-               
+               The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default mode.
+
+               - In individual mode, Agora Cloud Recording records the audio and video as separate files for each UID in a channel.
+
                - In composite mode, Agora Cloud Recording generates a single mixed audio and video file for all UIDs in a channel.
       requestBody:
         $ref: '#/components/requestBodies/start'
@@ -147,15 +147,15 @@ paths:
                 resourceId: >-
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '201':
-          $ref: '#/components/responses/201' 
+          $ref: '#/components/responses/201'
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504' 
+          $ref: '#/components/responses/504'
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update:
     post:
       tags:
@@ -165,9 +165,9 @@ paths:
       description: During a recording, you can call this method to update the subscription lists multiple times.
 
 
-        This method call overrides the existing subscription configurations. 
-        
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div> 
+        This method call overrides the existing subscription configurations.
+
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div>
 
       parameters:
         - in: path
@@ -187,7 +187,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The recording ID created by the `start` method. 
+          description: The recording ID created by the `start` method.
         - in: path
           name: mode
           required: true
@@ -195,7 +195,7 @@ paths:
             type: string
           description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). Composite mode is the default.
       requestBody:
-        $ref: '#/components/requestBodies/update'       
+        $ref: '#/components/requestBodies/update'
       responses:
         '200':
           description: The request is successful.
@@ -208,15 +208,15 @@ paths:
                 resourceId: >-
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404' 
+          $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504'         
+          $ref: '#/components/responses/504'
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout:
     post:
       tags:
@@ -227,8 +227,8 @@ paths:
 
 
         This method call overrides the existing layout configurations. For example, if you set the `backgroundColor` parameter as `"#FF0000"` (red) when starting a recording and call this method to update the layout without setting the `backgroundColor` parameter, the background color changes back to black (the default value).
-        
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div> 
+
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div>
 
       parameters:
         - in: path
@@ -248,7 +248,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The recording ID created by the `start` method. 
+          description: The recording ID created by the `start` method.
         - in: path
           name: mode
           required: true
@@ -256,7 +256,7 @@ paths:
             type: string
           description: The recording mode. Supports composite mode (`mix`) only.
       requestBody:
-        $ref: '#/components/requestBodies/updateLayout'       
+        $ref: '#/components/requestBodies/updateLayout'
       responses:
         '200':
           description: The request is successful.
@@ -269,15 +269,15 @@ paths:
                 resourceId: >-
                   JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404' 
+          $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504' 
+          $ref: '#/components/responses/504'
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query:
     get:
       tags:
@@ -289,7 +289,7 @@ paths:
 
         `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error. We recommend that you use the callback service for getting the details of all cloud recording events. See [Agora Cloud Recording RESTful API Callback Service](https://docs.agora.io/en/cloud-recording/cloud_recording_callback_rest) for more information.
 
-        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div> 
+        <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div>
       requestBody:
         $ref: '#/components/requestBodies/query'
       parameters:
@@ -310,13 +310,13 @@ paths:
           required: true
           schema:
             type: string
-          description: The recording ID created by the `start` method. 
+          description: The recording ID created by the `start` method.
         - in: path
           name: mode
           required: true
           schema:
             type: string
-          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
+          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`).
       responses:
         '200':
           description: The request is successful.
@@ -324,43 +324,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/query_response'
-              example:
-                resourceId: "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG"
-                sid: "38f8e3cfdc474cd56fc1ceba380d7e1a"
-                serverResponse:
-                  fileListMode: "json"
-                  fileList: [
-                    {
-                      filename: "xxx.m3u8",
-                      trackType: "audio_and_video",
-                      uid: "123",
-                      mixedAllUser: true,
-                      isPlayable: true,
+              examples:
+                Record video or capture snapshot:
+                  value:
+                    resourceId:     "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWM    C7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1c    WFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1    czSFh1GbzGvTZG"
+                    sid: "38f8e3cfdc474cd56fc1ceba380d7e1a"
+                    serverResponse:
+                      fileListMode: "json"
+                      fileList: [
+                        {
+                          filename: "xxx.m3u8",
+                          trackType: "audio_and_video",
+                          uid: "123",
+                          mixedAllUser: true,
+                          isPlayable: true,
+                          sliceStartTime: 1562724971626
+                        },
+                        {
+                          filename: "xxx.m3u8",
+                          trackType: "audio_and_video",
+                          uid: "456",
+                          mixedAllUser: true,
+                          isPlayable: true,
+                          sliceStartTime: 1562724971626
+                       }
+                       ]
+                      status: "5"
                       sliceStartTime: 1562724971626
-                    },  
-                    {
-                      filename: "xxx.m3u8",
-                      trackType: "audio_and_video",
-                      uid: "456",
-                      mixedAllUser: true,
-                      isPlayable: true,
-                      sliceStartTime: 1562724971626
-                   }
-                   ]
-                  status: "5"
-                  sliceStartTime: 1562724971626
+                Video on Demand (VoD):
+                  value:
+                    resourceId: "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG"
+                    sid: "38f8e3cfdc474cd56fc1ceba380d7e1a"
+                    serverResponse: {
+                      extensionServiceState: [
+                       {
+                          payload: {
+                            state: "inProgress",
+                            videoInfo: [
+                              {
+                                fileName: "38f8e3cfdc474cd56fc1ceba380d7e1a_httpClient463224.m3u8",
+                                videoId: "3af7751d658a4381bbed893381708c92"
+                              }
+                           ]
+                         },
+                          serviceName: "aliyun_vod_service"
+                       }
+                     ],
+                      subServiceStatus: {
+                        recordingService: "serviceInProgress"
+                     }
+                    }
         '206':
-          $ref: '#/components/responses/206' 
+          $ref: '#/components/responses/206'
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404' 
+          $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504' 
+          $ref: '#/components/responses/504'
   /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop:
     post:
       tags:
@@ -368,7 +393,7 @@ paths:
       summary: Stops cloud recording
       operationId: stop
       description: When a recording finishes, call this method to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the  `acquire` method for a new resource ID.
-          
+
 
        <div class="info-msg"><i class="fa fa-info-circle"></i> Note：<ul><li>Agora Cloud Recording automatically leaves the channel and stops recording when no user is in the channel for more than 30 seconds by default.</li><li>The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</li></ul></div>
 
@@ -390,13 +415,13 @@ paths:
           required: true
           schema:
             type: string
-          description: The recording ID created by the `start` method. 
+          description: The recording ID created by the `start` method.
         - in: path
           name: mode
           required: true
           schema:
             type: string
-          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`). 
+          description: The recording mode. Supports individual mode (`individual`) and composite mode (`mix`).
       requestBody:
         $ref: '#/components/requestBodies/stop'
       responses:
@@ -419,7 +444,7 @@ paths:
                       mixedAllUser: true,
                       isPlayable: true,
                       sliceStartTime: 1562724971626
-                    },  
+                    },
                     {
                       filename: "xxx.m3u8",
                       trackType: "audio_and_video",
@@ -431,17 +456,17 @@ paths:
                    ]
                   uploadingStatus: "uploaded"
         '206':
-          $ref: '#/components/responses/206' 
+          $ref: '#/components/responses/206'
         '400':
-          $ref: '#/components/responses/400' 
+          $ref: '#/components/responses/400'
         '401':
-          $ref: '#/components/responses/401' 
+          $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404' 
+          $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/500' 
+          $ref: '#/components/responses/500'
         '504':
-          $ref: '#/components/responses/504' 
+          $ref: '#/components/responses/504'
 components:
   schemas:
     acquire:
@@ -453,12 +478,12 @@ components:
       properties:
         cname:
           type: string
-          description: The name of the channel to be recorded. 
+          description: The name of the channel to be recorded.
         uid:
           type: string
           description: >-
-            A string that contains the UID of the recording   client, for example `"527841"`. The UID needs to meet   the following requirements: 
-              
+            A string that contains the UID of the recording   client, for example `"527841"`. The UID needs to meet   the following requirements:
+
               - It is a 32-bit unsigned integer within the range between 1 and (2<sup>32</sup>-1).
               - *It is unique and does not clash with any existing UID in the channel.*
               - It should not be a string. Ensure that all UIDs in the channel are integers.
@@ -480,16 +505,28 @@ components:
       properties:
         cname:
           type: string
-          description: The name of the channel to be recorded. 
+          description: The name of the channel to be recorded.
         uid:
           type: string
           description: A string containing the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
           required:
-            - storageConfig
             - recordingConfig
-          description: A client request。
+          description: >-
+            A client request. The following table lists requirements for parameters in ` clientRequest`.
+
+              - You must configure the stream subscription.
+              - You can choose to configure either recorded files or video screenshots at one time.
+              - Each extension service has specific compatibility requirements. See the table below for details:
+
+              | Parameter     | Configuration     | Compatibility     | Recording mode       |
+              | :-------------------------------------------- | :------------------------------------------- |               :----------------------------------------------------------- | :---------------------- |
+              | `recordingConfig`        | Stream subscription  |   Compatible with all other settings          | Individual or composite |
+              | `recordingFileConfig`| Recorded files      |     Cannot be set with `snapshotConfig` simultaneously           | Individual or composite |
+              | `snapshotConfig`    | Video screenshots      |      Cannot be set with `recordingFileConfig` or `aliyun_vod_service` simultaneously |    Individual     |
+              | `extensionServiceConfig`       | ApsaraVideo for VoD （`aliyun_vod_service`） | Cannot be set with `snapshotConfig` or `storageConfig` simultaneously | Composite       |
+              | `storageConfig`  | Third-party cloud storage    | Cannot be set with `aliyun_vod_service` simultaneously   | Individual or composite |
           properties:
             token:
               type: string
@@ -505,28 +542,28 @@ components:
                    type: integer
                    description: >-
                      The channel profile. Agora Cloud Recording must use the same channel profile as the Agora RTC Native/Web SDK. Otherwise, issues may occur.
-                     
-                     - 0: Communication profile. 
-                     
+
+                     - 0: Communication profile.
+
                      - 1: Live broadcast profile.
-                     
+
                    default: 0
                 streamTypes:
                   type: integer
                   description: >-
                     The type of the media stream to subscribe to.
-                  
+
                     - 0: Subscribes to audio streams only.
-                    
+
                     - 1: Subscribes to video streams only.
-                    
+
                     - 2: Subscribes to both audio and video streams.
-                    
+
                   default: 2
                 decryptionMode:
                   type: integer
                   description: |-
-                    The decryption mode that is the same as the encryption mode set by the Agora Native/Web SDK. When the channel is encrypted, Agora Cloud Recording uses `decryptionMode` to enable the built-in decryption function. 
+                    The decryption mode that is the same as the encryption mode set by the Agora Native/Web SDK. When the channel is encrypted, Agora Cloud Recording uses `decryptionMode` to enable the built-in decryption function.
 
                     - 0: None.
                     - 1: AES-128, XTS mode.
@@ -535,35 +572,35 @@ components:
                   default: 0
                 secret:
                   type: string
-                  description: The decryption password when decryption mode is enabled.              
+                  description: The decryption password when decryption mode is enabled.
                 audioProfile:
                   type: integer
                   description: >-
                     The profile of the output audio stream, including the sample rate, bitrate, encoding mode, and the number of channels. You cannot set this parameter in individual recording mode.
-                    
+
                     - 0: Sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 48 Kbps.
-                    
+
                     - 1: Sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 128 Kbps.
-                    
+
                     - 2: Sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 192 Kbps.
-                     
+
                   default: 0
                 videoStreamType:
                   type: integer
                   description: >-
                     The type of the video stream to subscribe to.
-                  
+
                     - 0: Subscribes to the high-quality stream.
-                    
+
                     - 1: Subscribes to the low-quality stream.
-                    
+
                   default: 0
                 maxIdleTime:
                   type: integer
                   default: 30
                   description: >-
                     Agora Cloud Recording automatically stops recording and leaves the channel when there is no user in the recording channel after a time period (30 seconds by default) set by this parameter. The value range is from 5 to 2<sup>32</sup>-1. Once the recording stops, the recording service generates new recorded files if you call `start` for the second time.
-                  
+
                     <div class="info-msg"><i class="fa fa-info-circle"></i> Note: <ul><li>In a communication channel, the recording service does not recognize a channel as an idle channel, so long as the channel has users, regardless of whether they send stream or not.</li><li>If a live broadcast channel has an audience without a host for a set time (<code>maxIdleTime</code>), the recording service automatically stops and leaves the channel.</li></div>
                 transcodingConfig:
                   type: object
@@ -587,11 +624,11 @@ components:
                     fps:
                       type: integer
                       default: 15
-                      description: The video frame rate (fps). 
+                      description: The video frame rate (fps).
                     bitrate:
                       type: integer
                       default: 500
-                      description: The video bitrate (Kbps). 
+                      description: The video bitrate (Kbps).
                     maxResolutionUid:
                       type: string
                       description: When `mixedVideoLayout` is set as `2` (vertical layout), you can specify the UID of the large video window by this parameter.
@@ -601,7 +638,7 @@ components:
                         The video mixing layout. 0, 1, and 2 are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_recording_layout). If you set this parameter as `3`, you need to set the layout by the `layoutConfig` parameter.
 
 
-                          - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users. 
+                          - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.
 
 
                           - 1: Best fit layout. This is a grid layout. The number of columns and rows and the grid size vary depending on the number of users in the channel. This layout supports up to 17 users.
@@ -612,7 +649,7 @@ components:
 
                           - 3: Customized layout. Set the layoutConfig parameter to customize the layout.
                       default: 0
-                    backgroundColor:                   
+                    backgroundColor:
                       type: string
                       default: "#000000"
                       description: The background color of the canvas (the display window or screen) in RGB hex value. The string starts with a "#". The default value is `"#000000"`, the black color.
@@ -635,12 +672,12 @@ components:
                             type: number
                             format: float
                             description: >-
-                              The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost). 
+                              The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost).
                           y_axis:
                             type: number
                             format: float
                             description: >-
-                               The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom).                           
+                               The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom).
                           width:
                             type: number
                             format: float
@@ -654,7 +691,7 @@ components:
                             default: 1.0
                             format: float
                             description: >-
-                              The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque). 
+                              The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque).
                           render_mode:
                             type: integer
                             description: >-
@@ -665,57 +702,57 @@ components:
 
                               - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
                             default: 0
-                subscribeVideoUids:  
+                subscribeVideoUids:
                       type: array
-                      description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
+                      description:  An array of the user IDs (UIDs) of the users whose video you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
 
-                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
+                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
-                unSubscribeVideoUids: 
+                unSubscribeVideoUids:
                       type: array
-                      description:  An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
+                      description:  An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
 
-                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>                        
+                        <div class="warning-msg"><i class="fa fa-warning"></i>  <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>0</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for video, but not for audio, then Agora Cloud Recording will not subscribe to any audio streams.</li></ul></div>
                       items:
                         type: string
                       maxLength: 32
                       example: ["345","789"]
                 subscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.   
-                      
-                        <div class="warning-msg"><i class="fa fa-warning"></i> <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
+                      description: An array of the user IDs (UIDs) of the users whose audio you want to subscribe. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
+
+                        <div class="warning-msg"><i class="fa fa-warning"></i> <ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>
                       items:
                         type: string
                       maxLength: 32
-                      example: ["123","456"]                     
+                      example: ["123","456"]
                 unSubscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details. 
-                      
-                        <div class="warning-msg"><i class="fa fa-warning"></i><ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>               
+                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
+
+                        <div class="warning-msg"><i class="fa fa-warning"></i><ul><li>Once you set the parameter, do not set <code>streamTypes</code> in <code>recordingConfig</code> as <code>1</code>.</li><li>Agora recommends that you do not set the array as empty.</li><li>If you set up a subscription list for audio, but not for video, then Agora Cloud Recording will not subscribe to any video streams.</li></ul></div>
                       items:
                         type: string
                       maxLength: 32
-                      example: ["345","789"]     
+                      example: ["345","789"]
                 subscribeUidGroup:
                       type: integer
                       description: >-
                         The estimated maximum number of subscribed users. **You must set this parameter in individual mode**. For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the number of subscribed users is 4.
-                      
-                        - 0: 1 to 2 UIDs 
+
+                        - 0: 1 to 2 UIDs
 
                         - 1: 3 to 7 UIDs
 
-                        - 2: 8 to 12 UIDs  
+                        - 2: 8 to 12 UIDs
 
-                        - 3: 13 to 17 UIDs                   
+                        - 3: 13 to 17 UIDs
             recordingFileConfig:
               type: object
-              description: Configurations for the recorded files. You cannot set both `recordingFileConfig` and `snapshotConfig` at the same time, otherwise an error will occur. 
+              description: Configurations for the recorded files. You cannot set both `recordingFileConfig` and `snapshotConfig` at the same time, otherwise an error will occur.
               default: ["hls"]
               properties:
                 avFileType:
@@ -736,7 +773,7 @@ components:
                 - `streamType` must be `1` or `2`.
 
                 - If you have set `subscribeAudioUid`, you must also set `subscribeVideoUids`.
-              
+
               required:
                 - fileType
               properties:
@@ -750,7 +787,7 @@ components:
                   type: array
                   description: File format of the screenshots. `fileType` can only take `["jpg"]`, setting screenshots to the JPG format.
                   items:
-                    type: string          
+                    type: string
             storageConfig:
               type: object
               description: Cloud storage configuration.
@@ -765,7 +802,7 @@ components:
                   type: integer
                   description: >-
                     The third-party cloud storage vendor.
-                  
+
                       - `0`: [Qiniu Cloud](https://www.qiniu.com/en/products/kodo)
                       - `1`: [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
                       - `2`: [Alibaba Cloud](https://www.alibabacloud.com/product/oss)
@@ -775,79 +812,79 @@ components:
                   type: integer
                   description: >-
                     The regional information specified by the third-party cloud storage:
-                    
+
 
                     When the third-party cloud storage is [Qiniu Cloud](https://www.qiniu.com/en/products/kodo) (`vendor` = 0):
-                    
+
                       - 0: East China
-                      - 1: North China 
+                      - 1: North China
                       - 2: South China
                       - 3: North America
-                      - 4: Southeast Asia   
-                    
+                      - 4: Southeast Asia
+
                       When the third-party cloud storage is [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls) (`vendor` = 1):
-                    
-                      - 0: US_EAST_1 
-                      - 1: US_EAST_2 
-                      - 2: US_WEST_1 
-                      - 3: US_WEST_2 
-                      - 4: EU_WEST_1 
-                      - 5: EU_WEST_2 
-                      - 6: EU_WEST_3 
-                      - 7: EU_CENTRAL_1 
-                      - 8: AP_SOUTHEAST_1 
-                      - 9: AP_SOUTHEAST_2 
-                      - 10: AP_NORTHEAST_1 
-                      - 11: AP_NORTHEAST_2 
-                      - 12: SA_EAST_1 
-                      - 13: CA_CENTRAL_1 
-                      - 14: AP_SOUTH_1 
-                      - 15: CN_NORTH_1 
-                      - 17: US_GOV_WEST_1 
-                    
+
+                      - 0: US_EAST_1
+                      - 1: US_EAST_2
+                      - 2: US_WEST_1
+                      - 3: US_WEST_2
+                      - 4: EU_WEST_1
+                      - 5: EU_WEST_2
+                      - 6: EU_WEST_3
+                      - 7: EU_CENTRAL_1
+                      - 8: AP_SOUTHEAST_1
+                      - 9: AP_SOUTHEAST_2
+                      - 10: AP_NORTHEAST_1
+                      - 11: AP_NORTHEAST_2
+                      - 12: SA_EAST_1
+                      - 13: CA_CENTRAL_1
+                      - 14: AP_SOUTH_1
+                      - 15: CN_NORTH_1
+                      - 17: US_GOV_WEST_1
+
                     When the third-party cloud storage is [Alibaba Cloud](https://www.alibabacloud.com/product/oss) (`vendor` = 2):
-                    
-                      - 0: CN_Hangzhou 
-                      - 1: CN_Shanghai 
-                      - 2: CN_Qingdao 
+
+                      - 0: CN_Hangzhou
+                      - 1: CN_Shanghai
+                      - 2: CN_Qingdao
                       - 3: CN_Beijing
-                      - 4: CN_Zhangjiakou 
-                      - 5: CN_Huhehaote 
-                      - 6: CN_Shenzhen 
-                      - 7: CN_Hongkong 
-                      - 8: US_West_1 
-                      - 9: US_East_1 
-                      - 10: AP_Southeast_1 
-                      - 11: AP_Southeast_2 
-                      - 12: AP_Southeast_3 
-                      - 13: AP_Southeast_5 
-                      - 14: AP_Northeast_1 
-                      - 15: AP_South_1 
-                      - 16: EU_Central_1 
-                      - 17: EU_West_1 
+                      - 4: CN_Zhangjiakou
+                      - 5: CN_Huhehaote
+                      - 6: CN_Shenzhen
+                      - 7: CN_Hongkong
+                      - 8: US_West_1
+                      - 9: US_East_1
+                      - 10: AP_Southeast_1
+                      - 11: AP_Southeast_2
+                      - 12: AP_Southeast_3
+                      - 13: AP_Southeast_5
+                      - 14: AP_Northeast_1
+                      - 15: AP_South_1
+                      - 16: EU_Central_1
+                      - 17: EU_West_1
                       - 18: EU_East_1
-                    
+
                     When the third-party cloud storage is [Tencent Cloud](https://intl.cloud.tencent.com/product/cos) (`vendor` = 3):
-                    
+
                       - 0：AP_Beijing_1
                       - 1：AP_Beijing
                       - 2：AP_Shanghai
                       - 3：AP_Guangzhou
-                      - 4：AP_Chengdu 
-                      - 5：AP_Chongqing 
-                      - 6：AP_Shenzhen_FSI 
-                      - 7：AP_Shanghai_FSI 
-                      - 8：AP_Beijing_FSI 
-                      - 9：AP_Hongkong 
-                      - 10：AP_Singapore 
-                      - 11：AP_Mumbai 
-                      - 12：AP_Seoul 
-                      - 13：AP_Bangkok 
-                      - 14：AP_Tokyo 
-                      - 15：NA_Siliconvalley 
-                      - 16：NA_Ashburn 
-                      - 17：NA_Toronto 
-                      - 18：EU_Frankfurt 
+                      - 4：AP_Chengdu
+                      - 5：AP_Chongqing
+                      - 6：AP_Shenzhen_FSI
+                      - 7：AP_Shanghai_FSI
+                      - 8：AP_Beijing_FSI
+                      - 9：AP_Hongkong
+                      - 10：AP_Singapore
+                      - 11：AP_Mumbai
+                      - 12：AP_Seoul
+                      - 13：AP_Bangkok
+                      - 14：AP_Tokyo
+                      - 15：NA_Siliconvalley
+                      - 16：NA_Ashburn
+                      - 17：NA_Toronto
+                      - 18：EU_Frankfurt
                       - 19：EU_Moscow
 
 
@@ -877,13 +914,98 @@ components:
                   type: array
                   description: >-
                     An array of strings. Sets the path of the recorded files in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, Agora Cloud Recording will add the prefix "`directory1/directory2/`" before the name of the recorded file, that is, `directory1/directory2/xxx.m3u8`. The prefix's length, including the slashes, should not exceed 128 characters. The string itself should not contain any slash. The supported characters are as follows:
-                      
-                      - The 26 lowercase English letters: a to z                     
+
+                      - The 26 lowercase English letters: a to z
                       - The 26 uppercase English letters: A to Z
                       - The 10 numbers: 0 to 9
-                    
+
                   items:
                     type: string
+            extensionServiceConfig:
+              type: object
+              description: Extension service configurations. Extension services are a collection of applications that process the media streams generated from the Agora RTC SDK. One example extension service is VoD service.
+              required:
+                - extensionServices
+              properties:
+                errorHandlePolicy:
+                  type: string
+                  description: Error handling policy. You can only set it to the default value, `"error_abort"`, which means that once an error occurs to an extension service, all other non-extension services, such as stream subscription, also stop.
+                extensionServices:
+                  type: array
+                  required:
+                    - serviceName
+                    - serviceParam
+                  description: An array of the configuration for each extension service.
+                  items:
+                    type: object
+                    properties:
+                      serviceName:
+                        type: string
+                        description: >-
+                          The name of the extension service. To use ApsaraVideo for VoD, set it as `aliyun_vod_service`.
+
+                          <div class="warning-msg"><i class="fa fa-warning">To use ApsaraVideo for VoD:<ul><li>You must choose composite recording mode.</li><li>Do not configure <code>snapshotConfig</code> or <code>storageConfig</code>.</li></ul></div>
+
+                      errorHandlePolicy:
+                        type: string
+                        description: Error handling policy. You can only set it to the default value, `"error_abort"`, which means that if an error occurs to the current extension service, other extension services also stop.
+                      serviceParam:
+                        type: object
+                        required:
+                          - accessKey
+                          - secretKey
+                          - regionId
+                          - apiData
+                        description: Configurations for an extension service. To use ApsaraVideo for VoD, configure as follows.
+                        properties:
+                          accessKey:
+                            type: string
+                            description: AccessKeyId in the AccessKey of Alibaba Cloud. For details, see [Alibaba Cloud's documentation](https://www.alibabacloud.com/help/doc-detail/53045.html).
+                          secretKey:
+                            type: string
+                            description: AccessKeySecret in the AccessKey of Alibaba Cloud. For details, see [Alibaba Cloud's documentation](https://www.alibabacloud.com/help/doc-detail/53045.html).
+                          regionId:
+                            type: string
+                            description: The service region. For details, see [Alibaba Cloud's documentation](https://www.alibabacloud.com/help/doc-detail/43248.html).
+                          apiData:
+                            type: object
+                            required:
+                              - videoData
+                            description: Configurations for ApsaraVideo for VoD.
+                            properties:
+                              videoData:
+                                type: object
+                                required:
+                                  - title
+                                description: Video configurations. See [Alibaba Cloud's documentation](https://www.alibabacloud.com/help/doc-detail/55407.html) for details about the following parameters.
+                                properties:
+                                  title:
+                                    type: string
+                                    description: The title of the video.
+                                  description:
+                                    type: string
+                                    description: The description of the video.
+                                  coverUrl:
+                                    type: string
+                                    description: The URL of the custom video thumbnail.
+                                  cateId:
+                                    type: string
+                                    description: The ID of the video category.
+                                  tags:
+                                    type: string
+                                    description: The tags of the video.
+                                  templateGroupId:
+                                    type: string
+                                    description: The ID of the transcoding template group.
+                                  userData:
+                                    type: string
+                                    description: The custom configurations.
+                                  storageLocation:
+                                    type: string
+                                    description: The bucket.
+                                  workflowId:
+                                    type: string
+                                    description: The ID of the workflow.
     update:
       type: object
       required:
@@ -893,7 +1015,7 @@ components:
       properties:
         cname:
           type: string
-          description: The name of the channel to be recorded. 
+          description: The name of the channel to be recorded.
         uid:
           type: string
           description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
@@ -915,32 +1037,32 @@ components:
                       items:
                         type: string
                       maxLength: 32
-                      example: ["123","456"]   
+                      example: ["123","456"]
                 unSubscribeAudioUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.     
+                      description: An array of the user IDs (UIDs) of the users whose audio you do not want to subscribe. Once you set this parameter, the recording service subscribes to the audio of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
                       items:
                         type: string
                       maxLength: 32
-                      example: ["345","789"]  
+                      example: ["345","789"]
               videoUidList:
                type: object
                description: The video subscription list. If you set this parameter, do not set `streamTypes` in `recordingConfig` as `0` (audio only).
                properties:
-                subscribeVideoUids: 
+                subscribeVideoUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose video you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.                   
+                      description: An array of the user IDs (UIDs) of the users whose video you want to subscribe. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
                       items:
                         type: string
                       maxLength: 32
                       example: ["123","456"]
                 unSubscribeVideoUids:
                       type: array
-                      description: An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.                
+                      description: An array of the user IDs (UIDs) of the users whose video you do not want to subscribe. Once you set this parameter, the recording service subscribes to the video of all UIDs except the specified ones. The array should not be empty. See [Set up subscription lists](https://docs.agora.io/en/cloud-recording/cloud_recording_subscription) for details.
                       items:
                         type: string
                       maxLength: 32
-                      example: ["345","789"]                
+                      example: ["345","789"]
     updateLayout:
       type: object
       required:
@@ -950,7 +1072,7 @@ components:
       properties:
         cname:
           type: string
-          description: The name of the channel to be recorded. 
+          description: The name of the channel to be recorded.
         uid:
           type: string
           description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
@@ -967,13 +1089,13 @@ components:
                 The video mixing layout. `0`, `1`, and `2` are the [predefined layouts](https://docs.agora.io/en/cloud-recording/cloud_recording_layout). If you set this parameter as `3`, you need to set the layout by the layoutConfig parameter.
 
                   - 0: Floating layout. The first user in the channel occupies the full canvas. The other users occupy the small regions on top of the canvas, starting from the bottom left corner. The small regions are arranged in the order of the users joining the channel. This layout supports one full-size region and up to four rows of small regions on top with four regions per row, comprising 17 users.
-                  
+
                   - 1: Best fit layout. This is a grid layout. The number of columns and rows and the grid size vary depending on the number of users in the channel. This layout supports up to 17 users.
-                  
+
                   - 2: Vertical layout. One large region is displayed on the left edge of the canvas, and several smaller regions are displayed along the right edge of the canvas. The space on the right supports up to 2 columns of small regions with 8 regions per column. This layout supports up to 17 users.
-                  
+
                   - 3: Customized layout. Set the `layoutConfig` parameter to customize the layout.
-                
+
               default: 0
             backgroundColor:
               type: string
@@ -1019,10 +1141,10 @@ components:
                     default: 0
                     description: >-
                       The video display mode.
-                    
+
                         - 0: Cropped mode. Uniformly scales the video until it fills the visible boundaries (cropped). One dimension of the video may have clipped contents.
 
-                        
+
                         - 1: Fit mode. Uniformly scales the video until one of its dimension fits the boundary (zoomed to fit). Areas that are not filled due to the disparity in the aspect ratio will be filled with black.
     stop:
       type: object
@@ -1033,13 +1155,13 @@ components:
       properties:
         cname:
           type: string
-          description: The name of the channel to be recorded. 
+          description: The name of the channel to be recorded.
         uid:
           type: string
-          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method. 
+          description: A string that contains the UID of the recording client. Must be the same `uid` used in the `acquire` method.
         clientRequest:
           type: object
-          description: A specific client request that is empty for this method. 
+          description: A specific client request that is empty for this method.
     acquire_response:
       type: object
       properties:
@@ -1084,16 +1206,18 @@ components:
           description: The recording ID. The unique identification of the current recording.
         serverResponse:
           type: object
-          description: The details about the recording status.
+          description: >-
+            The details about the recording status.
+              <div class="warning-msg"><i class="fa fa-warning">The child elements in <code>serverResponse</code> vary according to your configurations in <code>start</code>. For example, if you configure <code>snapshotConfig</code> or <code>extensionServiceConfig</code> in <code>start</code>, then <code>query</code> does not return <code>fileListMode</code>.</div>
           properties:
             fileListMode:
               type: string
               description: >-
                 The data type of `fileList`. The `query` method does not return this field if you have set `snapshotConfig`.
-                  
+
                   - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
 
-                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.            
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.
             fileList:
               type: array
               description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file. The `query` method does not return this field if you have set `snapshotConfig`.
@@ -1106,12 +1230,12 @@ components:
                     type: string
                     description: >-
                       The type of the recorded file.
-                    
+
                         - `"audio"`: Audio file.
 
                         - `"video"`: Video file (no audio).
 
-                        - `"audio_and_video"`: Video file (with audio).                    
+                        - `"audio_and_video"`: Video file (with audio).
                   uid:
                     type: string
                     description: The user whose audio or video is recorded in the file.
@@ -1119,18 +1243,18 @@ components:
                     type: boolean
                     description: >-
                       Whether the audio and video of all users are combined into a single file.
-                    
+
                         - `true`: All users are recorded in a single file.
 
-                        - `false`: Each user is recorded separately.                      
+                        - `false`: Each user is recorded separately.
                   isPlayable:
                     type: boolean
                     description: >-
                       Whether the file can be played online.
-                  
+
                         - `true`: The file can be played online.
 
-                        - `false`: The file cannot be played online.                    
+                        - `false`: The file cannot be played online.
                   sliceStartTime:
                     type: integer
                     description: The Unix time (ms) when the recording starts.
@@ -1138,7 +1262,7 @@ components:
               type: integer
               description: >-
                 The recording status.
-            
+
                   - 0: The recording has not started.
                   - 1: The initialization is complete.
                   - 2: The recorder is starting.
@@ -1149,10 +1273,60 @@ components:
                   - 7: The Agora Cloud Recording service stops.
                   - 8: The recording is ready to exit.
                   - 20: The recording exits abnormally.
-                           
+
             sliceStartTime:
              type: integer
              description: The time when the recording starts. Unix timestamp (ms).
+            extensionServiceState:
+              type: array
+              description: An array of the status of each extension service.
+              items:
+                properties:
+                  serviceName:
+                    type: string
+                    description: The name of the extension service.  `aliyun_vod_service` means ApsaraVideo for VoD.
+                  payload:
+                    type: object
+                    description: The status of the extension service.
+                    properties:
+                      state:
+                        type: string
+                        description: >-
+                          The status of uploading media content to the extension service.
+
+                            - `"inProgress"`: The recorded files are being uploaded to the extension service.
+                            - `"idle"`: No user is sending streams in the channel. Nothing is being uploaded.
+                      videoInfo:
+                        type: array
+                        description: An array of the M3U8 files and their corresponding video IDs. ApsaraVideo for VoD generates a video ID for each M3U8 file uploaded.
+                        items:
+                          properties:
+                            fileName:
+                              type: string
+                              description: The name of the M3U8 file.
+                            videoId:
+                              type: string
+                              description: The corresponding video ID of the M3U8 file.
+            subServiceStatus:
+              type: object
+              description: The status of the cloud recording submodules.
+              properties:
+                recordingService:
+                  type: string
+                  description: >-
+                    The status of the video subscription submodule. See the following table for details:
+
+
+                      | State    | Description           |
+                      | :------------------------ | :----------------------------------------------------------- |
+                      | "serviceIdle"   | The submodule is idle.         |
+                      | "serviceStarted"  | The submodule has started.      |
+                      | "serviceReady"   | The submodule is ready.      |
+                      | "serviceInProgress"   | The submodule is running.        |
+                      | "serviceCompleted"  | All subscribed contents have been uploaded to the extension service. |
+                      | "servicePartialCompleted" | Part of the subscribed contents have been uploaded to the extension service. |
+                      | "serviceValidationFailed" | The validation of the extension service failed. For example, `apiData` is incorrect. |
+                      | "serviceAbnormal"  | The submodule is in an abnormal status.   |
     stop_response:
       type: object
       properties:
@@ -1170,10 +1344,10 @@ components:
               type: string
               description: >-
                 The data type of `fileList`. The `query` method does not return this field if you have set `snapshotConfig`.
-                  
+
                   - `"string"`: `fileList` is a string. In composite mode, `fileListMode` is always `"string"`.
 
-                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.             
+                  - `"json"`: `fileList` is a JSONArray. In individual mode, `fileListMode` is always `"json"`.
             fileList:
               type: array
               description: When `fileListMode` is `"string"`, `fileList` is a string that represents the filename of the M3U8 file. When `fileListMode` is `"json"`, `fileList` is a JSONArray that contains the details of each recorded file. The `query` method does not return this field if you have set `snapshotConfig`.
@@ -1186,12 +1360,12 @@ components:
                     type: string
                     description: >-
                       The type of the recorded file.
-                    
+
                         - `"audio"`: Audio file.
 
                         - `"video"`: Video file (no audio).
 
-                        - `"audio_and_video"`: Video file (with audio).                      
+                        - `"audio_and_video"`: Video file (with audio).
                   uid:
                     type: string
                     description: The user whose audio or video is recorded in the file.
@@ -1199,15 +1373,15 @@ components:
                     type: boolean
                     description: >-
                       Whether the audio and video of all users are combined into a single file.
-                    
+
                         - `true`: All users are recorded in a single file.
 
-                        - `false`: Each user is recorded separately.                     
+                        - `false`: Each user is recorded separately.
                   isPlayable:
                     type: boolean
                     description: >-
                       Whether the file can be played online.
-                  
+
                         - `true`: The file can be played online.
 
                         - `false`: The file cannot be played online.
@@ -1218,10 +1392,10 @@ components:
               type: string
               description: >-
                 The upload status.
-              
+
                   - `"uploaded"`: All the recorded files are uploaded to the third-party cloud storage.
 
-                  - `"backuped"`:  Some of the recorded files fail to upload to the third-party cloud storage and upload to Agora Cloud Backup instead. Agora Cloud Backup automatically uploads these files to your cloud storage. 
+                  - `"backuped"`:  Some of the recorded files fail to upload to the third-party cloud storage and upload to Agora Cloud Backup instead. Agora Cloud Backup automatically uploads these files to your cloud storage.
 
                   - `"unknown"`: Unknown status.
   requestBodies:
@@ -1289,9 +1463,9 @@ components:
                     recordingConfig: {
                         maxIdleTime: 30,
                         streamTypes: 2,
-                        channelType: 0, 
+                        channelType: 0,
                         subscribeUidGroup: 0
-                    }, 
+                    },
                     snapshotConfig: {
                         captureInterval: 5,
                         fileType: ["jpg"]
@@ -1304,7 +1478,37 @@ components:
                         vendor: 2,
                         fileNamePrefix: ["directory1","directory2"]
                     }
-                }         
+                }
+            Video on Demand (VoD):
+              value:
+                uid: "527841"
+                cname: "httpClient463224"
+                clientRequest: {
+                    token: "<token if any>",
+                    recordingConfig: {
+                        maxIdleTime: 30,
+                        streamTypes: 2,
+                        channelType: 0,
+                        subscribeUidGroup: 0
+                   },
+                    extensionServiceConfig: {
+                      extensionServices: [{
+                        serviceName: "aliyun_vod_service",
+                        serviceParam: {
+                          secretKey: "xxxxxx",
+                          accessKey: "xxxxxx",
+                          regionId: "cn-shanghai",
+                          apiData: {
+                            videoData: {
+                              title: "My Video",
+                              description: "This is my first video",
+                              coverUrl: "http://xxxxx"
+                           }
+                         }
+                       }
+                     }]
+                   }
+               }
       description: The following parameters are required in the request body.
       required: true
     update:
@@ -1316,7 +1520,7 @@ components:
             cname: "httpClient463224"
             uid: "527841"
             clientRequest: {
-             "streamSubscribe": 
+             "streamSubscribe":
               {
                 "audioUidList": {
                   "subscribeAudioUids": ["#allstream#"]
@@ -1325,7 +1529,7 @@ components:
                   "unSubscribeVideoUids": ["444", "555", "666"]
                                 }
               }
-                           }                                                         
+                           }
       description: The following parameters are required in the request body.
       required: true
     updateLayout:
@@ -1387,7 +1591,7 @@ components:
     401:
       description: Unauthorized (incorrect App ID/Customer Certificate).
     404:
-      description: The requested resource could not be found. 
+      description: The requested resource could not be found.
     500:
       description: Internal server error.
     504:
