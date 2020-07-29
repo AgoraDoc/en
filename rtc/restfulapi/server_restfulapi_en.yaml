@@ -30,7 +30,7 @@ info:
 
     ## <a name="tryapi"></a>Try out the API
 
-    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Secret in **Password**, and then click **Authorize**.
 
 
     <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1593314309962" alt="Authorize" width="50%">
