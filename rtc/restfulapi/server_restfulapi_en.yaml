@@ -5,10 +5,10 @@ info:
 
     ## Authentication
 
-    The RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the Customer ID and Customer Certificate provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
+    The RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
 
 
-    You can find your Customer ID and Customer Certificate on the [RESTful API](https://console.agora.io/restfulApi) page in Agora Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate the credential. You can also generate it by using the **Try it out** feature on this page.
+    You can find your Customer ID and Customer Secret on the [RESTful API](https://console.agora.io/restfulApi) page in Agora Console. See [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate the credential. You can also generate it by using the **Try it out** feature on this page.
 
 
     ## Data format
@@ -30,7 +30,7 @@ info:
 
     ## <a name="tryapi"></a>Try out the API
 
-    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Certificate in **Password**, and then click **Authorize**.
+    You can use **Try it out** to send RESTful API requests and receive responses directly on the web page. You must get authorized before sending any request. Click **Authorize** below, enter your Customer ID in **Username** and Customer Secret in **Password**, and then click **Authorize**.
 
 
     <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1593314309962" alt="Authorize" width="50%">
@@ -38,7 +38,7 @@ info:
     <div class="info-msg"><i class="fa fa-info-circle"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
 
 
-  version: 2020.06.30
+  version: 2020.07.29
   title: Server RESTful API
 servers:
   - url: https://api.agora.io

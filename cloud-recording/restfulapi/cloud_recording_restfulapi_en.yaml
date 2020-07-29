@@ -40,7 +40,7 @@ info:
 
 
 
-  version: 2020.06.12
+  version: 2020.07.21
   title: Cloud Recording RESTful API
 servers:
   - url: https://api.agora.io
