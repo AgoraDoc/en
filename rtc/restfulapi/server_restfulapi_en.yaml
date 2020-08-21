@@ -643,7 +643,7 @@ paths:
         - in: path
           name: uid
           required: true
-          schema:s
+          schema:
             type: number
           description: The user ID.
                         <div class="info-msg"><i class="fa fa-info-circle"></i> The API does not support string user accounts. Ensure that you use the integer user ID.</i></div>
