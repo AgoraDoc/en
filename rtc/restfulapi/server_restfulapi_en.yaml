@@ -537,7 +537,7 @@ paths:
                   {
                     id: 1953,
                     appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    uid: 1,
+                    uid: 589517928,
                     opid: 1406,
                     cname: "11",
                     ip: "192.168.0.1",
@@ -643,9 +643,10 @@ paths:
         - in: path
           name: uid
           required: true
-          schema:
-            type: string
+          schema:s
+            type: number
           description: The user ID.
+                        <div class="info-msg"><i class="fa fa-info-circle"></i> The API does not support string user accounts. Ensure that you use the integer user ID.</i></div>
         - in: path
           name: channelName
           required: true
@@ -906,7 +907,7 @@ components:
           type: string
           description: The channel name. Do not set it as an empty string "".
         uid:
-          type: string
+          type: number
           description: The user ID. You can use the SDK APIs to get it. Do not set it as `0`.
         ip:
           type: string
@@ -1284,7 +1285,7 @@ components:
                 type: string
                 description:  The App ID of the project.
               uid:
-                type: string
+                type: number
                 description: The user ID.
               opid:
                 type: number
@@ -1517,7 +1518,7 @@ components:
           example:
             appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
             cname: "channel1"
-            uid: ""
+            uid: 589517928
             ip: ""
             time: 60
             privileges: ["join_channel"]
