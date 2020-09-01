@@ -470,11 +470,11 @@ paths:
       operationId: createKickingRule
       description: >-
                   Creates a banning rule.<br>
-                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following examples:
-                    - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot join any channel in the app.
-                    - If you set `cname`, but not `uid` or `ip`, then no one can join the channel specified by the `cname` field.
+                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following supported settings:
+                    - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot join any channel in the app.
+                    - If you set `cname`, but not `uid` and `ip`, then no one can join the channel specified by the `cname` field.
+                    - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot join any channel in the app.
                     - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
-                    - If you set `uid`, but not `cname` or `ip`, then the user with the ID cannot join any channel in the app.
 
                   The banned user receives the corresponding callback as follows:
                     - Android: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
