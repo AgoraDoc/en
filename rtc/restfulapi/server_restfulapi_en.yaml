@@ -470,11 +470,11 @@ paths:
       operationId: createKickingRule
       description: >-
                   Creates a banning rule.<br>
-                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following examples:
-                    - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot join any channel in the app.
-                    - If you set `cname`, but not `uid` or `ip`, then no one can join the channel specified by the `cname` field.
+                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following supported settings:
+                    - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot join any channel in the app.
+                    - If you set `cname`, but not `uid` and `ip`, then no one can join the channel specified by the `cname` field.
+                    - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot join any channel in the app.
                     - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
-                    - If you set `uid`, but not `cname` or `ip`, then the user with the ID cannot join any channel in the app.
 
                   The banned user receives the corresponding callback as follows:
                     - Android: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
@@ -537,7 +537,7 @@ paths:
                   {
                     id: 1953,
                     appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    uid: 1,
+                    uid: 589517928,
                     opid: 1406,
                     cname: "11",
                     ip: "192.168.0.1",
@@ -644,8 +644,9 @@ paths:
           name: uid
           required: true
           schema:
-            type: string
+            type: number
           description: The user ID.
+                        <div class="info-msg"><i class="fa fa-info-circle"></i> The API does not support string user accounts. Ensure that you use the integer user ID.</i></div>
         - in: path
           name: channelName
           required: true
@@ -906,7 +907,7 @@ components:
           type: string
           description: The channel name. Do not set it as an empty string "".
         uid:
-          type: string
+          type: number
           description: The user ID. You can use the SDK APIs to get it. Do not set it as `0`.
         ip:
           type: string
@@ -1284,7 +1285,7 @@ components:
                 type: string
                 description:  The App ID of the project.
               uid:
-                type: string
+                type: number
                 description: The user ID.
               opid:
                 type: number
@@ -1517,7 +1518,7 @@ components:
           example:
             appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
             cname: "channel1"
-            uid: ""
+            uid: 589517928
             ip: ""
             time: 60
             privileges: ["join_channel"]
