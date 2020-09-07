@@ -282,10 +282,7 @@ paths:
       - "Cloud Recording"
       summary: Queries the recording status
       operationId: query
-      description: After you start a recording, you can call query to check its status.
-
-
-        `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error. We recommend that you use the callback service for getting the details of all cloud recording events. See [Agora Cloud Recording RESTful API Callback Service](https://docs.agora.io/en/cloud-recording/cloud_recording_callback_rest) for more information.
+      description: After you start a recording, you can call query to check its status. `query` works only with an ongoing recording session. If you call `query` after a recording ends or after it starts with error, you get a 404 (Not Found) error.
 
         <div class="info-msg"><i class="fa fa-info-circle"> The request frequency limit is 10 requests per second for each App ID. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</i></div>
       requestBody:
