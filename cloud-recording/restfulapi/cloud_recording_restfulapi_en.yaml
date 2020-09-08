@@ -667,26 +667,26 @@ components:
                             type: number
                             format: float
                             description: >-
-                              The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost).
+                              The relative horizontal position of the top-left corner of the region. The value is between 0.0 (leftmost) and 1.0 (rightmost), and is accurate to six decimal places.
                           y_axis:
                             type: number
                             format: float
                             description: >-
-                               The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom).
+                               The relative vertical position of the top-left corner of the region. The value is between 0.0 (top) and 1.0 (bottom), and is accurate to six decimal places.
                           width:
                             type: number
                             format: float
-                            description: The relative width of the region. The value is between 0.0 and 1.0.
+                            description: The relative width of the region. The value is between 0.0 and 1.0, and is accurate to six decimal places.
                           height:
                             type: number
                             format: float
-                            description: The relative height of the region. The value is between 0.0 and 1.0.
+                            description: The relative height of the region. The value is between 0.0 and 1.0, and is accurate to six decimal places.
                           alpha:
                             type: number
                             default: 1.0
                             format: float
                             description: >-
-                              The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque).
+                              The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque), and is accurate to six decimal places.
                           render_mode:
                             type: integer
                             description: >-
