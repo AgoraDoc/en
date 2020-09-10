@@ -765,7 +765,7 @@ components:
 
                 - You cannot set both `recordingFileConfig` and `snapshotConfig` at the same time.
 
-                - `streamType` must be `1` or `2`.
+                - `streamTypes` must be `1` or `2`.
 
                 - If you have set `subscribeAudioUid`, you must also set `subscribeVideoUids`.
 
