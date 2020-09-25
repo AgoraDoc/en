@@ -1584,7 +1584,7 @@ components:
     400:
       description: The server cannot process the request due to malformed request syntax, or the cloud recording service is not enabled.
     401:
-      description: Unauthorized (incorrect App ID/Customer Certificate).
+      description: Unauthorized (incorrect Customer ID/Customer Secret).
     404:
       description: The requested resource could not be found.
     500:
