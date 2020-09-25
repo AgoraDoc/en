@@ -25,7 +25,7 @@ info:
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
-    <div class="info-msg"><i class="fa fa-info-circle"></i> The call frequency of the RESTful APIs is no more than 10 queries per second.  Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</div>
+    <div class="info-msg"><i class="fa fa-info-circle"></i> The call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</div>
 
 
     ## <a name="tryapi"></a>Try out the API
