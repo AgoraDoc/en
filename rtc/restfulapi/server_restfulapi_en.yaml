@@ -38,6 +38,12 @@ info:
     <div class="info-msg"><i class="fa fa-info-circle"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
 
 
+    ## Parameter descriptions
+
+    To view the description of each parameter, click **Schema**.
+
+    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1601374744792" alt="Schema" width="50%">
+
   version: 2020.07.29
   title: Server RESTful API
 servers:
