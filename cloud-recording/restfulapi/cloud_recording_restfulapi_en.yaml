@@ -835,6 +835,7 @@ components:
                       - 13: CA_CENTRAL_1
                       - 14: AP_SOUTH_1
                       - 15: CN_NORTH_1
+                      - 16: CN_NORTHWEST_1
                       - 17: US_GOV_WEST_1
 
                     When the third-party cloud storage is [Alibaba Cloud](https://www.alibabacloud.com/product/oss) (`vendor` = 2):
