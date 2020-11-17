@@ -509,7 +509,7 @@ paths:
     put:
       tags:
         - Live Streaming
-      summary: Update the user state
+      summary: Updates the user state
       operationId: updateUserState
       description: Call this method to update the state of the user.
       parameters:
@@ -590,8 +590,6 @@ paths:
         - $ref: "#/components/parameters/role"
         - $ref: "#/components/parameters/nextId"
         - $ref: "#/components/parameters/count"
-        - $ref: "#/components/parameters/updateTimeOffset"
-        - $ref: "#/components/parameters/includeOffline"
       responses:
         '200':
           description: The request has succeeded.
@@ -745,7 +743,7 @@ paths:
     get:
       tags:
           - "Live Streaming"
-      summary: Get the sequence list
+      summary: Gets the sequence list
       operationId: getSequence
       description: >-
         Call this method to get the list of sequences. 
@@ -1162,23 +1160,6 @@ components:
       schema:
         type: string
       description: The count of data objects. The default value is 1000.
-    updateTimeOffset:
-      in: query
-      name: updateTimeOffset
-      required: false
-      schema:
-        type: string
-      description: 更新时间偏移，UTC 时间戳。
-    includeOffline:
-      in: query
-      name: includeOffline
-      required: false
-      schema:
-        type: string
-      description: >- 
-        是否包含已离开频道的用户: 
-        - 0: （默认）不包含。
-        - 1: 包含。
     key:
       in: path
       name: key
@@ -1203,7 +1184,11 @@ components:
       required: true
       schema:
         type: string
-      description: 流 uuid。这是流的唯一标识符，也是加入 RTC 频道收发流id。取值范围 1 到 (2<sup>32</sup>-1)。如果设为 0 会自动生成一个 uuid。
+      description: >-
+
+        The unique identifier of the user's main stream. A 32-bit unsigned integer with a value ranging from 1 to (2<sup>32</sup>-1). If you do not set this parameter, the service automatically assigns a `streamUuid`. `streamUuid` can be used for joining an RTC channel.
+        
+        **Note:** Although this parameter is in the string format, temporarily, you can only pass an integer, such as `"123".
   securitySchemes:
     agora_auth:
       type: http
