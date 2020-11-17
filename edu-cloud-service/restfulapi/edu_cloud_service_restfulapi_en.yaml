@@ -19,8 +19,6 @@ info:
 
     You can click **Try it out** to send HTTP requests and receive responses directly on this page. You must get authorized before sending any request. Click **Authorize** below, enter the Agora Customer ID and Customer Secret that you get on Agora Console, and then click **Authorize**.
 
-    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1605533054922" alt="Authorize" width="50%">
-
   version: 2020.10.15
   title: Agora Edu Cloud Service
 servers:
@@ -1090,11 +1088,12 @@ components:
         type: string
       description: >-
         The unique identifier of a room in the string format. `roomUuid` is also used for the name of an RTC or RTM channel when you use the Agora RTC SDK or Agora RTM SDK. The string must be less than 64 bytes. Supported character scopes are:
-        - All lowercase English letters: a to z
-        - All uppercase English letters: A to Z
-        - All numeric characters: 0 to 9
-        - The space character
-        - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+
+          - All lowercase English letters: a to z
+          - All uppercase English letters: A to Z
+          - All numeric characters: 0 to 9
+          - The space character
+          - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
     contentType:
       in: header
       name: Content-Type
@@ -1119,11 +1118,12 @@ components:
         type: string
       description: >-
         The unique identifier of a user in the string format. `userUuid` is used for logging into the Agora RTM system. The string must be less than 64 bytes. Supported character scopes are:
-        - All lowercase English letters: a to z
-        - All uppercase English letters: A to Z
-        - All numeric characters: 0 to 9
-        - The space character
-        - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+
+          - All lowercase English letters: a to z
+          - All uppercase English letters: A to Z
+          - All numeric characters: 0 to 9
+          - The space character
+          - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
     userName:
       in: path
       name: userName
