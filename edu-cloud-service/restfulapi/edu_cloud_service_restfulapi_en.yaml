@@ -1,0 +1,1210 @@
+openapi: 3.0.0
+info:
+
+  description: >
+    This page contains detailed help for the RESTful APIs of Agora Edu Cloud Service.
+
+    ## Authentication
+
+    The RESTful APIs of Agora Edu Cloud Service only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
+
+    Get the Agora Customer ID and Customer Secret, as follows:
+
+      1. Log into [Agora Console](https://console.agora.io/), click the account name on the top right of Agora Console, and click **RESTful API** from the drop-down list to enter the RESTful page.
+      2. Click **Download** to get the Customer ID and Customer Secret.
+
+    After getting the Agora Customer ID and Customer Secret, see [RESTful API authentication](https://docs.agora.io/en/faq/restful_authentication) for how to generate the credential.
+
+    ## Try out the RESTful API
+
+    You can click **Try it out** to send HTTP requests and receive responses directly on this page. You must get authorized before sending any request. Click **Authorize** below, enter the Agora Customer ID and Customer Secret that you get on Agora Console, and then click **Authorize**.
+
+    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1605533054922" alt="Authorize" width="50%">
+
+  version: 2020.10.15
+  title: Agora Edu Cloud Service
+servers:
+  - url: https://api.agora.io
+
+security:
+  - agora_auth: []
+
+tags:
+    - name: Room Presetting
+      description: This section includes operations before a live streaming.
+    - name: Live Streaming
+      description: This section includes operations during a live streaming.
+
+paths:
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/config:
+    post:
+      tags:
+      - "Room Presetting"
+      summary: Creates a room
+      operationId: createRoom
+      description: Call this method to create and configure a room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/roomConfig"
+            example:
+              roomName: "test-class"
+              roleConfig: {
+                "host": {
+                  "limit": 0,
+                  "verifyType": 0,
+                  "subscribe": 0
+                },
+                "audience": {
+                  "limit": 0,
+                  "verifyType": 0,
+                  "subscribe": 0
+                }
+              }
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+    put:
+      tags:
+        - "Room Presetting"
+      summary: Updates the room configuration
+      operationId: put
+      description: Call this method to update the configuration of a room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/roomConfig"
+            example:
+              roomName: "test-class"
+              roleConfig: {
+                "host": {
+                  "limit": 0,
+                  "verifyType": 0,
+                  "subscribe": 0
+                },
+                "audience": {
+                  "limit": 0,
+                  "verifyType": 0,
+                  "subscribe": 0
+                }
+              }
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+    get:
+      tags:
+      - "Room Presetting"
+      summary: Gets the room configuration
+      operationId: queryRoomConfig
+      description: Call this method to get the configuration of a room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    properties:
+                        roomName:
+                          type: string
+                          description: The room name for display.
+                        roomUuid:
+                          type: string
+                          description: The unique identifier of the room in the string format. `roomUuid` is also used for the name of an RTC or RTM channel when you use the Agora RTC SDK or Agora RTM SDK.
+                        roleConfig:
+                          type: object
+                          description: The configuration of roles that have access to the room.
+                          properties:
+                            host:
+                              type: object
+                              description: The role configuration.
+                              properties:
+                                limit:
+                                  type: integer
+                                  description: The upper limit on the number of this role. The default value is `-1`, which means no limit. This integer must be small than `4294967296`.
+                                  default: -1
+                                verifyType:
+                                  type: integer
+                                  description: >-
+                                    The verification type:
+                                      - 0: Allows anonymity, which means any user can enter a room on the client.
+                                      - 1: Does not allow anonymity, which means only specified users can enter a room on client. You can call the [Add a user](./#/Room%20Presetting/addUser) to specify the users who have access to the room for enhanced security.
+                                  default: 0
+                                subscribe:
+                                  type: integer
+                                  description: >-
+                                    Whether clients subscribe to the data of this role:
+                                      - 0: Clients do not subscribe to the data of this role. Setting `subscribe` as `0` helps improve the overall performance of clients.
+                                      - 1: Clients subscribe to the data of this role. Setting `subscribe` as `1` if you need to deal with user data on the client.
+                                  default: 1
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users:
+    put:
+      tags:
+      - "Room Presetting"
+      summary: Adds a user to a room
+      operationId: addUser
+      description: Call this method to add a user to a room. After a successful method call, the user has access to the room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: array
+              required:
+                - userUuid
+                - userName
+                - role
+              items:
+                type: object
+                properties:
+                  userUuid:
+                    type: string
+                    description: >-
+                      The unique identifier of a user in the string format. `userUuid` is used for logging into the Agora RTM system. The string must be less than 64 bytes. Supported character scopes are:
+                        - All lowercase English letters: a to z
+                        - All uppercase English letters: A to Z
+                        - All numeric characters: 0 to 9
+                        - The space character
+                        - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+                  userName:
+                    type: string
+                    description: The user name for display. The string must be less than 64 bytes.
+                  role:
+                    type: string
+                    description: The user role. The string must be less than 20 bytes.
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    properties:
+                      userUuid:
+                        type: string
+                        description: The user uuid.
+                      result:
+                        type: integer
+                        description: >-
+                          The result of adding the user:
+                            - The user is added to the room.
+                            - The user has already in the room.
+                            - The role does not exist.
+                            - Exceeded the role number limit.
+    delete:
+      tags:
+      - "Room Presetting"
+      summary: Removes a user from a room
+      operationId: deleteUser
+      description: Call this method to remove a user from a room. After a successful method call, the user does not access to the room any longer.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: array
+              required:
+                - userUuid
+              description: The list of user uuids. You can add one user uuid at least, and 1000 user uuids at most.
+              items:
+                type: string
+                description: The user uuid.
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information
+                  data:
+                    type: object
+                    properties:
+                      userUuid:
+                        type: string
+                        description: The user uuid.
+                      result:
+                        type: integer
+                        description: >-
+                          The result of removing the user:
+                            - The user is removed from the room.
+                            - The user does not exist.
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}/entry:
+    post:
+      tags:
+          - "Live Streaming"
+      summary: Enters a room
+      operationId: enterRoom
+      description: >-
+        Call this method to get the parameters that a user needs for joining a room.
+
+        **Note:** Calling this method does not changes the user status to online. Only after a user successfully logs into the RTM system and join an RTM channel, the status of this user changes to online.
+      parameters:
+          - $ref: "#/components/parameters/appid"
+          - $ref: "#/components/parameters/roomid"
+          - $ref: "#/components/parameters/userid"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+                - role
+              properties:
+                userName:
+                  type: string
+                  description: The user name for display. The string must be less than 64 bytes.
+                role:
+                  type: string
+                  description: The user role. The string must be less than 20 bytes.
+                streamUuid:
+                  type: string
+                  description: >-
+
+                    The unique identifier of the user's main stream. A 32-bit unsigned integer with a value ranging from 1 to (2<sup>32</sup>-1). If you do not set this parameter, the service automatically assigns a `streamUuid`. `streamUuid` can be used for joining an RTC channel.
+
+                    **Note:** Although this parameter is in the string format, temporarily, you can only pass an integer, such as `"123".
+                publishType:
+                  type: integer
+                  description: >-
+                    The publishing type of the user's main stream:
+                      - 0: Use the same publishing type as the user enters the room last time. If the user enters the room for the first time, the user does not publish the main stream by default.
+                      - 1: Publishes the main stream.
+                      - 2: Does not publish the main stream.
+                  default: 0
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    properties:
+                      room:
+                        type: object
+                        description: The room configuration.
+                        properties:
+                          roomInfo:
+                            type: object
+                            description: The room information.
+                            properties:
+                              roomName:
+                                type: string
+                                description: The room name for display.
+                              roomUuid:
+                                type: string
+                                description: The unique identifier of a room in the string format. `roomUuid` is also used for the name of an RTC or RTM channel when you use the Agora RTC SDK or Agora RTM SDK.
+                          roomState:
+                            type: object
+                            description: The room state.
+                            properties:
+                              state:
+                                type: integer
+                                description: >-
+                                  The room state:
+                                    - 0: Not started.
+                                    - 1: Started.
+                                    - 2: Ended. When a room ends, users can not enter this room.
+                              startTime:
+                                type: integer
+                                description: The UTC Unix timestamp when the room starts in milliseconds.
+                              muteChat:
+                                type: object
+                                description: Whether allow users to chat via real-time messages.
+                                properties:
+                                  audience:
+                                    type: integer
+                                    description: >-
+                                      Whether allow audience to chat via real-time messages.
+                                        - 0: Allows.
+                                        - 1: Does not allow.
+                                    default: 0
+                                  host:
+                                    type: integer
+                                    description: >- 
+                                      Whether allow hosts to chat via real-time messages.
+                                        - 0: Allows.
+                                        - 1: Does not allow.
+                                    default: 0
+                              muteAudio:
+                                type: object
+                                description: Whether allow users to communicate via real-time audio.
+                                properties:
+                                  audience:
+                                    type: integer
+                                    description: >- 
+                                      Whether allow audience to communicate via real-time audio.
+                                        - 0: Allows.
+                                        - 1: Does not allow.
+                                    default: 0
+                                  host:
+                                    type: integer
+                                    description: >-
+                                      Whether allow hosts to communicate via real-time audio.
+                                        - 0: Allows.
+                                        - 1: Does not allow.
+                                    default: 0
+                              muteVideo:
+                                type: object
+                                description: Whether allow users to communicate via real-time video.
+                                properties:
+                                  host:
+                                    type: integer
+                                    description: >-
+                                      Whether allow hosts to communicate via real-time video.
+                                        - 0: Allows.
+                                        - 1: Does not allow.
+                                    default: 0
+                          roomProperties:
+                            type: object
+                            description: A dictionary-like object containing the extension properties of the room.
+                      user:
+                        type: object
+                        description: The configuration of the user.
+                        properties:
+                          userUuid:
+                            type: string
+                            description: UserUuid
+                          userName:
+                            type: string
+                            description: The user name for display.
+                          role:
+                            type: string
+                            description: The user role.
+                          streamUuid:
+                            type: string
+                            description: The uuid of the user's main stream.
+                          userToken:
+                            type: string
+                            description: >-
+                              The user token in the room.
+
+                              **Note**: This token is required for subsequent requests in the room.
+                          rtmToken:
+                            type: string
+                            description: The token for using the Agora RTM SDK.
+                          rtcToken:
+                            type: string
+                            description: The token for using the Agora RTC SDK.
+                          muteChat:
+                            type: string
+                            description: >-
+                              Whether the user is allowed to chat via real-time messages:
+                              - 0: Allowed.
+                              - 1: Not allowed.
+                          userProperties:
+                            type: object
+                            description: A dictionary-like object containing the extension properties of the user.
+                          streams:
+                            type: array
+                            description: The stream list of the user.
+                            items:
+                              type: object
+                              properties:
+                                streamUuid:
+                                  type: string
+                                  description: The uuid of the stream.
+                                streamName:
+                                  type: string
+                                  description: The stream name for display.
+                                videoSourceType:
+                                  type: integer
+                                  description: >-
+                                    The type of the video source:
+                                      - 0: None.
+                                      - 1: Camera.
+                                      - 2: Screen.
+                                audioSourceType:
+                                  type: integer
+                                  description: >-
+                                    The type of the audio source:
+                                      - 0: None.
+                                      - 1: Microphone.
+                                videoState:
+                                  type: integer
+                                  description: >-
+                                    The video state:
+                                      - 0: Muted.
+                                      - 1: Unmuted.
+                                audioState:
+                                  type: integer
+                                  description: >-
+                                    The audio state:
+                                      - 0: Muted.
+                                      - 1: Unmuted.
+                                updateTime:
+                                  type: integer
+                                  description: The UTC Unix timestamp when the stream state updates in milliseconds.
+                                state:
+                                  type: integer
+                                  description: >-
+                                    Whether the stream is valid:
+                                      - 0: Invalid.
+                                      - 1: Valid.
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}:
+    put:
+      tags:
+        - Live Streaming
+      summary: Update the user state
+      operationId: updateUserState
+      description: Call this method to update the state of the user.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/userid"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+                - muteChat
+              properties:
+                userName:
+                  type: string
+                  description: The user name for display.
+                muteChat:
+                  type: integer
+                  description: >-
+                    Whether the user is allowed to chat via real-time messages.
+                      - 0: Allowed.
+                      - 1: Not allowed.
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{toUserUuid}/chat/peer:
+    post:
+      tags:
+        - Live Streaming
+      summary: Sends a peer-to-peer chat message
+      operationId: sendPeerChat
+      description: Call this method to send a chat message to a user.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - in: path
+          name: toUserUuid
+          required: true
+          schema:
+            type: string
+          description: The uuid of the user to which the message is sent.
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+                - type
+              properties:
+                message:
+                  type: string
+                  description: The message content. The string must be less than 32 KB.
+                type:
+                  type: integer
+                  description: The message type. Temporarily, you can only set this parameter as `1` for text.
+                  default: 1
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/userStreams:
+    get:
+      tags:
+        - "Live Streaming"
+      summary: Gets the stream list of users
+      operationId: getUserStreamList
+      description: Call this method to get the stream list of all users in a room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/nextId"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/updateTimeOffset"
+        - $ref: "#/components/parameters/includeOffline"
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    description: Data.
+                    properties:
+                        total:
+                          type: integer
+                          description: The total number of data pieces.
+                        nextId:
+                          type: string
+                          description: The starting ID of the next batch of data. If there is no data left, this property is `null`.
+                        list:
+                          type: array
+                          description: The user list.
+                          items:
+                            type: object
+                            properties:
+                              userName:
+                                type: string
+                                description: The user name for display.
+                              userUuid:
+                                type: string
+                                description: The user uuid.
+                              role:
+                                type: string
+                                description: The user role.
+                              muteChat:
+                                type: integer
+                                description: >-
+                                  Whether the user is allowed to chat via real-time messages.
+                                    - 0: Allowed.
+                                    - 1: Not allowed.
+                              updateTime:
+                                type: string
+                                description: The UTC Unix timestamp when the user state updates in milliseconds.
+                              state:
+                                type: string
+                                description: >-
+                                  Whether the user is in the room:
+                                    - 0: The user is not in the room.
+                                    - 1: The user is in the room.
+                              streams:
+                                type: array
+                                description: The stream list of the user.
+                                items:
+                                  type: object
+                                  properties:
+                                    streamName:
+                                      type: string
+                                      description: The stream name for display.
+                                    streamUuid:
+                                      type: string
+                                      description: The stream uuid.
+                                    videoSourceType:
+                                      type: integer
+                                      description: >-
+                                        The type of the video source:
+                                          - 0: None.
+                                          - 1: Camera.
+                                          - 2: Screen.
+                                    audioSourceType:
+                                      type: integer
+                                      description: >-
+                                        The type of the audio source:
+                                          - 0: None.
+                                          - 1: Microphone.
+                                    videoState:
+                                      type: integer
+                                      description: >-
+                                        The video state:
+                                          - 0: Muted.
+                                          - 1: Unmuted.
+                                    audioState:
+                                      type: integer
+                                      description: >-
+                                        The audio state:
+                                          - 0: Muted.
+                                          - 1: Unmuted.
+                                    updateTime:
+                                      type: integer
+                                      description: The UTC Unix timestamp when the stream state updates in milliseconds.
+                                    state:
+                                      type: integer
+                                      description: >-
+                                        Whether the stream is valid:
+                                          - 0: Invalid.
+                                          - 1: Valid.
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}/properties/{key}:
+    put:
+      tags:
+          - "Live Streaming"
+      summary: Sets the user property
+      operationId: setUserProperty
+      description: Call this method to set the property of a specified user.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/userid"
+        - $ref: "#/components/parameters/key"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - value
+              properties:
+                value:
+                  type: string
+                  description: The property value in the string format. The string must be less than 8 KB. Setting this parameter as `null` means deleting this property.
+                cause:
+                  type: object
+                  description: The reason of updating a property. You can pass any object in this parameter.
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}/exit:
+    post:
+      tags:
+          - "Live Streaming"
+      summary: Kicks a user out of a room
+      operationId: kickUser
+      description: Call this method to kick a user out of a room.
+      parameters:
+          - $ref: "#/components/parameters/appid"
+          - $ref: "#/components/parameters/roomid"
+          - $ref: "#/components/parameters/userid"
+          - $ref: "#/components/parameters/token"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/sequences:
+    get:
+      tags:
+          - "Live Streaming"
+      summary: Get the sequence list
+      operationId: getSequence
+      description: >-
+        Call this method to get the list of sequences. 
+        
+        In Agora Edu Cloud Service, a sequence is a notification message sent by the Agora RTM SDK that indicates the state change of rooms, users, or streams.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+        - $ref: "#/components/parameters/nextId"
+        - $ref: "#/components/parameters/count"
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    description: Data.
+                    properties:
+                        total:
+                          type: integer
+                          description: The total number of data pieces.
+                        nextId:
+                          type: string
+                          description: The starting ID of the next batch of data.
+                        list:
+                          type: array
+                          description: The list of sequences.
+                          items:
+                            type: object
+                            properties:
+                              sequence:
+                                type: object
+                                description: The unique identifier of a sequence.
+                              cmd:
+                                type: integer
+                                description: The sequence type. Clients can use this property to determine the content of this sequence.
+                              version:
+                                type: integer
+                                description: The version.
+                              data:
+                                type: object
+                                description: The data of the sequence.
+  /scene/apps/{appId}/v1/rooms/{roomUUid}/states/{state}:
+    put:
+      tags:
+        - "Live Streaming"
+      summary: Updates the room state
+      operationId: updateRoomState
+      description: Call this method to update the state of a specified room.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/roomState"
+        - $ref: "#/components/parameters/token"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/streams:
+    get:
+      tags:
+        - "Live Streaming"
+      summary: Gets the stream list
+      operationId: getStreamList
+      description: Call this method to get the stream list.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+        - $ref: "#/components/parameters/nextId"
+        - $ref: "#/components/parameters/count"
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: The count of this batch of data.
+                      total:
+                        type: integer
+                        description: The total number of data pieces.
+                      nextId:
+                        type: string
+                        description: The starting ID of the next batch of data.
+                      list:
+                        type: array
+                        description: The stream list.
+                        items:
+                          type: object
+                          properties:
+                            fromUser:
+                              type: object
+                              description: The information of the user who sends this stream.
+                              properties:
+                                userName:
+                                  type: string
+                                  description: The user name for display.
+                                userUuid:
+                                  type: string
+                                  description: The user uuid.
+                                role:
+                                  type: string
+                                  description: The user role.
+                            streamUuid:
+                              type: string
+                              description: The stream uuid.
+                            streamName:
+                              type: string
+                              description: The stream name.
+                            videoSourceType:
+                              type: integer
+                              description: >-
+                                The type of the video source:
+                                  - 0: None.
+                                  - 1: Camera.
+                                  - 2: Screen.
+                            audioSourceType:
+                              type: integer
+                              description: >-
+                                The type of the audio source:
+                                  - 0: None.
+                                  - 1: Microphone.
+                            videoState:
+                              type: integer
+                              description: >-
+                                The video state:
+                                  - 0: Muted.
+                                  - 1: Unmuted.
+                            audioState:
+                              type: integer
+                              description: >-
+                                The audio state:
+                                  - 0: Muted.
+                                  - 1: Unmuted.
+                            updateTime:
+                              type: integer
+                              description: The UTC Unix timestamp when the stream state updates in milliseconds.
+                            state:
+                              type: integer
+                              description: >-
+                                Whether the stream is valid:
+                                  - 0: Invalid.
+                                  - 1: Valid.
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}/streams/{streamUuid}:
+    post:
+      tags:
+        - "Live Streaming"
+      summary: Creates a stream
+      operationId: createStream
+      description: Call this method to create a stream.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/userid"
+        - $ref: "#/components/parameters/streamid"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                streamName:
+                  type: string
+                  description: The stream name for display.
+                videoSourceType:
+                  type: integer
+                  description: >-
+                    The type of the video source:
+                      - 0: None.
+                      - 1: Camera.
+                      - 2: Screen.
+                audioSourceType:
+                  type: integer
+                  description: >-
+                    The type of the audio source:
+                      - 0: None.
+                      - 1: Microphone.
+                videoState:
+                  type: integer
+                  description: >-
+                    The video state:
+                      - 0: Muted.
+                      - 1: Unmuted.
+                audioSate:
+                  type: integer
+                  description: >-
+                    The audio state:
+                      - 0: Muted.
+                      - 1: Unmuted.
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    description: Data.
+                    properties:
+                      streamUuid:
+                        type: string
+                        description: The stream uuid。
+                      rtcToken:
+                        type: string
+                        description: The token for joining an RTC channel.
+components:
+  schemas:
+    roomConfig:
+      type: object
+      required:
+        - roomName
+        - roleConfig
+      properties:
+        roomName:
+          type: string
+          description: The room name for display. The string must be less than 64 bytes.
+        roleConfig:
+          type: object
+          description: The role configuration in the room. Use this parameter to specify the roles of users in room, such as host and audience.
+          required:
+              - host
+              - audience
+          properties:
+            host:
+              type: object
+              description: The configuration of hosts.
+              properties:
+                limit:
+                  type: integer
+                  description: The upper limit on the number of this role. The default value is `-1`, which means no limit. This integer must be small than `4294967296`.
+                  default: -1
+                verifyType:
+                  type: integer
+                  description: >-
+                    The verification type:
+                      - 0: Allows anonymity, which means any user can enter a room on the client.
+                      - 1: Does not allow anonymity, which means only specified users can enter a room on client. You can call the [Add a user](./#/Room%20Presetting/addUser) to specify the users who have access to the room for enhanced security.
+                  default: 0
+                subscribe:
+                  type: integer
+                  description: >-
+                    Whether clients subscribe to the data of this role:
+                      - 0: Clients do not subscribe to the data of this role. Setting `subscribe` as `0` helps improve the overall performance of clients.
+                      - 1: Clients subscribe to the data of this role. Setting `subscribe` as `1` if you need to deal with user data on the client.
+                  default: 1
+            audience:
+              type: object
+              description: The configuration of audience.
+              properties:
+                limit:
+                  type: integer
+                  description: The upper limit on the number of this role. The default value is `-1`, which means no limit. This integer must be small than `4294967296`.
+                  default: -1
+                verifyType:
+                  type: integer
+                  description: >-
+                    The verification type:
+                      - 0: Allows anonymity, which means any user can enter a room on the client.
+                      - 1: Does not allow anonymity, which means only specified users can enter a room on client. You can call the [Add a user](./#/Room%20Presetting/addUser) to specify the users who have access to the room for enhanced security.
+                  default: 0
+                subscribe:
+                  type: integer
+                  description: >-
+                    Whether clients subscribe to the data of this role:
+                      - 0: Clients do not subscribe to the data of this role. Setting `subscribe` as `0` helps improve the overall performance of clients.
+                      - 1: Clients subscribe to the data of this role. Setting `subscribe` as `1` if you need to deal with user data on the client.
+                  default: 1
+  responses:
+    200:
+      description: The request has succeeded.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+              msg:
+                type: string
+                description: The detailed information
+  parameters:
+    appid:
+      name: appId
+      in: path
+      required: true
+      description: The [App ID](https://docs.agora.io/en/Agora%20Platform/term_appid) assigned by Agora.
+      schema:
+        type: string
+    roomid:
+      name: roomUuid
+      required: true
+      in: path
+      schema:
+        type: string
+      description: >-
+        The unique identifier of a room in the string format. `roomUuid` is also used for the name of an RTC or RTM channel when you use the Agora RTC SDK or Agora RTM SDK. The string must be less than 64 bytes. Supported character scopes are:
+        - All lowercase English letters: a to z
+        - All uppercase English letters: A to Z
+        - All numeric characters: 0 to 9
+        - The space character
+        - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+    contentType:
+      in: header
+      name: Content-Type
+      required: true
+      schema:
+        type: string
+        enum:
+          - application/json
+    authorization:
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+        enum:
+          - Basic base64LoginString
+    userid:
+      in: header
+      name: userUuid
+      required: true
+      schema:
+        type: string
+      description: >-
+        The unique identifier of a user in the string format. `userUuid` is used for logging into the Agora RTM system. The string must be less than 64 bytes. Supported character scopes are:
+        - All lowercase English letters: a to z
+        - All uppercase English letters: A to Z
+        - All numeric characters: 0 to 9
+        - The space character
+        - Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+    userName:
+      in: path
+      name: userName
+      required: true
+      schema:
+        type: string
+      description: The user name for display. The string must be less than 64 bytes.
+    token:
+      in: header
+      name: token
+      required: true
+      schema:
+        type: string
+      description: The user token returned after a user enters a room.
+    role:
+      in: query
+      name: role
+      required: false
+      schema:
+        type: string
+      description: The user role.
+    nextId:
+      in: query
+      name: nextId
+      required: false
+      schema:
+        type: string
+      description: >- 
+        The starting ID of the next batch of data.
+          - When you call this method to get the data for the first time, you can leave this parameter empty or set is as `null`.
+          - Afterwards, you can set this parameter as the `nextId` that you get in the response of previous method call.
+    count:
+      in: query
+      name: count
+      required: false
+      schema:
+        type: string
+      description: The count of data objects. The default value is 1000.
+    updateTimeOffset:
+      in: query
+      name: updateTimeOffset
+      required: false
+      schema:
+        type: string
+      description: 更新时间偏移，UTC 时间戳。
+    includeOffline:
+      in: query
+      name: includeOffline
+      required: false
+      schema:
+        type: string
+      description: >- 
+        是否包含已离开频道的用户: 
+        - 0: （默认）不包含。
+        - 1: 包含。
+    key:
+      in: path
+      name: key
+      required: true
+      description: The property key in the string format. It must be printable characters and less than 32 bytes.
+      schema:
+        type: string
+    roomState:
+      in: path
+      name: roomState
+      schema:
+        type: integer
+      required: true
+      description: >-
+        The room state:
+          - 0: Not started.
+          - 1: Started.
+          - 2: Ended. When a room ends, users can not enter this room.
+    streamid:
+      in: path
+      name: streamUuid
+      required: true
+      schema:
+        type: string
+      description: 流 uuid。这是流的唯一标识符，也是加入 RTC 频道收发流id。取值范围 1 到 (2<sup>32</sup>-1)。如果设为 0 会自动生成一个 uuid。
+  securitySchemes:
+    agora_auth:
+      type: http
+      scheme: basic
