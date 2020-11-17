@@ -25,7 +25,7 @@ info:
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
-    <div class="info-msg"><i class="fa fa-info-circle"></i> The call frequency of the RESTful APIs is no more than 10 queries per second.  Contact <a href="mailto:support@agora.io">support@agora.io</a> if you want to raise the limit.</div>
+    <div class="info-msg"><i class="fa fa-info-circle"></i> The call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. If you are frequency limited when calling the APIs, please see <a href="https://docs.agora.io/en/faq/restful_api_call_frequency">How can I avoid being frequency limited when calling Agora Server RESTful APIs?</a> to optimize API call frequency.</div>
 
 
     ## <a name="tryapi"></a>Try out the API
@@ -37,6 +37,12 @@ info:
 
     <div class="info-msg"><i class="fa fa-info-circle"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
 
+
+    ## Parameter descriptions
+
+    To view the description of each parameter, click **Schema**.
+
+    <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1601374744792" alt="Schema" width="50%">
 
   version: 2020.07.29
   title: Server RESTful API
@@ -898,6 +904,7 @@ components:
       required:
         - appid
         - time
+        - time_in_seconds
         - privileges
       properties:
         appid:
@@ -915,7 +922,11 @@ components:
         time:
           type: number
           description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
-                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+        time_in_seconds:
+          type: number
+          description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
         privileges:
           type: array
           description: >-
@@ -938,6 +949,7 @@ components:
         - appid
         - id
         - time
+        - time_in_seconds
       properties:
         appid:
           type: string
@@ -948,7 +960,11 @@ components:
         time:
           type: number
           description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
-                      <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li></ul></div>
+                      <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+        time_in_seconds:
+          type: number
+          description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
      deleteKickingRule:
       type: object
       required:
