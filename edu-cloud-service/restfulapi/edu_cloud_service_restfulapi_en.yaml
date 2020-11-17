@@ -4,9 +4,20 @@ info:
   description: >
     This page contains detailed help for the RESTful APIs of Agora Edu Cloud Service.
 
-    ## Authentication
+    ## Basic Information
 
-    The RESTful APIs of Agora Edu Cloud Service only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
+    ### Server
+
+    All requests are sent to the server: api.agora.io.
+
+    ### Data format
+
+    The content type of all request bodies is application/json.
+
+    ### Authentication
+
+    The RESTful APIs of Agora Edu Cloud Service only support HTTPS. Before sending requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
+
 
     Get the Agora Customer ID and Customer Secret, as follows:
 
@@ -279,6 +290,76 @@ paths:
                           The result of removing the user:
                             - The user is removed from the room.
                             - The user does not exist.
+    get:
+      tags:
+        - "Live Streaming"
+      summary: Gets the user list
+      operationId: getUserList
+      description: Call this method to get the user list.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/nextId"
+        - $ref: "#/components/parameters/count"
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: >-
+                      Business status code:
+                        - 0: The request has succeeded.
+                        - Non-zero: The request has failed.
+                  msg:
+                    type: string
+                    description: The detailed information.
+                  data:
+                    type: object
+                    description: Data.
+                    properties:
+                        total:
+                          type: integer
+                          description: The total number of data pieces.
+                        nextId:
+                          type: string
+                          description: The starting ID of the next batch of data. If there is no data left, this property is `null`.
+                        list:
+                          type: array
+                          description: The user list.
+                          items:
+                            type: object
+                            properties:
+                              userName:
+                                type: string
+                                description: The user name for display.
+                              userUuid:
+                                type: string
+                                description: The user uuid.
+                              role:
+                                type: string
+                                description: The user role.
+                              muteChat:
+                                type: integer
+                                description: >-
+                                  Whether the user is allowed to chat via real-time messages.
+                                    - 0: Allowed.
+                                    - 1: Not allowed.
+                              updateTime:
+                                type: string
+                                description: The UTC Unix timestamp when the user state updates in milliseconds.
+                              state:
+                                type: string
+                                description: >-
+                                  Whether the user is in the room:
+                                    - 0: The user is not in the room.
+                                    - 1: The user is in the room.
   /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{userUuid}/entry:
     post:
       tags:
@@ -573,6 +654,95 @@ paths:
                   type: integer
                   description: The message type. Temporarily, you can only set this parameter as `1` for text.
                   default: 1
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/users/{toUserUuid}/messages/peer:
+    post:
+      tags:
+        - Live Streaming
+      summary: Sends a peer-to-peer customized message
+      operationId: sendPeerCustomMessage
+      description: Call this method to send a customized message to a user.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - in: path
+          name: toUserUuid
+          required: true
+          schema:
+            type: string
+          description: The uuid of the user to which the message is sent.
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message content. The string must be less than 32 KB.
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/chat/channel:
+    post:
+      tags:
+        - Live Streaming
+      summary: Sends a room chat message
+      operationId: sendRoomChat
+      description: Call this method to send a room chat message.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+                - type
+              properties:
+                message:
+                  type: string
+                  description: The message content. The string must be less than 32 KB.
+                type:
+                  type: integer
+                  description: The message type. Temporarily, you can only set this parameter as `1` for text.
+                  default: 1
+      responses:
+        '200':
+          $ref: "#/components/responses/200"
+  /scene/apps/{appId}/v1/rooms/{roomUuid}/message/channel:
+    post:
+      tags:
+        - Live Streaming
+      summary: Sends a room customized message
+      operationId: sendRoomCustomMessage
+      description: Call this method to send a room customized message.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message content. The string must be less than 32 KB.
       responses:
         '200':
           $ref: "#/components/responses/200"
@@ -991,6 +1161,71 @@ paths:
                       rtcToken:
                         type: string
                         description: The token for joining an RTC channel.
+    put:
+      tags:
+        - "Live Streaming"
+      summary: Updates a stream
+      operationId: updateStream
+      description: Call this method to update a stream.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/userid"
+        - $ref: "#/components/parameters/streamid"
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        description: Pass the following parameters in the request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                streamName:
+                  type: string
+                  description: The stream name for display.
+                videoSourceType:
+                  type: integer
+                  description: >-
+                    The type of the video source:
+                      - 0: None.
+                      - 1: Camera.
+                      - 2: Screen.
+                audioSourceType:
+                  type: integer
+                  description: >-
+                    The type of the audio source:
+                      - 0: None.
+                      - 1: Microphone.
+                videoState:
+                  type: integer
+                  description: >-
+                    The video state:
+                      - 0: Muted.
+                      - 1: Unmuted.
+                audioSate:
+                  type: integer
+                  description: >-
+                    The audio state:
+                      - 0: Muted.
+                      - 1: Unmuted.
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+    delete:
+      tags:
+        - "Live Streaming"
+      summary: Deletes a stream
+      operationId: deleteStream
+      description: Call this method to delete a stream.
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/roomid"
+        - $ref: "#/components/parameters/userid"
+        - $ref: "#/components/parameters/streamid"
+        - $ref: "#/components/parameters/token"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
 components:
   schemas:
     roomConfig:
