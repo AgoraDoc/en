@@ -481,7 +481,7 @@ components:
 
               - It is a 32-bit unsigned integer within the range between 1 and (2<sup>32</sup>-1).
               - *It is unique and does not clash with any existing UID in the channel.*
-              - It should not be a string. Ensure that all UIDs in the channel are integers.
+              - Cloud Recording does not support string UID (User Account). Ensure that all UIDs in the channel are integers.
 
         clientRequest:
           type: object
