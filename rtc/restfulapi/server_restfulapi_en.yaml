@@ -66,8 +66,8 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/createProject'
       responses:
-        '200':
-          description: The request is successful.
+        '201':
+          description: The request has been fulfilled, resulting in the creation of a new resource.
           content:
             application/json:
               schema:
@@ -78,7 +78,7 @@ paths:
                   name: project1
                   vendor_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
                   sign_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
-                  recording_server: 10.2.2.8:8080
+                  recording_server: null
                   status: 1
                   created: 1464165672
         '400':
@@ -95,6 +95,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -126,16 +128,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/getProject_response'
               example:
-                "project":
-                  {
+                "projects":
+                  [
+                    {
                     "id": "xxxx",
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
-                  }
+                    }
+                  ]
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -144,6 +148,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -174,6 +180,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -200,7 +208,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
                   }
@@ -213,6 +221,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -241,7 +251,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 0,
                     "created": 1464165672
                   }
@@ -253,6 +263,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -281,7 +293,7 @@ paths:
                       "name": "project1",
                       "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                       "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                      "recording_server": "10.2.2.8:8080",
+                      "recording_server": null,
                       "status": 1,
                       "created": 1464165672
                     }
@@ -293,6 +305,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -322,7 +336,7 @@ paths:
                       "name": "project1",
                       "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                       "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                      "recording_server": "10.2.2.8:8080",
+                      "recording_server": null,
                       "status": 1,
                       "created": 1464165672
                     }
@@ -334,6 +348,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -363,7 +379,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
                   }
@@ -375,6 +391,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -464,6 +482,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -513,6 +533,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -560,6 +582,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -594,6 +618,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -621,7 +647,11 @@ paths:
                  status: "success"
                  id: 1953
         '400':
-          $ref: '#/components/responses/400'
+          description: >-
+                   Bad request. Possible reasons:
+                   <ul>
+                   <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
+                   </ul>
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -682,6 +712,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -746,6 +778,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -803,6 +837,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -1578,6 +1614,8 @@ components:
       description: Forbidden.
     404:
       description: The requested resource could not be found.
+    415:
+      description: Unsupported media type. Make sure that you set `Content-Type`in `Headers` as `application/json`.
     429:
       description: Too many requests.
     500:
