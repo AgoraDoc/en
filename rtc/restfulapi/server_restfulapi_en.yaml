@@ -25,7 +25,7 @@ info:
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
-    <div class="info-msg"><i class="fa fa-info-circle"></i> The call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. If you are frequency limited when calling the APIs, please see <a href="https://docs.agora.io/en/faq/restful_api_call_frequency">How can I avoid being frequency limited when calling Agora Server RESTful APIs?</a> to optimize API call frequency.</div>
+    <div class="info-msg"><i class="fa fa-warning"></i> The call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. If you are frequency limited when calling the APIs, please see <a href="https://docs.agora.io/en/faq/restful_api_call_frequency">How can I avoid being frequency limited when calling Agora Server RESTful APIs?</a> to optimize API call frequency.</div>
 
 
     ## <a name="tryapi"></a>Try out the API
@@ -35,7 +35,7 @@ info:
 
     <img style="display:block;" src="https://web-cdn.agora.io/docs-files/1593314309962" alt="Authorize" width="50%">
 
-    <div class="info-msg"><i class="fa fa-info-circle"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
+    <div class="info-msg"><i class="fa fa-warning"></i> All the RESTful API requests sent from the web page take effect on your projects. If you just want to try the functions of the APIs, Agora recommends that you create and use a test project.</div>
 
 
     ## Parameter descriptions
@@ -61,13 +61,13 @@ paths:
       operationId: createProject
       description: Creates an Agora project.
 
-            <div class="info-msg"><i class="fa fa-info-circle"></i> You can create up to 10 projects, including any previously deleted. If you need to create more projects, please contact us by <a href="https://agora-ticket.agora.io/">submitting a ticket</a >.</div>
+            <div class="info-msg"><i class="fa fa-warning"></i> You can create up to 10 projects, including any previously deleted. If you need to create more projects, please contact us by <a href="https://agora-ticket.agora.io/">submitting a ticket</a >.</div>
       parameters: []
       requestBody:
         $ref: '#/components/requestBodies/createProject'
       responses:
-        '200':
-          description: The request is successful.
+        '201':
+          description: The request has been fulfilled, resulting in the creation of a new resource.
           content:
             application/json:
               schema:
@@ -78,7 +78,7 @@ paths:
                   name: project1
                   vendor_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
                   sign_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
-                  recording_server: 10.2.2.8:8080
+                  recording_server: null
                   status: 1
                   created: 1464165672
         '400':
@@ -95,6 +95,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -126,16 +128,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/getProject_response'
               example:
-                "project":
-                  {
+                "projects":
+                  [
+                    {
                     "id": "xxxx",
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
-                  }
+                    }
+                  ]
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -144,6 +148,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -174,6 +180,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -200,7 +208,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
                   }
@@ -213,6 +221,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -241,7 +251,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 0,
                     "created": 1464165672
                   }
@@ -253,6 +263,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -281,7 +293,7 @@ paths:
                       "name": "project1",
                       "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                       "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                      "recording_server": "10.2.2.8:8080",
+                      "recording_server": null,
                       "status": 1,
                       "created": 1464165672
                     }
@@ -293,6 +305,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -322,7 +336,7 @@ paths:
                       "name": "project1",
                       "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                       "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                      "recording_server": "10.2.2.8:8080",
+                      "recording_server": null,
                       "status": 1,
                       "created": 1464165672
                     }
@@ -334,6 +348,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -345,7 +361,7 @@ paths:
       summary: Resets the primary App Certificate
       operationId: resetSignKey
       description: Resets the primary App Certificate for a specified project.
-        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></i></div>
+        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the primary App Certificate is leaked, use this method to reset it.</li><li>If the primary App Certificate has not been enabled, calling this method automatically enables it.</li></ul></div>
       requestBody:
         $ref: '#/components/requestBodies/resetSignKey'
 
@@ -363,7 +379,7 @@ paths:
                     "name": "project1",
                     "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
                     "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
-                    "recording_server": "10.2.2.8:8080",
+                    "recording_server": null,
                     "status": 1,
                     "created": 1464165672
                   }
@@ -375,6 +391,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -386,7 +404,7 @@ paths:
       summary:  Gets usage data
       operationId: getProjectUsagesV3
       description: Gets the usage data within one year of a specified project.<br>
-                  <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>Ensure that you fill in a valid project ID, otherwise, you cannot get the usage information.</li><li>Agora recommends not including the current day in your query period, because the data is continuously changing on the current day.</li></ul></i></div>
+                  <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>Ensure that you fill in a valid project ID, otherwise, you cannot get the usage information.</li><li>Agora recommends not including the current day in your query period, because the data is continuously changing on the current day.</li></ul></div>
       parameters:
         - name: project_id
           required: true
@@ -464,6 +482,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -483,12 +503,12 @@ paths:
                     - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
 
                   The banned user receives the corresponding callback as follows:
-                    - Android: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
-                    - iOS/macOS: [`connectionChangedToState`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:connectionChangedToState:reason:) callback reports `AgoraConnectionChangedBannedByServer(3)`.
-                    - Web: [`Client.on("client-banned")`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/web/interfaces/agorartc.client.html#on) callback.
-                    - Windows: [`onConnectionStateChanged`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/cpp/classagora_1_1rtc_1_1_i_rtc_engine_event_handler.html#af409b2e721d345a65a2c600cea2f5eb4) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
-                    - Electron: [`AgoraRtcEngine.on("connectionStateChanged")`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/electron/classes/agorartcengine.html#on) callback reports `3`.
-                    - Unity: [`OnConnectionStateChangedHandler`](https://docs.agora.io/en/Agora%20Platform/API%20Reference/unity/namespaceagora__gaming__rtc.html#adae7694cb602375ccbc14be3062a230c) callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+                    - Android: `onConnectionStateChanged` callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+                    - iOS/macOS: `connectionChangedToState` callback reports `AgoraConnectionChangedBannedByServer(3)`.
+                    - Web: `Client.on("client-banned")` callback.
+                    - Windows: `onConnectionStateChanged` callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+                    - Electron: `AgoraRtcEngine.on("connectionStateChanged")` callback reports `3`.
+                    - Unity: `OnConnectionStateChangedHandler` callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
 
 
       parameters: []
@@ -513,6 +533,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -560,6 +582,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -594,6 +618,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -621,7 +647,11 @@ paths:
                  status: "success"
                  id: 1953
         '400':
-          $ref: '#/components/responses/400'
+          description: >-
+                   Bad request. Possible reasons:
+                   <ul>
+                   <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
+                   </ul>
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -652,7 +682,8 @@ paths:
           schema:
             type: number
           description: The user ID.
-                        <div class="info-msg"><i class="fa fa-info-circle"></i> The API does not support string user accounts. Ensure that you use the integer user ID.</i></div>
+
+                        <div class="info-msg"><i class="fa fa-warning"></i> This API does not support string user accounts. Ensure that you use the integer user ID.</div>
         - in: path
           name: channelName
           required: true
@@ -681,6 +712,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -695,6 +728,9 @@ paths:
        This method gets the user list.
         - In the Communication profile, this method gets the list of all users in the channel.
         - In the Live-broadcast profile, this method gets the list of all hosts and audience in the channel.
+        <div class="info-msg"><i class="fa fa-warning"> Note</i><ul>
+        <li>Users in a channel must use the same channel profile; otherwise, the query results may be inaccurate.</li>
+        <li>You can synchronize the online channel statistics either by calling this method or by calling the <a href="https://docs.agora.io/en/rtc/restfulapi/#/Online%20channel%20statistics%20query/userProperty">Gets the user role</a > method. Compared with the Gets the user role method, this method requires a lower call frequency and has a higher query efficiency. Therefore, Agora recommends using this method to query online channel statistics.</li></ul></div>
       parameters:
         - in: path
           name: appid
@@ -711,7 +747,7 @@ paths:
       responses:
         '200':
           description: The request is successful.</br>
-            <div class="info-msg"><i class="fa fa-info-circle"></i> The response of this method differs with the channel profile.</i></div>
+            <div class="info-msg"><i class="fa fa-warning"></i> The response of this method differs with the channel profile.</div>
           content:
                 application/json:
                   schema:
@@ -742,6 +778,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -751,7 +789,8 @@ paths:
       tags:
       - "Online channel statistics query"
       summary: Gets the channel list
-      description: Gets the channel list of a specified project.
+      description: Gets the channel list of a specified project.</br>
+            <div class="info-msg"><i class="fa fa-warning"></i> If the number of users in a channel changes frequently, the query results may be inaccurate. The following situations may occur:<ul><li>A channel appears repeatedly in different pages.</li><li>A channel does not appear in any page.</li></ul></div>
       operationId: channelList
       parameters:
         - in: path
@@ -766,7 +805,7 @@ paths:
           schema:
             type: number
           description: The page of the channel list that you want to query. The default value is 0.</br>
-                       <div class="info-msg"><i class="fa fa-info-circle"></i> The value of <code>page_no</code> cannot exceed (the total number of channels/the number of items in a page - 1). Otherwise, the specified page does not contain any channel list.</i></div>
+                       <div class="info-msg"><i class="fa fa-warning"></i> The value of <code>page_no</code> cannot exceed (the total number of channels/the number of items in a page - 1). Otherwise, the specified page does not contain any channel list.</div>
         - in: query
           name: page_size
           required: false
@@ -798,6 +837,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
         '429':
           $ref: '#/components/responses/429'
         '500':
@@ -824,7 +865,7 @@ components:
               - true: Enable the primary App Certificate.
               - false: Do not enable the primary App Certificate.
 
-              <div class="info-msg"><i class="fa fa-info-circle"></i> After creating a project, you can send a request to <code>https://api.agora.io/dev/v1/signkey</code> to enable or disable the primary App Certificate, or send a request to <code>https://api.agora.io/dev/v1/reset_signkey</code> to reset the primary App Certificate.</i></div>
+              <div class="info-msg"><i class="fa fa-warning"></i> After creating a project, you can send a request to <code>https://api.agora.io/dev/v1/signkey</code> to enable or disable the primary App Certificate, or send a request to <code>https://api.agora.io/dev/v1/reset_signkey</code> to reset the primary App Certificate.</div>
           default: false
      getProject:
       type: object
@@ -1443,7 +1484,7 @@ components:
               type: array
               description: >-
                        The channel lists.
-                       <div class="info-msg"><i class="fa fa-info-circle"></i> If the specified page does not contain any channels, this field is empty.</i></div>
+                       <div class="info-msg"><i class="fa fa-warning"></i> If the specified page does not contain any channels, this field is empty.</div>
 
               items:
                properties:
@@ -1573,6 +1614,8 @@ components:
       description: Forbidden.
     404:
       description: The requested resource could not be found.
+    415:
+      description: Unsupported media type. Make sure that you set `Content-Type`in `Headers` as `application/json`.
     429:
       description: Too many requests.
     500:

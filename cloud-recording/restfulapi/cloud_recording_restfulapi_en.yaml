@@ -481,7 +481,7 @@ components:
 
               - It is a 32-bit unsigned integer within the range between 1 and (2<sup>32</sup>-1).
               - *It is unique and does not clash with any existing UID in the channel.*
-              - It should not be a string. Ensure that all UIDs in the channel are integers.
+              - Cloud Recording does not support string UID (User Account). Ensure that all UIDs in the channel are integers.
 
         clientRequest:
           type: object
@@ -899,7 +899,14 @@ components:
 
                 bucket:
                   type: string
-                  description: The bucket of the third-party cloud storage.
+                  description: The bucket of the third-party cloud storage. When the third-party cloud storage is Kingsoft Cloud, the string can only contain letters, numeric characters, and "-". The bucket name also has the following limitation, depending on which cloud storage you use.
+
+                    - When the third-party cloud storage is Alibaba Cloud, the string can be no longer than 63 characters.
+
+                    - When the third-party cloud storage is Tencent Cloud, the string can be no longer than 50 characters.
+
+                    - When the third-party cloud storage is Kingsoft Cloud,  the string can be no longer than 63 characters.
+
                 accessKey:
                   type: string
                   description: The access key of the third-party cloud storage.Agora suggests that you use a write-only access key.
