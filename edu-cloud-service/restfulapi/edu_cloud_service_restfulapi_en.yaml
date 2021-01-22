@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
 
   description: >
-    This page contains detailed help for the RESTful APIs of Agora Edu Cloud Service.
+    This page contains detailed help for the RESTful APIs of Agora Room Management Service.
 
     ## Basic Information
 
@@ -16,7 +16,7 @@ info:
 
     ### Authentication
 
-    The RESTful APIs of Agora Edu Cloud Service only support HTTPS. Before sending requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
+    The RESTful APIs of Agora Room Management Service only support HTTPS. Before sending requests, you must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and pass the credential to the `Authorization` parameter in the request header.
 
 
     Get the Agora Customer ID and Customer Secret, as follows:
@@ -30,8 +30,12 @@ info:
 
     You can click **Try it out** to send HTTP requests and receive responses directly on this page. You must get authorized before sending any request. Click **Authorize** below, enter the Agora Customer ID and Customer Secret that you get on Agora Console, and then click **Authorize**.
 
+    ## Notifications
+
+    Agora Room Management Service sends various notifications to clients via RTM channel messages and peer-to-peer messages. For details, see [Room Management Service Notifications](https://docs.agora.io/en/One-to-one%20Classroom/room_manage_service_notifications?platform=RESTful).
+
   version: 2020.10.15
-  title: Agora Edu Cloud Service
+  title: Agora Room Management Service
 servers:
   - url: https://api.agora.io
 
@@ -918,7 +922,7 @@ paths:
       description: >-
         Call this method to get the list of sequences. 
         
-        In Agora Edu Cloud Service, a sequence is a notification message sent by the Agora RTM SDK that indicates the state change of rooms, users, or streams.
+        In Agora Room Management Service, a sequence is a notification message sent by the Agora RTM SDK that indicates the state change of rooms, users, or streams.
       parameters:
         - $ref: "#/components/parameters/appid"
         - $ref: "#/components/parameters/roomid"
