@@ -21,7 +21,7 @@ info:
     <ul>
       <li>Creates and manages Agora projects.</li>
       <li>Gets the usage data of a specified project.</li>
-      <li>Creates and manages the rules of banning users from joining a channel.</li>
+      <li>Creates and gets the rules of banning user privileges.</li>
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
@@ -111,7 +111,7 @@ paths:
         - name: id
           required: true
           in: query
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
           schema:
             type: string
         - name: name
@@ -409,7 +409,7 @@ paths:
         - name: project_id
           required: true
           in: query
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
           schema:
             type: string
         - name: from_date
@@ -491,18 +491,30 @@ paths:
   /dev/v1/kicking-rule:
     post:
       tags:
-      - "Banning rule management"
-      summary: Creates a rule
+      - "Banning user privileges"
+      summary: Creates a banning rule
       operationId: createKickingRule
       description: >-
-                  Creates a banning rule.<br>
-                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`. See the following supported settings:
-                    - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot join any channel in the app.
-                    - If you set `cname`, but not `uid` and `ip`, then no one can join the channel specified by the `cname` field.
-                    - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot join any channel in the app.
-                    - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
+                  Creates a rule of banning user privileges.<br>
+                  The user privileges (`privileges`) that can be banned include:
+                    - `join_channel`: Joining a channel.
+                    - `publish_audio`: Publishing audio.
+                    - `publish_video`: Publishing video.
 
-                  The banned user receives the corresponding callback as follows:
+                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`.
+                    - When you set `privileges` as `join_channel`, the rule works as follows:
+                      - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot join any channel in the app.
+                      - If you set `cname`, but not `uid` and `ip`, then no one can join the channel specified by the `cname` field.
+                      - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot join any channel in the app.
+                      - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
+
+                    - When you set `privileges` as `publish_audio` or `publish_video`, the rule works as follows:
+                      - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot publish audio or video in any channel of the app.
+                      - If you set `cname`, but not `uid` and `ip`, then no one can publish audio or video in the channel specified by the `cname` field.
+                      - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot publish audio or video in any channel of the app.
+                      - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot publish audio or video in the channel specified by the `cname` field.
+
+                  The user who is kicked out of a channel receives the corresponding callback as follows:
                     - Android: `onConnectionStateChanged` callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
                     - iOS/macOS: `connectionChangedToState` callback reports `AgoraConnectionChangedBannedByServer(3)`.
                     - Web: `Client.on("client-banned")` callback.
@@ -541,7 +553,7 @@ paths:
           $ref: '#/components/responses/500'
     get:
       tags:
-      - "Banning rule management"
+      - "Banning user privileges"
       summary: Gets the rule list
       operationId: listKickingRule
       description: Gets a list of all banning rules.
@@ -570,6 +582,9 @@ paths:
                     cname: "11",
                     ip: "192.168.0.1",
                     ts: "2018-01-09T07:23:06.000Z",
+                    privileges: [
+                      "join_channel"
+                    ],
                     createAt: "2018-01-09T06:23:06.000Z",
                     updateAt: "2018-01-09T14:23:06.000Z",
                 }
@@ -588,80 +603,80 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-    put:
-      tags:
-      - "Banning rule management"
-      summary: Updates the rule time
-      operationId: updateKickingRule
-      description: Updates the expiration time of a specified banning rule.
+    # put:
+    #   tags:
+    #   - "Banning rule management"
+    #   summary: Updates the rule time
+    #   operationId: updateKickingRule
+    #   description: Updates the expiration time of a specified banning rule.
+#
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/updateKickingRule'
+#
+    #   responses:
+    #     '200':
+    #       description: The request is successful.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/updateKickingRule_response'
+    #           example:
+    #              status: "success"
+    #              result:
+    #               id: 1953
+    #               ts: "2018-01-09T08:45:54.545Z"
+    #     '400':
+    #       $ref: '#/components/responses/400'
+    #     '401':
+    #       $ref: '#/components/responses/401'
+    #     '403':
+    #       $ref: '#/components/responses/403'
+    #     '404':
+    #       $ref: '#/components/responses/404'
+    #     '415':
+    #       $ref: '#/components/responses/415'
+    #     '429':
+    #       $ref: '#/components/responses/429'
+    #     '500':
+    #       $ref: '#/components/responses/500'
 
-      requestBody:
-        $ref: '#/components/requestBodies/updateKickingRule'
 
-      responses:
-        '200':
-          description: The request is successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/updateKickingRule_response'
-              example:
-                 status: "success"
-                 result:
-                  id: 1953
-                  ts: "2018-01-09T08:45:54.545Z"
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-
-
-    delete:
-      tags:
-      - "Banning rule management"
-      summary: Deletes the rule
-      operationId: deleteKickingRule
-      description: Deletes a specified banning rule.
-
-      requestBody:
-        $ref: '#/components/requestBodies/deleteKickingRule'
-
-      responses:
-        '200':
-          description: The request is successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/deleteKickingRule_response'
-              example:
-                 status: "success"
-                 id: 1953
-        '400':
-          description: >-
-                   Bad request. Possible reasons:
-                   <ul>
-                   <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
-                   </ul>
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+    # delete:
+    #   tags:
+    #   - "Banning rule management"
+    #   summary: Deletes the rule
+    #   operationId: deleteKickingRule
+    #   description: Deletes a specified banning rule.
+#
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/deleteKickingRule'
+#
+    #   responses:
+    #     '200':
+    #       description: The request is successful.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/deleteKickingRule_response'
+    #           example:
+    #              status: "success"
+    #              id: 1953
+    #     '400':
+    #       description: >-
+    #                Bad request. Possible reasons:
+    #                <ul>
+    #                <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
+    #                </ul>
+    #     '401':
+    #       $ref: '#/components/responses/401'
+    #     '403':
+    #       $ref: '#/components/responses/403'
+    #     '404':
+    #       $ref: '#/components/responses/404'
+    #     '429':
+    #       $ref: '#/components/responses/429'
+    #     '500':
+    #       $ref: '#/components/responses/500'
   /dev/v1/channel/user/property/{appid}/{uid}/{channelName}:
     get:
       tags:
@@ -875,10 +890,10 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
         name:
           type: string
-          description: The project ID.
+          description: The project name.
      deleteProject:
       type: object
       required:
@@ -886,7 +901,7 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
      changeProjectStatus:
       type: object
       required:
@@ -895,7 +910,7 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
         status:
           type: number
           description: >-
@@ -912,7 +927,7 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
         recording_server:
           type: string
           description: The IP of the recording server. Pay attention to this field if you use the Agora On-premise Recording SDK earlier than v1.9.0.
@@ -924,7 +939,7 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
         enable:
           type: boolean
           description: >-
@@ -939,7 +954,7 @@ components:
       properties:
         id:
           type: string
-          description: The project ID.
+          description: The project ID, which can be obtained by calling the Gets all projects API.
      createKickingRule:
       type: object
       required:
@@ -972,52 +987,50 @@ components:
           type: array
           description: >-
                   The user privileges from which you want to ban the specified users. You can choose the following values:
-                    - `join_channel`： Join a channel.
-                    - `publish_audio`：Publish audio.
-                    - `publish_video`：Publish video.
+                    - `join_channel`： Bans a user from joining a channel or kicks a user out of a channel.
+                    - `publish_audio`：Bans a user from publishing audio. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
+                    - `publish_video`：Bans a user from publishing video. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
 
-                  If you want to ban users from joining a channel, you must set `privileges` as `join_channel`.</br>
-                  Setting `privileges` as `publish_audio` or `publish_video` bans users from publishing audio or video.
           items:
             type: string
             enum:
               - join_channel
               - publish_audio
               - publish_video
-     updateKickingRule:
-      type: object
-      required:
-        - appid
-        - id
-        - time
-        - time_in_seconds
-      properties:
-        appid:
-          type: string
-          description: The App ID of the project.
-        id:
-          type: number
-          description: The ID of the rule that you want to update.
-        time:
-          type: number
-          description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
-                      <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
-        time_in_seconds:
-          type: number
-          description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
-                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
-     deleteKickingRule:
-      type: object
-      required:
-        - appid
-        - id
-      properties:
-        appid:
-          type: string
-          description: The App ID of the project.
-        id:
-          type: number
-          description: The ID of the rule that you want to delete.
+     # updateKickingRule:
+     #  type: object
+     #  required:
+     #    - appid
+     #    - id
+     #    - time
+     #    - time_in_seconds
+     #  properties:
+     #    appid:
+     #      type: string
+     #      description: The App ID of the project.
+     #    id:
+     #      type: number
+     #      description: The ID of the rule that you want to update.
+     #    time:
+     #      type: number
+     #      description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
+     #                  <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+     #    time_in_seconds:
+     #      type: number
+     #      description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
+     #                    <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+     # deleteKickingRule:
+     #  type: object
+     #  required:
+     #    - appid
+     #    - id
+     #  properties:
+     #    appid:
+     #      type: string
+     #      description: The App ID of the project.
+     #    id:
+     #      type: number
+     #      description: The ID of the rule that you want to delete.
      createProject_response:
       type: object
       properties:
@@ -1322,7 +1335,7 @@ components:
           description: The status of this request. `"success"` means the request is successful.
         id:
           type: number
-          description: The rule ID. If you want to update the rule, you need the rule ID to specify the rule.
+          description: The rule ID.
      listKickingRule_response:
       type: object
       properties:
@@ -1355,38 +1368,45 @@ components:
                 description: The IP address of the user.
               ts:
                 type: string
-                description: The time when this rule expires, using UTC time and Unix timestamp.
+                description: The UTC time when this rule expires.
+              privileges:
+                type: array
+                description: >-
+                  Banned user privileges, including the following values:
+                    - `join_channel`: Bans a user from joining a channel or kicks a user out of a channel.
+                    - `publish_audio`: Bans a user from publishing audio.
+                    - `publish_video`: Bans a user from publishing video.
               createAt:
                 type: string
-                description: The time when this rule is created, using UTC time and Unix timestamp.
+                description: The UTC time when this rule is created.
               updateAt:
                 type: string
-                description: The time when this rule is updated, using UTC time and Unix timestamp.
-     updateKickingRule_response:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The status of this request. `"success"` means the request is successful.
-        result:
-          type: object
-          description: The result of the rule update.
-          properties:
-           id:
-            type: string
-            description: The rule ID.
-           ts:
-              type: string
-              description: The time when the rule expires, using UTC time and Unix timestamp.
-     deleteKickingRule_response:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The status of this request. `"success"` means the request is successful.
-        id:
-          type: string
-          description: The ID of the rule that you want to delete.
+                description: The UTC time when this rule is updated.
+     # updateKickingRule_response:
+     #  type: object
+     #  properties:
+     #    status:
+     #      type: string
+     #      description: The status of this request. `"success"` means the request is successful.
+     #    result:
+     #      type: object
+     #      description: The result of the rule update.
+     #      properties:
+     #       id:
+     #        type: string
+     #        description: The rule ID.
+     #       ts:
+     #          type: string
+     #          description: The time when the rule expires, using UTC time and Unix timestamp.
+     # deleteKickingRule_response:
+     #  type: object
+     #  properties:
+     #    status:
+     #      type: string
+     #      description: The status of this request. `"success"` means the request is successful.
+     #    id:
+     #      type: string
+     #      description: The ID of the rule that you want to delete.
      userProperty_response:
       type: object
       properties:
@@ -1581,27 +1601,27 @@ components:
             privileges: ["join_channel"]
       description: The following parameters are required in the request body.
       required: true
-    updateKickingRule:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/updateKickingRule'
-          example:
-            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
-            id: 1953
-            time: 60
-      description: The following parameters are required in the request body.
-      required: true
-    deleteKickingRule:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/deleteKickingRule'
-          example:
-            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
-            id: 1953
-      description: The following parameters are required in the request body.
-      required: true
+    # updateKickingRule:
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/updateKickingRule'
+    #       example:
+    #         appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+    #         id: 1953
+    #         time: 60
+    #   description: The following parameters are required in the request body.
+    #   required: true
+    # deleteKickingRule:
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/deleteKickingRule'
+    #       example:
+    #         appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+    #         id: 1953
+    #   description: The following parameters are required in the request body.
+    #   required: true
 
   responses:
     200:
