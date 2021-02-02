@@ -21,7 +21,7 @@ info:
     <ul>
       <li>Creates and manages Agora projects.</li>
       <li>Gets the usage data of a specified project.</li>
-      <li>Creates and gets the rules of banning user privileges.</li>
+      <li>Creates and manages the rules of banning user privileges.</li>
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
@@ -573,7 +573,7 @@ paths:
                 $ref: '#/components/schemas/listKickingRule_response'
               example:
                status: "success"
-               ruls: [
+               rules: [
                   {
                     id: 1953,
                     appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
@@ -603,80 +603,76 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-    # put:
-    #   tags:
-    #   - "Banning rule management"
-    #   summary: Updates the rule time
-    #   operationId: updateKickingRule
-    #   description: Updates the expiration time of a specified banning rule.
-#
-    #   requestBody:
-    #     $ref: '#/components/requestBodies/updateKickingRule'
-#
-    #   responses:
-    #     '200':
-    #       description: The request is successful.
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/updateKickingRule_response'
-    #           example:
-    #              status: "success"
-    #              result:
-    #               id: 1953
-    #               ts: "2018-01-09T08:45:54.545Z"
-    #     '400':
-    #       $ref: '#/components/responses/400'
-    #     '401':
-    #       $ref: '#/components/responses/401'
-    #     '403':
-    #       $ref: '#/components/responses/403'
-    #     '404':
-    #       $ref: '#/components/responses/404'
-    #     '415':
-    #       $ref: '#/components/responses/415'
-    #     '429':
-    #       $ref: '#/components/responses/429'
-    #     '500':
-    #       $ref: '#/components/responses/500'
+    put:
+      tags:
+      - "Banning user privileges"
+      summary: Updates the rule time
+      operationId: updateKickingRule
+      description: Updates the expiration time of a specified banning rule.
+      requestBody:
+        $ref: '#/components/requestBodies/updateKickingRule'
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateKickingRule_response'
+              example:
+                 status: "success"
+                 result:
+                  id: 1953
+                  ts: "2018-01-09T08:45:54.545Z"
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '415':
+          $ref: '#/components/responses/415'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
 
 
-    # delete:
-    #   tags:
-    #   - "Banning rule management"
-    #   summary: Deletes the rule
-    #   operationId: deleteKickingRule
-    #   description: Deletes a specified banning rule.
-#
-    #   requestBody:
-    #     $ref: '#/components/requestBodies/deleteKickingRule'
-#
-    #   responses:
-    #     '200':
-    #       description: The request is successful.
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/deleteKickingRule_response'
-    #           example:
-    #              status: "success"
-    #              id: 1953
-    #     '400':
-    #       description: >-
-    #                Bad request. Possible reasons:
-    #                <ul>
-    #                <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
-    #                </ul>
-    #     '401':
-    #       $ref: '#/components/responses/401'
-    #     '403':
-    #       $ref: '#/components/responses/403'
-    #     '404':
-    #       $ref: '#/components/responses/404'
-    #     '429':
-    #       $ref: '#/components/responses/429'
-    #     '500':
-    #       $ref: '#/components/responses/500'
+    delete:
+      tags:
+      - "Banning user privileges"
+      summary: Deletes the rule
+      operationId: deleteKickingRule
+      description: Deletes a specified banning rule.
+      requestBody:
+        $ref: '#/components/requestBodies/deleteKickingRule'
+      responses:
+        '200':
+          description: The request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteKickingRule_response'
+              example:
+                 status: "success"
+                 id: 1953
+        '400':
+          description: >-
+                   Bad request. Possible reasons:
+                   <ul>
+                   <li>Unsupported media type. Make sure that you set <code>Content-Type</code> in <code>Headers</code> as <code>application/json</code>.</li>
+                   </ul>
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
   /dev/v1/channel/user/property/{appid}/{uid}/{channelName}:
     get:
       tags:
@@ -1335,7 +1331,7 @@ components:
           description: The status of this request. `"success"` means the request is successful.
         id:
           type: number
-          description: The rule ID.
+          description: The rule ID. If you want to update or delete the rule, you need the rule ID to specify the rule.
      listKickingRule_response:
       type: object
       properties:
@@ -1350,7 +1346,7 @@ components:
             properties:
               id:
                 type: number
-                description: The rule ID.
+                description: The rule ID. If you want to update or delete the rule, you need the rule ID to specify the rule.
               appid:
                 type: string
                 description:  The App ID of the project.
@@ -1382,31 +1378,31 @@ components:
               updateAt:
                 type: string
                 description: The UTC time when this rule is updated.
-     # updateKickingRule_response:
-     #  type: object
-     #  properties:
-     #    status:
-     #      type: string
-     #      description: The status of this request. `"success"` means the request is successful.
-     #    result:
-     #      type: object
-     #      description: The result of the rule update.
-     #      properties:
-     #       id:
-     #        type: string
-     #        description: The rule ID.
-     #       ts:
-     #          type: string
-     #          description: The time when the rule expires, using UTC time and Unix timestamp.
-     # deleteKickingRule_response:
-     #  type: object
-     #  properties:
-     #    status:
-     #      type: string
-     #      description: The status of this request. `"success"` means the request is successful.
-     #    id:
-     #      type: string
-     #      description: The ID of the rule that you want to delete.
+     updateKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request. `"success"` means the request is successful.
+        result:
+          type: object
+          description: The result of the rule update.
+          properties:
+           id:
+            type: string
+            description: The rule ID.
+           ts:
+              type: string
+              description: The UTC time when the rule expires.
+     deleteKickingRule_response:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of this request. `"success"` means the request is successful.
+        id:
+          type: string
+          description: The ID of the rule that you want to delete.
      userProperty_response:
       type: object
       properties:
