@@ -495,26 +495,26 @@ paths:
       summary: Creates a banning rule
       operationId: createKickingRule
       description: >-
-                  Creates a rule of banning user privileges.<br>
+                  Creates a rule of banning specified user privileges.<br>
                   The user privileges (`privileges`) that can be banned include:
                     - `join_channel`: Joining a channel.
                     - `publish_audio`: Publishing audio.
                     - `publish_video`: Publishing video.
 
-                  The banning rule works based on the three fields: `cname`, `uid`, and `ip`.
+                  The banning rule works based on the following three fields: `cname`, `uid`, and `ip`.
                     - When you set `privileges` as `join_channel`, the rule works as follows:
-                      - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot join any channel in the app.
-                      - If you set `cname`, but not `uid` and `ip`, then no one can join the channel specified by the `cname` field.
-                      - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot join any channel in the app.
-                      - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot join the channel specified by the `cname` field.
+                      - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot join any channel in the app.
+                      - If you set `cname`, but not `uid` or `ip`, then no one can join the channel specified by the `cname` field.
+                      - If you set `uid`, but not `cname` or `ip`, then the user with the user ID cannot join any channel in the app.
+                      - If you set `cname` and `uid`, but not `ip`, then the user with the user ID cannot join the channel specified by the `cname` field.
 
                     - When you set `privileges` as `publish_audio` or `publish_video`, the rule works as follows:
-                      - If you set `ip`, but not `cname` and `uid`, then the users with this `ip` cannot publish audio or video in any channel of the app.
-                      - If you set `cname`, but not `uid` and `ip`, then no one can publish audio or video in the channel specified by the `cname` field.
-                      - If you set `uid`, but not `cname` and `ip`, then the user with the ID cannot publish audio or video in any channel of the app.
-                      - If you set `cname` and `uid`, but not `ip`, then the user with the ID cannot publish audio or video in the channel specified by the `cname` field.
+                      - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot publish audio or video in any channel of the app.
+                      - If you set `cname`, but not `uid` or `ip`, then no one can publish audio or video in the channel specified by the `cname` field.
+                      - If you set `uid`, but not `cname` or `ip`, then the user with the user ID cannot publish audio or video in any channel of the app.
+                      - If you set `cname` and `uid`, but not `ip`, then the user with the user ID cannot publish audio or video in the channel specified by the `cname` field.
 
-                  The user who is kicked out of a channel receives the corresponding callback as follows:
+                  A user who is kicked out of a channel receives the corresponding callback as follows:
                     - Android: `onConnectionStateChanged` callback reports `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
                     - iOS/macOS: `connectionChangedToState` callback reports `AgoraConnectionChangedBannedByServer(3)`.
                     - Web: `Client.on("client-banned")` callback.
@@ -974,59 +974,58 @@ components:
         time:
           type: number
           description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
-                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> and <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to rejoin the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
         time_in_seconds:
           type: number
           description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
-                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> and <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to rejoin the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
         privileges:
           type: array
           description: >-
                   The user privileges from which you want to ban the specified users. You can choose the following values:
-                    - `join_channel`： Bans a user from joining a channel or kicks a user out of a channel.
-                    - `publish_audio`：Bans a user from publishing audio. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
-                    - `publish_video`：Bans a user from publishing video. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
-
+                    - `join_channel`: Bans a user from joining a channel or kicks a user out of a channel.
+                    - `publish_audio`: Bans a user from publishing audio. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
+                    - `publish_video`: Bans a user from publishing video. You can pass in both `publish_audio` and `publish_video` to ban a user from publishing audio and video.
           items:
             type: string
             enum:
               - join_channel
               - publish_audio
               - publish_video
-     # updateKickingRule:
-     #  type: object
-     #  required:
-     #    - appid
-     #    - id
-     #    - time
-     #    - time_in_seconds
-     #  properties:
-     #    appid:
-     #      type: string
-     #      description: The App ID of the project.
-     #    id:
-     #      type: number
-     #      description: The ID of the rule that you want to update.
-     #    time:
-     #      type: number
-     #      description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
-     #                  <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
-     #    time_in_seconds:
-     #      type: number
-     #      description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
-     #                    <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> to <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to re-join the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
-     # deleteKickingRule:
-     #  type: object
-     #  required:
-     #    - appid
-     #    - id
-     #  properties:
-     #    appid:
-     #      type: string
-     #      description: The App ID of the project.
-     #    id:
-     #      type: number
-     #      description: The ID of the rule that you want to delete.
+     updateKickingRule:
+      type: object
+      required:
+        - appid
+        - id
+        - time
+        - time_in_seconds
+      properties:
+        appid:
+          type: string
+          description: The App ID of the project.
+        id:
+          type: number
+          description: The ID of the rule that you want to update.
+        time:
+          type: number
+          description: The time duration (in minutes) to ban the user. The value range is [1,1440], and the default value is 60.
+                      <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> and <code>1</code>, Agora automatically sets the value to <code>1</code>.</li><li>If the set value is higher than <code>1440</code>, Agora automatically sets the value to <code>1440</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to rejoin the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+        time_in_seconds:
+          type: number
+          description: The time duration (in seconds) to ban the user. The value range is [10,86430], and the default value is 3600.
+                        <div class="warning-msg"><i class="fa fa-warning"></i> Note:</br><ul><li>If the set value is between <code>0</code> and <code>10</code>, Agora automatically sets the value to <code>10</code>.</li><li>If the set value is higher than <code>86430</code>, Agora automatically sets the value to <code>86430</code>. </li><li>If the set value is <code>0</code>, the banning rule does not take effect. The server sets all users that conform to the rule offline, and users can log in again to rejoin the channel.</li><li>Use either <code>time</code> or <code>time_in_seconds</code>. If you set both parameters, the <code>time_in_seconds</code> parameter takes effect.</li></ul></div>
+     deleteKickingRule:
+      type: object
+      required:
+        - appid
+        - id
+      properties:
+        appid:
+          type: string
+          description: The App ID of the project.
+        id:
+          type: number
+          description: The ID of the rule that you want to delete.
      createProject_response:
       type: object
       properties:
@@ -1067,7 +1066,7 @@ components:
           properties:
               id:
                 type: string
-                description: The project ID。
+                description: The project ID.
               name:
                 type: string
                 description: The project name.
@@ -1597,27 +1596,27 @@ components:
             privileges: ["join_channel"]
       description: The following parameters are required in the request body.
       required: true
-    # updateKickingRule:
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '#/components/schemas/updateKickingRule'
-    #       example:
-    #         appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
-    #         id: 1953
-    #         time: 60
-    #   description: The following parameters are required in the request body.
-    #   required: true
-    # deleteKickingRule:
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '#/components/schemas/deleteKickingRule'
-    #       example:
-    #         appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
-    #         id: 1953
-    #   description: The following parameters are required in the request body.
-    #   required: true
+    updateKickingRule:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateKickingRule'
+          example:
+            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+            id: 1953
+            time: 60
+      description: The following parameters are required in the request body.
+      required: true
+    deleteKickingRule:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/deleteKickingRule'
+          example:
+            appid: "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2"
+            id: 1953
+      description: The following parameters are required in the request body.
+      required: true
 
   responses:
     200:
