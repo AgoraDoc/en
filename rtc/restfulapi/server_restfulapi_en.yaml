@@ -154,38 +154,38 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-    delete:
-      tags:
-      - "Project management"
-      summary: Deletes a project
-      operationId: deleteProject
-      description: Deletes a specified Agora project.
-      parameters: []
-      requestBody:
-        $ref: '#/components/requestBodies/deleteProject'
-      responses:
-        '200':
-          description: The request is successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/deleteProject_response'
-              example:
-                "success": true
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '415':
-          $ref: '#/components/responses/415'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+    # delete:
+    #   tags:
+    #   - "Project management"
+    #   summary: Deletes a project
+    #   operationId: deleteProject
+    #   description: Deletes a specified Agora project.
+    #   parameters: []
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/deleteProject'
+    #   responses:
+    #     '200':
+    #       description: The request is successful.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/deleteProject_response'
+    #           example:
+    #             "success": true
+    #     '400':
+    #       $ref: '#/components/responses/400'
+    #     '401':
+    #       $ref: '#/components/responses/401'
+    #     '403':
+    #       $ref: '#/components/responses/403'
+    #     '404':
+    #       $ref: '#/components/responses/404'
+    #     '415':
+    #       $ref: '#/components/responses/415'
+    #     '429':
+    #       $ref: '#/components/responses/429'
+    #     '500':
+    #       $ref: '#/components/responses/500'
   /dev/v1/projects:
     get:
       tags:
@@ -890,14 +890,14 @@ components:
         name:
           type: string
           description: The project name.
-     deleteProject:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          description: The project ID, which can be obtained by calling the Gets all projects API.
+     # deleteProject:
+     #  type: object
+     #  required:
+     #    - id
+     #  properties:
+     #    id:
+     #      type: string
+     #      description: The project ID, which can be obtained by calling the Gets all projects API.
      changeProjectStatus:
       type: object
       required:
@@ -1088,16 +1088,16 @@ components:
               created:
                 type: number
                 description: The Unix timestamp (in seconds) of when the project is created.
-     deleteProject_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: >-
-             Whether the project is deleted:
-               - true：The project is deleted successfully.
-               - false：Reserved for future use.
-
+     # deleteProject_response:
+     #  type: object
+     #  properties:
+     #    success:
+     #      type: boolean
+     #      description: >-
+     #         Whether the project is deleted:
+     #           - true：The project is deleted successfully.
+     #           - false：Reserved for future use.
+     #
      getProjects_response:
       type: object
       properties:
@@ -1534,15 +1534,15 @@ components:
             name: "xxxxx"
       description: The following parameters are required in the request body.
       required: true
-    deleteProject:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/deleteProject'
-          example:
-            id: "xxxx"
-      description: The following parameters are required in the request body.
-      required: true
+    # deleteProject:
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/deleteProject'
+    #       example:
+    #         id: "xxxx"
+    #   description: The following parameters are required in the request body.
+    #   required: true
     changeProjectStatus:
       content:
         application/json:
