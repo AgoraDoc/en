@@ -503,8 +503,14 @@ paths:
 
                   The banning rule works based on the following three fields: `cname`, `uid`, and `ip`.
                     - When you set `privileges` as `join_channel`, the rule works as follows:
-                      - If you set `ip`, but not `cname` or `uid`, then the users with this `ip` cannot join any channel in the app.
+                      - If you set `ip`, but not `cname` or `uid`, then all users with this `ip` cannot join any channel in the app.
+                        <div class="warning-msg"><i class="fa fa-warning"></i>
+                        Using <code>ip</code> as a filter field may incorrectly block users who should not be blocked, for example, in a scenario where multiple people share an IP address.
+                       </div>
                       - If you set `cname`, but not `uid` or `ip`, then no one can join the channel specified by the `cname` field.
+                        <div class="warning-msg"><i class="fa fa-warning"></i>
+                        Using <code>cname</code> as a filter field directly blocks the channel with the `cname`.
+                       </div>
                       - If you set `uid`, but not `cname` or `ip`, then the user with the user ID cannot join any channel in the app.
                       - If you set `cname` and `uid`, but not `ip`, then the user with the user ID cannot join the channel specified by the `cname` field.
 
