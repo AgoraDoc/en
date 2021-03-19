@@ -25,7 +25,7 @@ info:
       <li>Gets information about user roles, user lists, and channel lists.</li>
     </ul>
 
-    <div class="info-msg"><i class="fa fa-warning"></i> The call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. If you are frequency limited when calling the APIs, please see <a href="https://docs.agora.io/en/faq/restful_api_call_frequency">How can I avoid being frequency limited when calling Agora Server RESTful APIs?</a> to optimize API call frequency.</div>
+    <div class="info-msg"><i class="fa fa-warning"></i>For each Agora account (not each App ID), the call frequency of each online channel statistics query API is no more than 20 queries per second, and the call frequency of each other API is no more than 10 queries per second. If you are frequency limited when calling the APIs, please see <a href="https://docs.agora.io/en/faq/restful_api_call_frequency">How can I avoid being frequency limited when calling Agora Server RESTful APIs?</a> to optimize API call frequency.</div>
 
 
     ## <a name="tryapi"></a>Try out the API
