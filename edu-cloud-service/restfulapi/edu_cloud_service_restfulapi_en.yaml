@@ -356,10 +356,10 @@ paths:
                                     - 0: Allowed.
                                     - 1: Not allowed.
                               updateTime:
-                                type: string
+                                type: integer
                                 description: The UTC Unix timestamp when the user state updates in milliseconds.
                               state:
-                                type: string
+                                type: integer
                                 description: >-
                                   Whether the user is in the room:
                                     - 0: The user is not in the room.
@@ -813,10 +813,10 @@ paths:
                                     - 0: Allowed.
                                     - 1: Not allowed.
                               updateTime:
-                                type: string
+                                type: integer
                                 description: The UTC Unix timestamp when the user state updates in milliseconds.
                               state:
-                                type: string
+                                type: integer
                                 description: >-
                                   Whether the user is in the room:
                                     - 0: The user is not in the room.
